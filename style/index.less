@@ -1,10 +1,209 @@
-*{
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  /* Firefox */
+  -webkit-box-sizing: border-box;
+  /* Safari */
 }
+
 html,
 body {
-  background-color: #080d25;
   width: 100%;
   height: 100%;
+  // background-color: #080d25;
+  background-color: #F1F1F1;
+  font-family: PingFangSC-Regular, sans-serif;
+
+}
+
+ul {
+  list-style: none;
+}
+
+@themeColor:#F56C6C;
+.icon {
+  display: inline-block;
+  background-size: 24px 24px;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+  margin-bottom: -5px;
+  &.icon-hot {
+    background-image: url('../assets/icon-hot.png');
+  }
+  &.icon-race {
+    background-image: url('../assets/icon-race.png');
+  }
+  &.icon-nav {
+    background-image: url('../assets/icon-nav.png');
+  }
+}
+
+.wrapper {
+  padding-top: 90px;
+  width: 1024px;
+  margin: 0 auto;
+
+  .swiper-wrapper {
+    width: 1024px;
+    height: 399px;
+
+    img {
+      width: 1024px;
+      height: 403px;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+
+      /* Center slide text vertically */
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+    }
+  }
+
+  .basic {
+    background-color: #fff;
+    padding: 10px;
+    width: 1024px;
+    border-radius: 2px;
+    margin-top: 20px;
+
+    .title {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      // .icon {
+      //   margin-bottom: -3px;
+      // }
+
+      .more {
+        text-decoration: none;
+        color: #333;
+
+        &:hover {
+          color: @themeColor;
+        }
+      }
+    }
+
+    .news-list {
+      .news-item {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-top: 20px;
+
+        .item-cover {
+          height: 120px;
+          width: 280px;
+          border-radius: 4px;
+          overflow: hidden;
+
+          img {
+            height: 100%;
+            width: 100%;
+          }
+        }
+
+        .item-media {
+          flex: 1;
+          margin-left: 20px;
+
+          .title {
+            line-height: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .desc {
+            color: #666;
+            font-size: 16px;
+            line-height: 25px;
+            margin-top: 10px;
+            height: 50px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+          }
+          .detail {
+            text-decoration: none;
+            color: #000;
+            font-size: 16px;
+            display: inline-block;
+            margin-top: 18px;
+            cursor: pointer;
+            &:hover {
+              color: @themeColor;
+            }
+          }
+        }
+      }
+    }
+    .web-list {
+      list-style: none;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 20px 0;
+      .web-item {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        img {
+          width: 40px;
+          height: 30px;
+        }
+        span {
+          margin-left: 5px;
+          color: #333;
+          font-size: 16px;
+          
+        }
+      }
+      li {
+        margin: 0 30px 10px 0;
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 3px;
+        &:hover {
+          background-color: rgba(153,153,153, .2);
+          span {
+            color: @themeColor;
+          }
+        }
+        a {
+          text-decoration: none;
+          
+        }
+      }
+    }
+  }
 }
