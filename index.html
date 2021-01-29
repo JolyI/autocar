@@ -15,7 +15,8 @@
     <link rel=”icon” href='./favicon.ico' mce_href=”/dir/favicon.ico” type=”image/x-icon”>
     <title>中国赛车</title>
     <link rel="stylesheet" href="./style/normalize.css" />
-    <link rel="stylesheet" href="./dist/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="./lib/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="./lib/zui.min.css" />
 
     <!-- 样式文件 -->
     <link rel="stylesheet/less" type="text/css" href="./style/index.less" />
@@ -34,7 +35,7 @@
             <!-- <button href="./" class="login-btn">[登录/注册]</button> -->
             <div class="profile">
                 <div class="profile-box">
-                    <img src="./assets/avator.png" alt="" class="avator">
+                    <img src="./assets/avator.png" alt="" class="avator" />
                     <div class="name">秦皇汉武</div>
                 </div>
                 <div class="draw-box">
@@ -53,17 +54,17 @@
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <a href="http://slide.sports.sina.com.cn/f1/slide_2_84822_259668.html" target="_blank">
-                            <img src="//n.sinaimg.cn/sports/transform/180/w630h350/20201213/2b98-kffctca8851364.jpg" alt="">
+                            <img src="//n.sinaimg.cn/sports/transform/180/w630h350/20201213/2b98-kffctca8851364.jpg" alt="" />
                         </a>
                     </div>
                     <div class="swiper-slide">
                         <a href="http://slide.sports.sina.com.cn/f1/slide_2_84822_259239.html" target="_blank">
-                            <img src="//n.sinaimg.cn/sports/transform/180/w630h350/20201206/e7f6-keyancw5691314.jpg" alt="">
+                            <img src="//n.sinaimg.cn/sports/transform/180/w630h350/20201206/e7f6-keyancw5691314.jpg" alt="" />
                         </a>
                     </div>
                     <div class="swiper-slide">
                         <a href="http://slide.sports.sina.com.cn/f1/slide_2_84822_261521.html/d/1" target="_blank">
-                            <img src="//k.sinaimg.cn/n/sports/2_img/upload/88598dbf/600/w1920h1080/20210121/3cbe-khxeamw0428311.jpg/w220h165z1l0t0q100c79.jpg" alt="">
+                            <img src="//k.sinaimg.cn/n/sports/2_img/upload/88598dbf/600/w1920h1080/20210121/3cbe-khxeamw0428311.jpg/w220h165z1l0t0q100c79.jpg" alt="" />
                         </a>
                     </div>
                 </div>
@@ -77,91 +78,92 @@
                     <div><i class="icon icon-hot"></i> 热点新闻</div>
                     <a class="more" href="https://www.srfcworld.com/events">更多>></a>
                 </div>
-                <ul class="news-list">
-                </ul>
+                <ul class="news-list"></ul>
             </div>
             <!-- 网址导航 -->
             <div class="basic">
                 <div class="title">
-                    <div>
-                        <i class="icon icon-nav"></i> 相关网址
-                    </div>
+                    <div><i class="icon icon-nav"></i> 相关网址</div>
                 </div>
-                <ul class="web-list">
-
-                </ul>
+                <ul class="web-list"></ul>
             </div>
         </div>
     </section>
     <footer class="footer">
-        <div class="detail">
-            @ 2021 中国赛车
-        </div>
+        <div class="detail">@ 2021 中国赛车</div>
         <div class="tips">
             本网站仅做学习交流之用途，若有侵权，请及时与站主联系。
         </div>
     </footer>
 </body>
-<script src="./dist/swiper-bundle.min.js"></script>
+<script src="./lib/swiper-bundle.min.js"></script>
 <script src="./js/jquery1.9.0.min.js"></script>
+<script src="./lib/zui.min.js"></script>
 <script>
-    var mySwiper = new Swiper('.swiper-container', {
+    var mySwiper = new Swiper(".swiper-container", {
         pagination: {
-            el: '.swiper-pagination',
+            el: ".swiper-pagination",
         },
         navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
         },
         autoplay: true,
-    })
+    });
     var page = {
         list: [{
-            img: 'https://z0.sinaimg.cn/auto/resize?img=http%3A%2F%2Fn.sinaimg.cn%2Fsports%2F2_img%2Fupload%2F88598dbf%2F213%2Fw2048h1365%2F20210128%2F9647-kicwvzr2925643.jpg&size=0_143',
-            url: '',
-            title: '图集-塞恩斯首次测试法拉利F1赛车',
-            desc: '图集-塞恩斯1月27日在意大利费奥拉诺赛道驾驶法拉利2018款F1赛车SF71H进行了测试，这也是他首次驾驶法拉利F1赛车。',
+            img: "https://z0.sinaimg.cn/auto/resize?img=http%3A%2F%2Fn.sinaimg.cn%2Fsports%2F2_img%2Fupload%2F88598dbf%2F213%2Fw2048h1365%2F20210128%2F9647-kicwvzr2925643.jpg&size=0_143",
+            url: "",
+            title: "图集-塞恩斯首次测试法拉利F1赛车",
+            desc: "图集-塞恩斯1月27日在意大利费奥拉诺赛道驾驶法拉利2018款F1赛车SF71H进行了测试，这也是他首次驾驶法拉利F1赛车。",
         }, ],
         // web网站
         webList: [{
-            title: '国际汽联官方网站',
-            img: './assets/fia.png',
-            url: 'http://www.fia.com/'
-        }]
-    }
+            title: "国际汽联官方网站",
+            img: "./assets/fia.png",
+            url: "http://www.fia.com/",
+        }, ],
+    };
 
     // 初始化页面数据
-    initHotNews()
-    initWeb()
-        // 初始化热点新闻
+    initHotNews();
+    initWeb();
+    // 初始化热点新闻
     function initHotNews() {
-        var domStr = ''
-            // 有list数据就循环list
+        var domStr = "";
+        // 有list数据就循环list
         for (var h = 0; h < 5; h++) {
-            var data = page.list[0]
+            var data = page.list[0];
             domStr +=
                 '<li class="news-item">' +
                 '    <div class="item-cover">' +
-                '       <img src="' + data.img + '" alt="">' +
-                '   </div>' +
+                '       <img src="' +
+                data.img +
+                '" alt="">' +
+                "   </div>" +
                 '    <div class="item-media">' +
-                '      <p class="title">' + data.title + '</p>' +
-                '    <p class="desc">' + data.desc + '</p>' +
-                '     <a class="detail" href="' + data.url + '">查看详情>> </a>' +
-                '</div>' +
-                ' </li>'
+                '      <p class="title">' +
+                data.title +
+                "</p>" +
+                '    <p class="desc">' +
+                data.desc +
+                "</p>" +
+                '     <a class="detail" href="' +
+                data.url +
+                '">查看详情>> </a>' +
+                "</div>" +
+                " </li>";
         }
-        $('.news-list').html(domStr)
+        $(".news-list").html(domStr);
     }
 
     // 初始化网站导航
     function initWeb() {
-        var domStr = ''
-            // 有list数据就循环list
+        var domStr = "";
+        // 有list数据就循环list
         for (var h = 0; h < 15; h++) {
-            var data = page.webList[0]
-            domStr +=
-                `
+            var data = page.webList[0];
+            domStr += `
                 <li>
                     <a href="${data.url}" target="_blank">
                         <div class="web-item">
@@ -170,9 +172,9 @@
                         </div>
                     </a>
                 </li>
-                `
+                `;
         }
-        $('.web-list').html(domStr)
+        $(".web-list").html(domStr);
     }
 </script>
 
