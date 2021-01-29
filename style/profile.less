@@ -1,0 +1,99 @@
+.wrapper {
+  min-height: 76vh;
+  width: 1024px;
+  margin: 0 auto;
+  position: relative;
+
+  .icon {
+    display: inline-block !important;
+    background-size: 24px 24px;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+    margin-bottom: -5px;
+
+    &.icon-renwu {
+      background-image: url('../assets/icon-renwu.png');
+    }
+
+    &.icon-left {
+      background-image: url('../assets/icon-arrow-left.png');
+    }
+
+    &.icon-tx {
+      background-image: url('../assets/icon-touxiang.png');
+    }
+
+    &.icon-xt {
+      background-image: url('../assets/icon-xitong.png');
+    }
+
+  }
+
+  @slideActiveColor: #1296db;
+  @sliderColor: #666;
+
+  .slide-container {
+    background-color: #fff;
+    width: 200px;
+    position: absolute;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    border: 1px solid rgba(153, 153, 153, .2);
+    box-shadow: 0px 0px 6px #999;
+
+    .slide-item {
+      cursor: pointer;
+      padding: 10px;
+      font-size: 16px;
+      color: #333;
+
+      &:not(&:last-child) {
+        border-bottom: 1px solid #ddd;
+      }
+
+      span {
+        margin: 0 10px;
+      }
+
+      &:active,
+      &:hover {
+        background-color: rgba(153, 153, 153, .1);
+      }
+
+      .icon-left {
+        float: right;
+      }
+
+      &.active,
+      &:hover {
+        background-color: rgba(153, 153, 153, .1);
+
+        span {
+          color: @slideActiveColor;
+        }
+
+        .icon-tx {
+          background-image: url('../assets/icon-touxiang-v.png');
+        }
+
+        .icon-renwu {
+          background-image: url('../assets/icon-renwu-v.png');
+        }
+
+        .icon-xt {
+          background-image: url('../assets/icon-xitong-v.png');
+        }
+      }
+    }
+  }
+
+  .main-container {
+    width: 800px;
+    background-color: sandybrown;
+    padding: 15px;
+    margin-left: 224px;
+  }
+}
