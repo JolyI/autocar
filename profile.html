@@ -42,19 +42,21 @@
                 </div>
                 <div class="collapse navbar-collapse navbar-collapse-example">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="active"><a href="./login.html">登录/注册</a></li>
+                        <li><a href="./index.html">首页</a></li>
+                        <li><a href="./blog.html">在线论坛</a></li>
+                        <li><a href="./login.html">登录/注册</a></li>
                         <li class="dropdown">
                             <a href="your/nice/url" class="dropdown-toggle" data-toggle="dropdown">秦皇汉武 <b
                                     class="caret"></b></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li>
                                     <a href="./profile.html">
-                                        <i class="icon icon-u"></i> 个人中心
+                                        <i class="icon icon-user"></i> 个人中心
                                     </a>
                                 </li>
                                 <li class="divider"></li>
                                 <li>
-                                    <a> <i class="icon icon-logout"></i> 退出登录 </a>
+                                    <a> <i class="icon icon-signout"></i> 退出登录 </a>
                                 </li>
                             </ul>
                         </li>
@@ -74,9 +76,18 @@
                 <i class="icon icon-renwu"></i> <span>我的任务</span>
                 <i class="icon icon-left"></i>
             </li>
-            <li class="slide-item" data-page="system-box">
-                <i class="icon icon-xt"></i> <span>任务系统</span>
+            <li class="slide-item admin" data-page="user-box">
+                <i class="icon icon-group"></i> <span>用户管理</span>
                 <i class="icon icon-left"></i>
+            </li>
+            <li class="slide-item admin" data-page="system-box">
+                <i class="icon icon-cloud"></i> <span>任务系统</span>
+                <i class="icon icon-left"></i>
+            </li>
+            <li class="slide-item admin" data-page="car-box">
+                <i class="icon icon-tint"></i> <span>车队管理</span>
+                <i class="icon icon-left"></i>
+            </li>
             </li>
         </ul>
         <!-- 右侧内容区域 -->
@@ -134,7 +145,50 @@
                     </div>
                 </div>
             </div>
-            <!-- 任务系统 版主权限 -->
+            <!-- 用户g管理 admin权限 -->
+            <div class="user-box main-item hide">
+                <div class="card">
+                    <!-- <div class="add-wrapper">
+                        <button class="btn btn-success" onclick="showAddTaskModal()">
+                            <i class="icon icon-plus"></i>
+                            新建任务
+                        </button>
+                    </div> -->
+                    <table class="table table-striped table-bordered" align="center" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <th>用户名称</th>
+                            <th>真实姓名</th>
+                            <th>创建时间</th>
+                            <th>用户权限</th>
+                            <th>操作</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>test</td>
+                                <td>test</td>
+                                <td>test</td>
+                                <td>test</td>
+                                <td>
+                                    <button class="btn btn-danger plan_btn" onclick="showPlanModal()">
+                                        <i class="icon icon-times"></i>删除
+                                    </button>
+                                    <button class="btn btn-primary plan_btn" onclick="showPlanModal()">
+                                        <i class="icon icon-repeat"></i>编辑
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="no_table hide">
+                        <p>暂无记录</p>
+                    </div>
+
+                    <div id="user-page" style="text-align: center">
+                        <ul id="pageLimit1"></ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 任务系统 admin权限 -->
             <div class="system-box main-item hide">
                 <div class="card">
                     <div class="add-wrapper">
@@ -173,6 +227,49 @@
                     </div>
 
                     <div id="sys-page" style="text-align: center">
+                        <ul id="pageLimit1"></ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 车队管理 admin权限 -->
+            <div class="car-box main-item hide">
+                <div class="card">
+                    <div class="add-wrapper">
+                        <button class="btn btn-success" onclick="showAddTaskModal()">
+                            <i class="icon icon-plus"></i>
+                            新建车队
+                        </button>
+                    </div>
+                    <table class="table table-striped table-bordered" align="center" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <th>车队名称</th>
+                            <th>车队描述</th>
+                            <th>创建时间</th>
+                            <th>车队成员</th>
+                            <th>操作</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>test</td>
+                                <td>test</td>
+                                <td>test</td>
+                                <td>test</td>
+                                <td>
+                                    <button class="btn btn-danger plan_btn" onclick="showPlanModal()">
+                                        <i class="icon icon-times"></i>删除
+                                    </button>
+                                    <button class="btn btn-primary plan_btn" onclick="showPlanModal()">
+                                        <i class="icon icon-repeat"></i>编辑
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="no_table hide">
+                        <p>暂无记录</p>
+                    </div>
+
+                    <div id="car-page" style="text-align: center">
                         <ul id="pageLimit1"></ul>
                     </div>
                 </div>
@@ -262,6 +359,7 @@
         function init() {
             initSlide();
             initTaskTable();
+            initCarTable()
             eventListener();
         }
 
@@ -456,6 +554,163 @@
         }
 
         // 任务系统 表格初始化
+        function initUserTable() {
+
+            $.ajax({
+                type: "post",
+                url: baseUrl + "/api/v1/user/gw/order/list",
+                data: JSON.stringify({
+                    id: parseInt(localStorage.getItem("user_id")), //用户id
+                    page: 1, //页数
+                }),
+                dataType: "json",
+                beforeSend: function(request) {
+                    request.setRequestHeader("token", localStorage.getItem("token"));
+                },
+                success: function(data) {
+                    if (data.success == true) {
+                        if (data.data.length > 0) {
+                            $(".user-box .no_table").addClass('hide');
+                            $(".user-box table").show();
+                            var html = "";
+                            for (var i in data.data) {
+                                var html =
+                                    html +
+                                    " <tr>" +
+                                    "<td>" +
+                                    data.data[i].product_name +
+                                    "</td>" +
+                                    "<td>" +
+                                    data.data[i].order_number +
+                                    "</td>" +
+                                    "<td>" +
+                                    data.data[i].submit_time +
+                                    "</td>" +
+                                    "<td>" +
+                                    data.data[i].total_amount +
+                                    "</td>" +
+                                    "<td>" +
+                                    infoFormatter(data.data[i].order_status) +
+                                    "</td>" +
+                                    "</tr>";
+                            }
+                            $(".user-box table tbody").html(html);
+                            var options = {
+                                currentPage: $("#sys-page .active a").html(), //当前的请求页面。
+                                totalPages: data.total_page, //一共多少页。
+                                size: "normal", //应该是页眉的大小。
+                                bootstrapMajorVersion: 3, //bootstrap的版本要求。
+                                alignment: "right",
+                                numberOfPages: 10, //一页列出多少数据。
+                                itemTexts: function(type, page, current) {
+                                    //如下的代码是将页眉显示的中文显示我们自定义的中文。
+                                    switch (type) {
+                                        case "first":
+                                            return "首页";
+                                        case "prev":
+                                            return "上一页";
+                                        case "next":
+                                            return "下一页";
+                                        case "last":
+                                            return "末页";
+                                        case "page":
+                                            return page;
+                                    }
+                                },
+                                onPageClicked: function(event, originalEvent, type, page) {
+                                    $.ajax({
+                                        url: baseUrl + "/api/v1/user/gw/order/list",
+                                        type: "post",
+                                        data: JSON.stringify({
+                                            id: parseInt(localStorage.getItem(
+                                                "user_id")), //用户id
+                                            page: page, //页数
+                                        }),
+                                        dataType: "json",
+                                        beforeSend: function(request) {
+                                            request.setRequestHeader(
+                                                "token",
+                                                localStorage.getItem("token")
+                                            );
+                                        },
+                                        success: function(data) {
+                                            if (data.success == true) {
+                                                if (data.data.length > 0) {
+                                                    $(".system-box .no_table").addClass(
+                                                        'hide');
+                                                    $(".system-box table").show();
+                                                    var html = "";
+                                                    for (var i in data.data) {
+                                                        var html =
+                                                            html +
+                                                            " <tr>" +
+                                                            "<td>" +
+                                                            data.data[i].product_name +
+                                                            "</td>" +
+                                                            "<td>" +
+                                                            data.data[i].order_number +
+                                                            "</td>" +
+                                                            "<td>" +
+                                                            data.data[i].submit_time +
+                                                            "</td>" +
+                                                            "<td>" +
+                                                            data.data[i].total_amount +
+                                                            "</td>" +
+                                                            "<td>" +
+                                                            infoFormatter(data.data[i]
+                                                                .order_status) +
+                                                            "</td>" +
+                                                            "</tr>";
+                                                    }
+                                                    $(".system-box table tbody").html(
+                                                        html);
+                                                } else {
+                                                    $(".system-box .no_table").show();
+                                                    $(".system-box table").hide();
+                                                }
+                                            }
+                                        },
+                                        error: function(data) {
+                                            if (data.status == 403) {
+                                                deleteItem();
+                                                messageBox(
+                                                    "您的登录已过期，请重新登录！",
+                                                    "登录过期",
+                                                    0,
+                                                    function() {
+                                                        window.location.href =
+                                                            "./index.html";
+                                                    }
+                                                );
+                                            }
+                                        },
+                                    });
+                                },
+                            };
+                            $(".user-box #pageLimit1").bootstrapPaginator(options);
+                        } else {
+                            $(".user-box .no_table").show();
+                            $(".user-box table").hide();
+                        }
+                    }
+                },
+                error: function(data) {
+                    if (data.status == 403) {
+                        deleteItem();
+                        messageBox(
+                            "您的登录已过期，请重新登录！",
+                            "登录过期",
+                            0,
+                            function() {
+                                window.location.href = "index.html";
+                            }
+                        );
+                    }
+                },
+            });
+
+        }
+        // 任务系统 表格初始化
         function initSystemTable() {
 
             $.ajax({
@@ -593,6 +848,162 @@
                         } else {
                             $(".system-box .no_table").show();
                             $(".system-box table").hide();
+                        }
+                    }
+                },
+                error: function(data) {
+                    if (data.status == 403) {
+                        deleteItem();
+                        messageBox(
+                            "您的登录已过期，请重新登录！",
+                            "登录过期",
+                            0,
+                            function() {
+                                window.location.href = "index.html";
+                            }
+                        );
+                    }
+                },
+            });
+
+        }
+
+        // 车队管理 admin 表格初始化
+        function initCarTable() {
+
+            $.ajax({
+                type: "post",
+                url: baseUrl + "/api/v1/user/gw/order/list",
+                data: JSON.stringify({
+                    id: parseInt(localStorage.getItem("user_id")), //用户id
+                    page: 1, //页数
+                }),
+                dataType: "json",
+                beforeSend: function(request) {},
+                success: function(data) {
+                    if (data.success == true) {
+                        if (data.data.length > 0) {
+                            $(".car-box .no_table").addClass('hide');
+                            $(".car-box table").show();
+                            var html = "";
+                            for (var i in data.data) {
+                                var html =
+                                    html +
+                                    " <tr>" +
+                                    "<td>" +
+                                    data.data[i].product_name +
+                                    "</td>" +
+                                    "<td>" +
+                                    data.data[i].order_number +
+                                    "</td>" +
+                                    "<td>" +
+                                    data.data[i].submit_time +
+                                    "</td>" +
+                                    "<td>" +
+                                    data.data[i].total_amount +
+                                    "</td>" +
+                                    "<td>" +
+                                    infoFormatter(data.data[i].order_status) +
+                                    "</td>" +
+                                    "</tr>";
+                            }
+                            $(".system-box table tbody").html(html);
+                            var options = {
+                                currentPage: $("#car-page .active a").html(), //当前的请求页面。
+                                totalPages: data.total_page, //一共多少页。
+                                size: "normal", //应该是页眉的大小。
+                                bootstrapMajorVersion: 3, //bootstrap的版本要求。
+                                alignment: "right",
+                                numberOfPages: 10, //一页列出多少数据。
+                                itemTexts: function(type, page, current) {
+                                    //如下的代码是将页眉显示的中文显示我们自定义的中文。
+                                    switch (type) {
+                                        case "first":
+                                            return "首页";
+                                        case "prev":
+                                            return "上一页";
+                                        case "next":
+                                            return "下一页";
+                                        case "last":
+                                            return "末页";
+                                        case "page":
+                                            return page;
+                                    }
+                                },
+                                onPageClicked: function(event, originalEvent, type, page) {
+                                    $.ajax({
+                                        url: baseUrl + "/api/v1/user/gw/order/list",
+                                        type: "post",
+                                        data: JSON.stringify({
+                                            id: parseInt(localStorage.getItem(
+                                                "user_id")), //用户id
+                                            page: page, //页数
+                                        }),
+                                        dataType: "json",
+                                        beforeSend: function(request) {
+                                            request.setRequestHeader(
+                                                "token",
+                                                localStorage.getItem("token")
+                                            );
+                                        },
+                                        success: function(data) {
+                                            if (data.success == true) {
+                                                if (data.data.length > 0) {
+                                                    $(".system-box .no_table").addClass(
+                                                        'hide');
+                                                    $(".system-box table").show();
+                                                    var html = "";
+                                                    for (var i in data.data) {
+                                                        var html =
+                                                            html +
+                                                            " <tr>" +
+                                                            "<td>" +
+                                                            data.data[i].product_name +
+                                                            "</td>" +
+                                                            "<td>" +
+                                                            data.data[i].order_number +
+                                                            "</td>" +
+                                                            "<td>" +
+                                                            data.data[i].submit_time +
+                                                            "</td>" +
+                                                            "<td>" +
+                                                            data.data[i].total_amount +
+                                                            "</td>" +
+                                                            "<td>" +
+                                                            infoFormatter(data.data[i]
+                                                                .order_status) +
+                                                            "</td>" +
+                                                            "</tr>";
+                                                    }
+                                                    $(".system-box table tbody").html(
+                                                        html);
+                                                } else {
+                                                    $(".system-box .no_table").show();
+                                                    $(".system-box table").hide();
+                                                }
+                                            }
+                                        },
+                                        error: function(data) {
+                                            if (data.status == 403) {
+                                                deleteItem();
+                                                messageBox(
+                                                    "您的登录已过期，请重新登录！",
+                                                    "登录过期",
+                                                    0,
+                                                    function() {
+                                                        window.location.href =
+                                                            "./index.html";
+                                                    }
+                                                );
+                                            }
+                                        },
+                                    });
+                                },
+                            };
+                            $(".car-box #pageLimit1").bootstrapPaginator(options);
+                        } else {
+                            $(".car-box .no_table").show();
+                            $(".car-box table").hide();
                         }
                     }
                 },

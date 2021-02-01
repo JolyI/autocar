@@ -26,28 +26,30 @@
 <body>
     <nav class="navbar nav-header" role="navigation">
         <div class="container-fluid">
-            <div class="wrapper">
+            <div class="nav-wrapper">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-example">
-              <span class="sr-only">切换导航</span>
-            </button>
+                        <span class="sr-only">切换导航</span>
+                    </button>
                     <a class="navbar-brand logo" href="./"></a>
                 </div>
                 <div class="collapse navbar-collapse navbar-collapse-example">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="active"><a href="./login.html">登录/注册</a></li>
+                        <li class="active"><a href="./index.html">首页</a></li>
+                        <li><a href="./blog.html">在线论坛</a></li>
+                        <li><a href="./login.html">登录/注册</a></li>
                         <li class="dropdown">
-                            <a href="your/nice/url" class="dropdown-toggle" data-toggle="dropdown">秦皇汉武 <b class="caret"></b
-                ></a>
+                            <a href="your/nice/url" class="dropdown-toggle" data-toggle="dropdown">秦皇汉武 <b
+                                    class="caret"></b></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li>
                                     <a href="./profile.html">
-                                        <i class="icon icon-u"></i> 个人中心
+                                        <i class="icon icon-user"></i> 个人中心
                                     </a>
                                 </li>
                                 <li class="divider"></li>
                                 <li>
-                                    <a> <i class="icon icon-logout"></i> 退出登录 </a>
+                                    <a> <i class="icon icon-signout"></i> 退出登录 </a>
                                 </li>
                             </ul>
                         </li>
@@ -72,67 +74,48 @@
                     <div class="item active">
                         <img alt="First slide" src="//n.sinaimg.cn/sports/transform/180/w630h350/20201213/2b98-kffctca8851364.jpg" />
                         <div class="carousel-caption">
-                            <a href="http://slide.sports.sina.com.cn/f1/slide_2_84822_259668.html" target="_blank">2020F1阿布扎比站正赛</a
-                >
-              </div>
-            </div>
-            <div class="item">
-              <img
-                alt="second slide"
-                src="//n.sinaimg.cn/sports/transform/180/w630h350/20201206/e7f6-keyancw5691314.jpg"
-              />
-              <div class="carousel-caption">
-                <a
-                  href="http://slide.sports.sina.com.cn/f1/slide_2_84822_259239.html"
-                  target="_blank"
-                  >米克舒马赫加冕F2年度冠军</a
-                >
-              </div>
-            </div>
-            <div class="item">
-              <img
-                alt="third slide"
-                src="//k.sinaimg.cn/n/sports/2_img/upload/88598dbf/600/w1920h1080/20210121/3cbe-khxeamw0428311.jpg/w220h165z1l0t0q100c79.jpg"
-              />
-              <div class="carousel-caption">
-                <a
-                  href="http://slide.sports.sina.com.cn/f1/slide_2_84822_261521.html/d/1"
-                  target="_blank"
-                  >红牛新人佩雷兹报到</a
-                >
-              </div>
-            </div>
-          </div>
-
-          <!-- 项目切换按钮 -->
-          <a
-            class="left carousel-control"
-            href="#myNiceCarousel"
-            data-slide="prev"
-          >
-            <span class="icon icon-chevron-left"></span>
-          </a>
-                            <a class="right carousel-control" href="#myNiceCarousel" data-slide="next">
-                                <span class="icon icon-chevron-right"></span>
-                            </a>
-                        </div>
-
-                        <!-- 热点新闻 -->
-                        <div class="basic hot-news">
-                            <div class="title">
-                                <div><i class="icon icon-hot"></i> 热点新闻</div>
-                                <a class="more" href="https://www.srfcworld.com/events">更多>></a>
-                            </div>
-                            <ul class="news-list"></ul>
-                        </div>
-                        <!-- 网址导航 -->
-                        <div class="basic">
-                            <div class="title">
-                                <div><i class="icon icon-nav"></i> 相关网址</div>
-                            </div>
-                            <ul class="web-list"></ul>
+                            <a href="http://slide.sports.sina.com.cn/f1/slide_2_84822_259668.html" target="_blank">2020F1阿布扎比站正赛</a>
                         </div>
                     </div>
+                    <div class="item">
+                        <img alt="second slide" src="//n.sinaimg.cn/sports/transform/180/w630h350/20201206/e7f6-keyancw5691314.jpg" />
+                        <div class="carousel-caption">
+                            <a href="http://slide.sports.sina.com.cn/f1/slide_2_84822_259239.html" target="_blank">米克舒马赫加冕F2年度冠军</a>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <img alt="third slide" src="//k.sinaimg.cn/n/sports/2_img/upload/88598dbf/600/w1920h1080/20210121/3cbe-khxeamw0428311.jpg/w220h165z1l0t0q100c79.jpg" />
+                        <div class="carousel-caption">
+                            <a href="http://slide.sports.sina.com.cn/f1/slide_2_84822_261521.html/d/1" target="_blank">红牛新人佩雷兹报到</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 项目切换按钮 -->
+                <a class="left carousel-control" href="#myNiceCarousel" data-slide="prev">
+                    <span class="icon icon-chevron-left"></span>
+                </a>
+                <a class="right carousel-control" href="#myNiceCarousel" data-slide="next">
+                    <span class="icon icon-chevron-right"></span>
+                </a>
+            </div>
+
+            <!-- 热点新闻 -->
+            <div class="basic hot-news">
+                <div class="title">
+                    <div><i class="icon icon-hot"></i> 热点新闻</div>
+                    <a class="more" href="https://www.srfcworld.com/events">更多>></a>
+                </div>
+                <ul class="news-list"></ul>
+            </div>
+            <!-- 网址导航 -->
+            <div class="basic">
+                <div class="title">
+                    <div><i class="icon icon-nav"></i> 相关网址</div>
+                </div>
+                <ul class="web-list"></ul>
+            </div>
+        </div>
     </section>
     <footer class="footer">
         <div class="detail">@ 2021 中国赛车</div>

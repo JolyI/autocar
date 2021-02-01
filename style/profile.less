@@ -4,7 +4,7 @@
     margin: 0 auto;
     position: relative;
 
-    .icon {
+    .slide-container .icon {
         display: inline-block !important;
         background-size: 24px 24px;
         background-position: center;
@@ -12,6 +12,8 @@
         width: 24px;
         height: 24px;
         margin-bottom: -5px;
+        font-size: 23px;
+        color: #8a8a8a;
 
         &.icon-renwu {
             background-image: url('../assets/icon-renwu.png');
@@ -77,6 +79,9 @@
                 span {
                     color: @slideActiveColor;
                 }
+                .icon {
+                    color: @slideActiveColor;
+                }
 
                 .icon-tx {
                     background-image: url('../assets/icon-touxiang-v.png');
@@ -127,9 +132,10 @@
 
         .task-box {}
 
-        .system-box {
+        .system-box,.car-box,.user-box {
             .add-wrapper {
                 margin: 20px 0;
+                text-align: right;
             }
         }
     }

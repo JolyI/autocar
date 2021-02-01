@@ -13,10 +13,19 @@ header {
   left: 0;
   right: 0;
 }
-
+@slideActiveColor: #1296db;
 .nav-wrapper {
   width: 1024px;
   margin: 0 auto;
+  .nav {
+      li {
+        &.active {
+            a {
+                color: @slideActiveColor;
+            }
+        }
+      }
+  }
 }
 
 .footer {
