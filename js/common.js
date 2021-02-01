@@ -1,6 +1,35 @@
 baseUrl = 'http://127.0.0.1';
 baseToken = "";
 
+// 登录接口
+loginUrl = './login'
+    // 退出登录接口
+loginOutUrl = './login'
+
+// 个人信息接口
+profileUrl = './login'
+
+// 个人信息修改接口
+editProfileUrl = './'
+
+// 我的任务接口
+taskMineUrl = './login'
+
+// 任务进度修改接口
+editTaskUrl = './login'
+
+// ------------版主----------------
+// 添加任务接口
+adminAddTaskUrl = './login'
+
+// 修改任务接口
+adminEditTaskUrl = './login'
+
+// 删除任务接口
+adminDeleteTaskUrl = './delete'
+
+
+
 /**
  * 提示弹窗
  * @param {*} content 弹窗内容 暂时不支持富文本
