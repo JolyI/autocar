@@ -1,26 +1,40 @@
 {
-    "vetur.format.defaultFormatter.html": "js-beautify-html",
-    "vetur.format.defaultFormatterOptions": {
-      "js-beautify-html": {
-        "wrap_attributes": "force"
-      }
+    "editor.fontSize": 16,
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false,
+    "update.mode": "none",
+    "search.followSymlinks": false,
+    "[javascript]": {
+        "editor.defaultFormatter": "HookyQR.beautify"
     },
-    "files.associations": {
-      "*.vue": "vue"
+    "[html]": {
+        "editor.defaultFormatter": "HookyQR.beautify"
     },
-    "eslint.validate": [
-      "javascript",
-      "javascriptreact",
-      {
-        "language": "vue",
-        "autoFix": true
-      }
-    ],
-    "eslint.autoFixOnSave": true,
-    "editor.formatOnSave": true,
-    "editor.tabSize": 2,
-    "vetur.format.options.tabSize": 2,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "beautify.config": "",
+    "beautify.language": {
+        "html": [
+            "htm",
+            "html",
+            "vue"
+        ],
+        "js": {
+            "type": [
+                "javascript",
+                "json"
+            ],
+            "filename": [
+                ".jshintrc",
+                ".jsbeautify"
+            ]
+        },
+        "css": [
+            "css",
+            "scss",
+            "less"
+        ]
+    },
+    "[vue]": {
+        "editor.defaultFormatter": "HookyQR.beautify"
     }
-  }
+}
