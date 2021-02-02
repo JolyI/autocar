@@ -1,33 +1,4 @@
-baseUrl = 'http://127.0.0.1';
-baseToken = "";
-
-// 登录接口
-loginUrl = './login'
-    // 退出登录接口
-loginOutUrl = './login'
-
-// 个人信息接口
-profileUrl = './login'
-
-// 个人信息修改接口
-editProfileUrl = './'
-
-// 我的任务接口
-taskMineUrl = './login'
-
-// 任务进度修改接口
-editTaskUrl = './login'
-
-// ------------版主----------------
-// 添加任务接口
-adminAddTaskUrl = './login'
-
-// 修改任务接口
-adminEditTaskUrl = './login'
-
-// 删除任务接口
-adminDeleteTaskUrl = './delete'
-
+baseUrl = 'http://127.0.0.1:8080/';
 
 
 /**
@@ -74,40 +45,48 @@ function messageBox(content, title, time, callBack) {
 }
 
 
+
 function deleteItem() {
     //合并操作后修改
     window.localStorage.clear()
 }
 
-function logOut() {
-    $.ajax({
-        type: 'post',
-        url: baseUrl + "/api/v1/user/gw/logout",
-        data: {},
-        contentType: "application/json",
-        dataType: "json",
-        beforeSend: function(request) {
-            request.setRequestHeader("token", localStorage.getItem("token"));
-        },
-        success: function(data) {
-            if (data.success == true) {
-                $(".isLogin").hide();
-                $(".noLogin").show();
-                deleteItem();
-                window.location.href = "index.html";
-            } else {
-                tip(data.errmsg)
-            }
-        },
-        error: function(data) {
-            if (data.status == 403) {
-                //合并操作后修改
-                deleteItem();
-                window.location.href = 'login.html';
-            }
-        }
 
-    })
+// 检测是否登录 header栏的变化
+function isLogin() {
+    if (localStorage.getItem('userid')) {
+        $('nav .login-no').hide()
+        $('nav .login-ok').show()
+
+        const id = localStorage.getItem('userid')
+        $.ajax({
+            type: 'get',
+            url: baseUrl + '/user/' + id,
+            contentType: "application/json",
+            dataType: 'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            success: function(data) {
+                localStorage.setItem('userInfo', data)
+                $('nav #name').html(data.username)
+            },
+            error: function() {
+
+            }
+        })
+
+    } else {
+        $('nav .login-no').show()
+        $('nav .login-ok').hide()
+        window.location.href = './login.html'
+    }
+}
+
+function logOut() {
+    deleteItem();
+    window.location.href = "./login.html";
 }
 
 //去除url上的param参数
@@ -117,4 +96,18 @@ function clearUrl() {
         url = url.replace(/(\?|#)[^'"]*/, ''); //去除参数
         window.history.pushState({}, 0, url);
     }
+}
+
+var Toast = null
+
+function showToast(data) {
+    if (Toast) {
+        Toast.destroy()
+    }
+    Toast = new $.zui.Messager(data.msg, {
+        placement: 'center',
+        type: data.type ? data.type : 'default',
+        icon: data.icon ? data.icon : '',
+        close: false
+    }).show();
 }

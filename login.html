@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 
 <head>
     <meta charset="utf-8" />
@@ -19,13 +19,17 @@
     <!-- 样式文件 -->
     <link rel="stylesheet/less" type="text/css" href="./style/login.less" />
     <script src="./style/less.min.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/jquery1.9.0.min.js"></script>
+    <script src="./lib/zui/js/zui.min.js"></script>
+    <script src="./js/common.js"></script>
 </head>
 
 <body>
     <div class="login-wrapper">
         <div class="bg"></div>
         <!-- 登录 -->
-        <div class="login-content card login_box">
+        <form id="login_form" class="login-content card login_box">
             <div class="title">登 录</div>
             <div class="form-box">
                 <div class="label">用户名</div>
@@ -41,21 +45,43 @@
             <div class="form-a">
                 <a id="reg_btn">没有账号？立即注册</a>
             </div>
-        </div>
+        </form>
         <!-- 注册 -->
-        <div class="login-content card hide reg_box">
+        <form id="register_form" class="register-content card hide reg_box">
             <div class="title">注 册</div>
             <div class="form-box">
                 <div class="label">用户名</div>
-                <input type="text" placeholder="请输入用户名" name="username" />
+                <input type="text" placeholder="请输入用户名" name="username" data-msg="用户名" />
+            </div>
+            <div class="form-box">
+                <div class="label">真实姓名</div>
+                <input type="text" placeholder="请输入真实姓名" name="realName" />
+            </div>
+            <div class="form-box">
+                <div class="label">电话号码</div>
+                <input type="text" placeholder="请输入电话号码" name="phone" />
+            </div>
+            <div class="form-box">
+                <div class="label">车队</div>
+                <select id="teamSelect" name="teamId">
+                    <option value="" label="请选择车队" />
+                </select>
+            </div>
+            <div class="form-box">
+                <div class="label">特长</div>
+                <input type="text" placeholder="请输入特长" name="specialty" />
+            </div>
+            <div class="form-box">
+                <div class="label">获奖信息</div>
+                <input type="text" placeholder="请输入获奖信息（若无，请输入【无】）" name="awardInfo" />
             </div>
             <div class="form-box">
                 <div class="label">密码</div>
-                <input type="password" placeholder="请输入密码" name="password" />
+                <input type="text" placeholder="请输入密码" name="password" />
             </div>
             <div class="form-box">
                 <div class="label">确认密码</div>
-                <input type="password" placeholder="请输入确认密码" name="password" />
+                <input type="text" placeholder="请输入确认密码" name="password_again" />
             </div>
             <button id="reg_account_btn" type="button" class="btn btn-primary submit" data-loading-text="正在注册...">
                 注 册
@@ -63,33 +89,177 @@
             <div class="form-a">
                 <a id="login_btn">已有账号，返回登录</a>
             </div>
-        </div>
+        </form>
     </div>
-    <script src="./js/jquery1.9.0.min.js"></script>
-    <script src="./lib/zui/js/zui.min.js"></script>
     <script>
-        $(".login_box").show();
-        $(".reg_box").hide();
+        var pageInfo = {
+            msgObj: null,
+            teamList: null
+        }
+        $(function() {
+            init()
+        })
+
+        function init() {
+            $(".login_box").show();
+            $(".reg_box").hide();
+        }
+
+        // 获取车队列表片
+        function getTeamLsit() {
+            $.ajax({
+                type: 'GET',
+                url: _apiTeamList,
+                data: {},
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+
+                success: function(data) {
+                    var data = data
+                    let str = '<option value="" label="请选择车队" />'
+                    for (let i = 0; i < data.length; i++) {
+                        str += '<option value="' + data[i].id + '" label="' + data[i].name + '" />'
+                    }
+                    $('#teamSelect').html(str)
+                },
+                error: function(data) {
+                    console.log('请求失败', data)
+                    showToast({
+                        msg: '请求失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+        }
+
+        // 登录
         $("#submit_btn").on("click", function() {
             var $btn = $(this);
-            $btn.button("loading");
+            var form_data = $('#login_form').serializeArray()
+            console.log(form_data)
+            var params = {},
+                msg = false;
+            try {
+                form_data.forEach(item => {
+                    if (item.name == 'username' && !item.value) {
+                        msg = '请输入用户名'
+                        throw new Error(msg)
+                    }
+                    if (item.name == 'password' && !item.value) {
+                        msg = '请输入密码'
+                        throw new Error(msg)
+                    }
+                    params[item.name] = item.value
+                })
+                $btn.button("loading");
+                handleLogin($btn, params)
+            } catch (error) {
+                console.log(error)
+                params = {}
+                showToast({
+                    msg: '' + error,
+                    icon: 'info',
+                    type: 'warning'
+                })
+                return
+            }
 
-            // 此处使用 setTimeout 来模拟复杂功能逻辑
-            setTimeout(function() {
-                $btn.button("reset");
-            }, 2000);
+
         });
+        // 注册
         $("#reg_account_btn").on("click", function() {
-            var $btn = $(this);
-            $btn.button("loading");
+            var form_data = $('#register_form').serializeArray()
+                // 数据查验
+            var msg = false,
+                pwd = null,
+                pwd_again = null,
+                params = {};
+            try {
+                form_data.forEach(item => {
+                        params[item.name] = item.value
+                            // 用户名不为空
+                        if (item.name == "username" && !item.value) {
+                            msg = '请输入用户名！'
+                            throw new Error(msg)
+                        }
+                        // 
+                        if (item.name == "realName" && !item.value) {
+                            msg = '请输入真实姓名！'
+                            throw new Error(msg);
+                        }
+                        if (item.name == "phone" && !item.value) {
+                            msg = '请输入电话号码！'
+                            throw new Error(msg);
+                        }
+                        if (item.name == "phone" && !(/^1[3456789]\d{9}$/.test(item.value))) {
+                            msg = '请输入正确的电话号码！'
+                            throw new Error(msg);
+                        }
+                        if (item.name == "teamId" && !item.value) {
+                            msg = '请选择车队！'
+                            throw new Error(msg);
+                        }
+                        if (item.name == "specialty" && !item.value) {
+                            msg = '请输入特长！'
+                            throw new Error(msg);
+                        }
+                        if (item.name == "awardInfo" && !item.value) {
+                            msg = '请输入获奖信息！'
+                            throw new Error(msg);
+                        }
+                        if (item.name == "password" && !item.value) {
+                            msg = '请输入密码！'
+                            throw new Error(msg);
 
-            // 此处使用 setTimeout 来模拟复杂功能逻辑
-            setTimeout(function() {
-                $btn.button("reset");
-            }, 2000);
+                        }
+                        if (item.name == "password" && item.value.length < 5) {
+                            msg = '密码不能低于6位！'
+                            throw new Error(msg);
+
+                        }
+                        if (item.name == "password_again" && !item.value) {
+                            msg = '请输入确认密码！'
+                            throw new Error(msg);
+                        }
+                        if (item.name == 'password') {
+                            pwd = item.value
+                        }
+                        if (item.name == 'password_again') {
+                            pwd_again = item.value
+                        }
+                    })
+                    // 密码是否一致
+                if (pwd != pwd_again) {
+                    msg = '两次密码输入不一致！'
+                    throw new Error(msg)
+                }
+                var $btn = $(this);
+                $btn.button("loading");
+                // 先给个
+                params.avatar ? '' : params.avatar =
+                    '//gw.alicdn.com/imgextra/i3/O1CN01QEaQlr1idHCLFlMXQ_!!6000000004435-55-tps-106-19.svg'
+                handleRegister($btn, params)
+
+            } catch (error) {
+                console.log(error)
+                params = {}
+                showToast({
+                    msg: '' + error,
+                    icon: 'info',
+                    type: 'warning'
+                })
+                return
+            }
         });
 
         $("#reg_btn").click(function() {
+            if (!pageInfo.teamList) {
+                getTeamLsit()
+            }
             $(".login_box").hide();
             setTimeout(() => {
                 $(".reg_box").show(10);
@@ -101,6 +271,96 @@
                 $(".login_box").show(10);
             }, 0);
         });
+
+        // 注册业务事件
+        function handleRegister($btn, params) {
+            $.ajax({
+                type: 'post',
+                url: _apiUserSave,
+                data: JSON.stringify(params),
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    $btn.button("reset");
+                    if (data) {
+                        // 注册成功 返回登录 
+                        showToast({
+                            msg: '注册成功',
+                            icon: 'check',
+                            type: 'success'
+                        })
+                        setTimeout(function() {
+                            $("#login_btn").click()
+                        }, 1000)
+                    } else {
+                        showToast({
+                            msg: '注册失败！' + data,
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: data.message || '注册失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+        }
+
+        // 登录业务事件
+        function handleLogin($btn, params) {
+            $.ajax({
+                type: 'post',
+                url: _apiUserLogin,
+                data: JSON.stringify(params),
+                contentType: 'application/json',
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    console.log(data)
+                    $btn.button("reset");
+                    if (data) {
+                        // 登录成功 存储id
+                        localStorage.setItem('userid', data)
+                        showToast({
+                            msg: '登录成功，即将跳转首页',
+                            icon: 'check',
+                            type: 'success'
+                        })
+                        setTimeout(function() {
+                            location.href = './index.html'
+                        }, 1000)
+                    } else {
+                        showToast({
+                            msg: '登录失败！',
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: data.message || '登录失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+        }
     </script>
 </body>
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 
 <head>
     <meta charset="utf-8" />
@@ -22,12 +22,14 @@
     <script src="./lib/table/jquery.z-pager.js"></script>
     <script src="./js/dialog.js"></script>
     <script src="./lib/zui/js/zui.min.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/common.js"></script>
+
     <!-- 样式文件 -->
     <link rel="stylesheet/less" type="text/css" href="./style/header.less" />
     <link rel="stylesheet/less" type="text/css" href="./style/profile.less" />
     <script src="./style/less.min.js"></script>
 
-    <script src="./js/common.js"></script>
 </head>
 
 <body>
@@ -44,10 +46,10 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="./index.html">首页</a></li>
                         <li><a href="./blog.html">在线论坛</a></li>
-                        <li><a href="./login.html">登录/注册</a></li>
-                        <li class="dropdown">
-                            <a href="your/nice/url" class="dropdown-toggle" data-toggle="dropdown">秦皇汉武 <b
-                                    class="caret"></b></a>
+                        <li class="login-no"><a href="./login.html">登录/注册</a></li>
+                        <li class="login-ok none- dropdown">
+                            <a href="your/nice/url" class="dropdown-toggle" data-toggle="dropdown"><span
+                                    id="name"></span> <b class="caret"></b></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li>
                                     <a href="./profile.html">
@@ -56,7 +58,7 @@
                                 </li>
                                 <li class="divider"></li>
                                 <li>
-                                    <a> <i class="icon icon-signout"></i> 退出登录 </a>
+                                    <a onclick="logOut()"> <i class="icon icon-signout"></i> 退出登录 </a>
                                 </li>
                             </ul>
                         </li>
@@ -85,7 +87,7 @@
                 <i class="icon icon-left"></i>
             </li>
             <li class="slide-item admin" data-page="car-box">
-                <i class="icon icon-tint"></i> <span>车队管理</span>
+                <i class="icon icon-flag"></i> <span>车队管理</span>
                 <i class="icon icon-left"></i>
             </li>
             </li>
@@ -97,17 +99,27 @@
                 <div class="card">
                     <div class="user-item">
                         <span class="user-label">姓名：</span>
-                        <span class="desc">IQ年代的千万不能</span>
+                        <span class="desc" id="username">-</span>
                     </div>
                     <div class="user-item">
-                        <span class="user-label">性别：</span>
-                        <span class="desc">-</span>
+                        <span class="user-label">真实姓名：</span>
+                        <span class="desc" id="realname">-</span>
                     </div>
                     <div class="user-item">
-                        <span class="user-label">说明：</span>
-                        <p class="desc">
-                            念奴娇·赤壁怀古<br /> [宋] 苏轼<br /> 大江东去，浪淘尽，千古风流人物。 故垒西边，人道是，三国周郎赤壁。 乱石穿空，惊涛拍岸，卷起千堆雪。 江山如画，一时多少豪杰。 遥想公瑾当年，小乔初嫁了，雄姿英发。 羽扇纶巾，谈笑间，樯橹灰飞烟灭。 故国神游，多情应笑我，早生华发。 人生如梦，一尊还酹江月。
-                        </p>
+                        <span class="user-label">电话号码：</span>
+                        <span class="desc" id="phone">-</span>
+                    </div>
+                    <div class="user-item">
+                        <span class="user-label">更新时间：</span>
+                        <span class="desc" id="create_time">-</span>
+                    </div>
+                    <div class="user-item">
+                        <span class="user-label">获奖信息：</span>
+                        <span class="desc" id="awardInfo">-</span>
+                    </div>
+                    <div class="user-item">
+                        <span class="user-label">特长：</span>
+                        <span class="desc" id="specialty">-</span>
                     </div>
                 </div>
             </div>
@@ -116,67 +128,37 @@
                 <div class="card">
                     <table class="table table-striped table-bordered" align="center" cellspacing="0" cellpadding="0">
                         <thead>
-                            <th>任务名称</th>
-                            <th>任务描述</th>
-                            <th>创建时间</th>
-                            <th>任务进度</th>
-                            <th>操作</th>
+                            <th width="100px">任务名称</th>
+                            <th width="200px">任务描述</th>
+                            <th width="100px">任务实现者</th>
+                            <th width="100px">所属车队</th>
+                            <th width="100px">创建时间</th>
+                            <th width="100px">任务状态</th>
+                            <th width="180px">操作</th>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>test</td>
-                                <td>test</td>
-                                <td>test</td>
-                                <td>test</td>
-                                <td>
-                                    <button class="btn btn-primary plan_btn" onclick="showPlanModal()">
-                                        <i class="icon icon-paint-brush"></i>更新记录
-                                    </button>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
-                    <div class="no_table hide">
-                        <p>暂无记录</p>
-                    </div>
-
-                    <div id="task-page" style="text-align: center">
-                        <ul id="pageLimit1"></ul>
-                    </div>
                 </div>
             </div>
-            <!-- 用户g管理 admin权限 -->
+            <!-- 用户管理 admin权限 -->
             <div class="user-box main-item hide">
                 <div class="card">
-                    <!-- <div class="add-wrapper">
-                        <button class="btn btn-success" onclick="showAddTaskModal()">
+                    <div class="add-wrapper">
+                        <button class="btn btn-success">
                             <i class="icon icon-plus"></i>
-                            新建任务
+                            添加用户
                         </button>
-                    </div> -->
+                    </div>
                     <table class="table table-striped table-bordered" align="center" cellspacing="0" cellpadding="0">
                         <thead>
-                            <th>用户名称</th>
+                            <th>用户姓名</th>
                             <th>真实姓名</th>
                             <th>创建时间</th>
-                            <th>用户权限</th>
                             <th>操作</th>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>test</td>
-                                <td>test</td>
-                                <td>test</td>
-                                <td>test</td>
-                                <td>
-                                    <button class="btn btn-danger plan_btn" onclick="showPlanModal()">
-                                        <i class="icon icon-times"></i>删除
-                                    </button>
-                                    <button class="btn btn-primary plan_btn" onclick="showPlanModal()">
-                                        <i class="icon icon-repeat"></i>编辑
-                                    </button>
-                                </td>
-                            </tr>
+
                         </tbody>
                     </table>
                     <div class="no_table hide">
@@ -190,36 +172,24 @@
             </div>
             <!-- 任务系统 admin权限 -->
             <div class="system-box main-item hide">
+                <div class="add-wrapper">
+                    <button class="btn btn-success btn-mini" onclick="showAddTaskModal()">
+                        <i class="icon icon-plus"></i>
+                        新建任务
+                    </button>
+                </div>
                 <div class="card">
-                    <div class="add-wrapper">
-                        <button class="btn btn-success" onclick="showAddTaskModal()">
-                            <i class="icon icon-plus"></i>
-                            新建任务
-                        </button>
-                    </div>
                     <table class="table table-striped table-bordered" align="center" cellspacing="0" cellpadding="0">
                         <thead>
-                            <th>任务名称</th>
-                            <th>任务描述</th>
-                            <th>创建时间</th>
-                            <th>任务进度</th>
-                            <th>操作</th>
+                            <th width="100px">任务名称</th>
+                            <th width="200px">任务描述</th>
+                            <th width="100px">任务实现者</th>
+                            <th width="100px">所属车队</th>
+                            <th width="100px">创建时间</th>
+                            <th width="100px">任务状态</th>
+                            <th width="180px">操作</th>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>test</td>
-                                <td>test</td>
-                                <td>test</td>
-                                <td>test</td>
-                                <td>
-                                    <button class="btn btn-danger plan_btn" onclick="showPlanModal()">
-                                        <i class="icon icon-times"></i>删除
-                                    </button>
-                                    <button class="btn btn-primary plan_btn" onclick="showPlanModal()">
-                                        <i class="icon icon-repeat"></i>编辑
-                                    </button>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                     <div class="no_table hide">
@@ -235,17 +205,18 @@
             <div class="car-box main-item hide">
                 <div class="card">
                     <div class="add-wrapper">
-                        <button class="btn btn-success" onclick="showAddTaskModal()">
+                        <button class="btn btn-success">
                             <i class="icon icon-plus"></i>
                             新建车队
                         </button>
                     </div>
                     <table class="table table-striped table-bordered" align="center" cellspacing="0" cellpadding="0">
                         <thead>
-                            <th>车队名称</th>
-                            <th>车队描述</th>
-                            <th>创建时间</th>
-                            <th>车队成员</th>
+                            <th width="100px">车队名称</th>
+                            <th width="120px">车队队长</th>
+                            <th width="200px">车队描述</th>
+                            <th width="100px">车队所属</th>
+                            <th width="120px">创建时间</th>
                             <th>操作</th>
                         </thead>
                         <tbody>
@@ -282,86 +253,369 @@
             本网站仅做学习交流之用途，若有侵权，请及时与站主联系。
         </div>
     </footer>
-    <!--  对话框 更新进度 -->
+    <!--  对话框 编辑任务 -->
     <div id="planModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">×</span><span class="sr-only">关闭</span>
-                    </button>
-                    <h4 class="modal-title">修改进度</h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">关闭</span></button>
+                    <h4 id="modal_task_title" class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
-                    <div class="input-control has-icon-left">
-                        <input id="plan_ipt" type="number" class="form-control" placeholder="进度百分比">
-                        <label for="plan_ipt" class="input-control-icon-left">
-                            <i class="icon icon-line-chart"></i></label>
-                    </div>
+                    <form id="modal_task_form" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="task_form_title" class="col-sm-2">任务名称</label>
+                            <div class="col-md-6 col-sm-10">
+                                <input name="title" type="text" class="form-control" id="task_form_title" placeholder="任务名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="task_form_content" class="col-sm-2">任务内容</label>
+                            <div class="col-md-6 col-sm-10">
+                                <textarea name="content" id="task_form_content" type="text" class="form-control" rows="5" placeholder="任务描述"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="task_form_status" class="col-sm-2">任务状态</label>
+                            <div class="col-sm-3">
+                                <select name="status" class="form-control" id="task_form_status">
+                                    <option label="请选择任务状态" value=""></option>
+                                    <option label="待开始" value="1"></option>
+                                    <option label="进行中" value="2"></option>
+                                    <option label="已完成" value="3"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="task_form_userId" class="col-sm-2">任务实现者</label>
+                            <div class="col-sm-3">
+                                <select name="userId" class="form-control" id="task_form_userId">
+                                    <option label="请选择用户" value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="task_form_teamId" class="col-sm-2">所属车队</label>
+                            <div class="col-sm-3">
+                                <select name="teamId" class="form-control" id="task_form_teamId">
+                                    <option label="请选择车队" value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        关闭
-                    </button>
-                    <button type="button" class="btn btn-primary">提交</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="editTask(this)">确定</button>
                 </div>
             </div>
         </div>
     </div>
-    <!--  对话框 建立任务 -->
-    <div id="add_task_modal" class="modal fade">
-        <div class="modal-dialog">
+    <!-- 确认弹窗 -->
+    <div class="modal fade" id="confirm_Modal">
+        <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">×</span><span class="sr-only">关闭</span>
-                    </button>
-                    <h4 class="modal-title">新增任务</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-item input-control has-icon-left">
-                        <input id="add_task_name" type="text" class="form-control" placeholder="任务名称">
-                        <label for="add_task_name" class="input-control-icon-left">
-                            <i class="icon icon-line-chart"></i></label>
-                    </div>
-                    <div class="form-item input-control has-icon-left">
-                        <textarea id="add_task_desc" class="form-control" rows="3" placeholder="任务描述"></textarea>
-                        <label for="add_task_desc" class="input-control-icon-left">
-                            <i class="icon icon-line-chart"></i></label>
-                    </div>
-                    <select class="form-item form-control">
-                        <option value="">请选择执行人员</option>
-                        <option value="apple">甲xx</option>
-                        <option value="banana">乙xx</option>
-                        <option value="orange">丙xxxx</option>
-                    </select>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">关闭</span></button>
+                    <h4 class="modal-title" id="confirm_Modal_title"></h4>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        关闭
-                    </button>
-                    <button type="button" class="btn btn-primary">提交</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmModalSubmit(this)">确认</button>
                 </div>
             </div>
         </div>
     </div>
     <script>
         // 页面事件 参数  类似vue-data写法
-        var pageData = {
-            page: 1,
-            pagesize: 10,
+        var pageInfo = {
+            handleType: null,
             handRow: null, // 当前操作行数据
+            taskList: null, // 任务管理
+            userList: null, // 用户管理
+            teamList: null, // 车队管理 
+            myTaskList: null, //我的任务
         };
         window.onload = function() {
             init();
         };
 
         function init() {
+            isLogin()
+            getUserInfo()
+            getAllList()
             initSlide();
-            initTaskTable();
-            initCarTable()
             eventListener();
         }
+
+        // 用户信息
+        function getUserInfo() {
+            $.ajax({
+                type: 'get',
+                url: baseUrl + '/user/' + localStorage.getItem('userid'),
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    localStorage.setItem('userInfo', data)
+                    $('.personal-box #username').html(data.username)
+                    $('.personal-box #realname').html(data.realName)
+                    $('.personal-box #phone').html(data.phone)
+                    $('.personal-box #create_time').html(data.createTime)
+                    $('.personal-box #awardInfo').html(data.awardInfo)
+                    $('.personal-box #specialty').html(data.specialty)
+                },
+                error: function() {
+
+                }
+            })
+        }
+
+        // 嵌套ajax 获取用户列表/任务列表/车队列表
+        function getAllList() {
+            // 用户列表
+            try {
+                $.ajax({
+                    type: 'GET',
+                    url: _apiUserList,
+                    contentType: "application/json",
+                    dataType: 'json',
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    crossDomain: true,
+                    async: true,
+                    success: function(userData) {
+                        pageInfo.userList = userData
+                            // 任务列表
+                        $.ajax({
+                            type: 'GET',
+                            url: _apitaskList,
+                            contentType: "application/json",
+                            dataType: 'json',
+                            xhrFields: {
+                                withCredentials: true
+                            },
+                            crossDomain: true,
+                            async: true,
+                            success: function(taskData) {
+                                pageInfo.taskList = taskData
+                                    // 车队列表
+                                $.ajax({
+                                    type: 'GET',
+                                    url: _apiTeamList,
+                                    contentType: "application/json",
+                                    dataType: 'json',
+                                    xhrFields: {
+                                        withCredentials: true
+                                    },
+                                    crossDomain: true,
+                                    async: true,
+                                    success: function(teamData) {
+                                        pageInfo.teamList = teamData
+                                            // 渲染
+                                        setHtmlBox()
+                                    },
+                                    error: function(teamData) {
+                                        throw new Error(teamData)
+                                    }
+                                })
+                            },
+                            error: function(taskData) {
+                                throw new Error(taskData)
+                            }
+                        })
+                    },
+                    error: function(userData) {
+                        throw new Error(userData)
+                    }
+                })
+            } catch (error) {
+                const data = JSON.parse(e.responseText)
+                showToast({
+                    msg: data.message || '',
+                    icon: 'times',
+                    type: 'danger'
+                })
+            }
+        }
+
+        function setHtmlBox() {
+            let systemdomStr = '',
+                sysData = pageInfo.taskList,
+                teamdomStr = '',
+                teamData = pageInfo.teamList,
+                userdomStr = '',
+                userData = pageInfo.userList;
+
+            // 构建map映射
+            // 用户id-名称
+            var map_user = {}
+                // 车队id-名称
+            var map_team = {}
+                // 任务id-名称
+            var map_task = {}
+
+            if (userData && userData.length) {
+                userData.forEach(item => {
+                    map_user[item.id] = item.username
+                })
+            }
+            if (teamData && teamData.length) {
+                teamData.forEach(item => {
+                    map_team[item.id] = item.name
+                })
+            }
+            if (sysData && sysData.length) {
+                sysData.forEach(item => {
+                    map_task[item.id] = item.title
+                })
+            }
+            // 找出 我的任务 
+            var myTaskList = []
+                // 用户列表
+            if (userData && userData.length) {
+                for (let i = 0; i < userData.length; i++) {
+                    userdomStr += '<tr>' +
+                        '                <td>' + userData[i].username + '</td>' +
+                        '                <td>' + userData[i].realName + '</td>' +
+                        '                <td>' + userData[i].createTime + '</td>' +
+                        '               <td>' +
+                        '                    <button class="btn btn-danger plan_btn" data-index="' + i +
+                        '" onclick="deleteUser(this)">' +
+                        '                        <i class="icon icon-times"></i>删除' +
+                        '                    </button>' +
+                        '            <button class="btn btn-primary plan_btn" data-index="' + i +
+                        '" onclick="showUserModal(this)">' +
+                        '                <i class="icon icon-repeat"></i>编辑' +
+                        '        </button>' +
+                        '    </td>' +
+                        '</tr>'
+                }
+                $('.user-box table tbody').html(userdomStr)
+            } else {
+                $('.user-box table tbody').html('<tr><td colspan="4" align="center">暂无数据</td></tr>')
+            }
+
+            // 任务列表
+            if (pageInfo.taskList && pageInfo.taskList.length) {
+                for (let i = 0; i < sysData.length; i++) {
+                    if (sysData[i].userId == localStorage.getItem('userid')) {
+                        myTaskList.push(sysData[i])
+                    }
+                    let status = '',
+                        statusStr = ''
+                    if (sysData[i].status == 1) {
+                        statusStr = '<span class="label label-warning">待开始</span>'
+                    }
+                    if (sysData[i].status == 2) {
+                        statusStr = '<span class="label label-info">进行中</span>'
+                    }
+                    if (sysData[i].status == 3) {
+                        statusStr = '<span class="label label-success">已完成</span>'
+                    }
+
+                    // 根据上面的映射 找出实现者 找出车队 就好做了
+                    systemdomStr += '<tr>' +
+                        '           <td>' + sysData[i].title + '</td>' +
+                        '           <td>' + sysData[i].content + '</td>' +
+                        '           <td>' + map_user[sysData[i].userId] + '</td>' +
+                        '           <td>' + map_team[sysData[i].teamId] + '</td>' +
+                        '           <td>' + sysData[i].createTime + '</td>' +
+                        '           <td>' + statusStr + '</td>' +
+                        '           <td>' +
+                        '               <button class="btn btn-danger plan_btn"  data-index=' + i +
+                        ' onclick="deletTask(this)">' +
+                        '               <i class="icon icon-times"></i>删除' +
+                        '       </button>' +
+                        '       <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index=' + i +
+                        ' onclick="showPlanModal(this)">' +
+                        '           <i class="icon icon-edit-sign"></i>编辑' +
+                        '   </button>' +
+                        '</td>' +
+                        '</tr>'
+                }
+                $('.system-box table tbody').html(systemdomStr)
+                pageInfo.myTaskList = myTaskList
+            } else {
+                $('.system-box table tbody').html('<tr><td colspan="5" align="center">暂无数据</td></tr>')
+            }
+
+            // w我的任务
+            if (myTaskList && myTaskList.length) {
+                var mytaskdomStr = ''
+                for (let i = 0; i < myTaskList.length; i++) {
+                    let status = '',
+                        statusStr = ''
+                    if (sysData[i].status == 1) {
+                        statusStr = '<span class="label label-warning">待开始</span>'
+                    }
+                    if (sysData[i].status == 2) {
+                        statusStr = '<span class="label label-info">进行中</span>'
+                    }
+                    if (sysData[i].status == 3) {
+                        statusStr = '<span class="label label-success">已完成</span>'
+                    }
+
+                    // 根据上面的映射 找出实现者 找出车队 就好做了
+                    mytaskdomStr += '<tr>' +
+                        '           <td>' + myTaskList[i].title + '</td>' +
+                        '           <td>' + myTaskList[i].content + '</td>' +
+                        '           <td>' + map_user[sysData[i].userId] + '</td>' +
+                        '           <td>' + map_team[sysData[i].teamId] + '</td>' +
+                        '           <td>' + myTaskList[i].createTime + '</td>' +
+                        '           <td>' + statusStr + '</td>' +
+                        '           <td>' +
+                        '               <button class="btn btn-danger plan_btn"  data-index=' + i +
+                        ' onclick="deletTask(this)">' +
+                        '               <i class="icon icon-times"></i>删除' +
+                        '       </button>' +
+                        '       <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index=' + i +
+                        ' onclick="showPlanModal(this)">' +
+                        '           <i class="icon icon-edit-sign"></i>编辑' +
+                        '   </button>' +
+                        '</td>' +
+                        '</tr>'
+                }
+                $('.task-box table tbody').html(mytaskdomStr)
+            } else {
+                $('.task-box table tbody').html('<tr><td colspan="5" align="center">暂无数据</td></tr>')
+            }
+
+            // 车队列表
+            if (teamData && teamData.length) {
+                for (let i = 0; i < teamData.length; i++) {
+                    teamdomStr += '<tr>' +
+                        '                <td>' + teamData[i].name + '</td>' +
+                        '                <td>' + map_user[teamData[i].captain] + '</td>' +
+                        '                <td>' + teamData[i].content + '</td>' +
+                        '                <td>' + teamData[i].createUser + '</td>' +
+                        '                <td>' + teamData[i].createTime + '</td>' +
+                        '               <td>' +
+                        '                    <button class="btn btn-danger plan_btn" data-index="' + i +
+                        '" onclick="deleteTeam(this)">' +
+                        '                        <i class="icon icon-times"></i>删除' +
+                        '                    </button>' +
+                        '            <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index="' +
+                        i +
+                        '" onclick="showTeamModal(this)">' +
+                        '                <i class="icon icon-repeat"></i>编辑' +
+                        '        </button>' +
+                        '    </td>' +
+                        '</tr>'
+                }
+                $('.car-box table tbody').html(teamdomStr)
+            } else {
+                $('.car-box table tbody').html('<tr><td colspan="4" align="center">暂无数据</td></tr>')
+            }
+        }
+
+
 
         // 左侧菜单
         function initSlide() {
@@ -390,638 +644,224 @@
             });
         }
 
-        function showPlanModal() {
+        // 编辑任务
+        function showPlanModal(e) {
+            const index = $(e).attr('data-index')
+            pageInfo.handRow = pageInfo.taskList[index]
+                // console.log(pageInfo.handRow)
+            $('#planModal #modal_task_title').html('编辑任务')
+            $('#planModal  #task_form_title').val(pageInfo.handRow.title)
+            $('#planModal  #task_form_content').val(pageInfo.handRow.content)
+            $('#planModal  #task_form_status').val(pageInfo.handRow.status)
+            $('#planModal  #task_form_userId').val(pageInfo.handRow.userId)
+            $('#planModal  #task_form_teamId').val(pageInfo.handRow.teamId)
+            htmlUserOption()
+            pageInfo.handleType = 'EDITTASK'
             $('#planModal').modal()
         }
-
+        // 添加任务
         function showAddTaskModal() {
-            $('#add_task_modal').modal()
+            $('#planModal #modal_task_title').html('添加任务')
+            $('#planModal  #task_form_title').val('')
+            $('#planModal  #task_form_content').val('')
+            $('#planModal  #userId').val('')
+            $('#planModal  #task_form_status').val('')
+            htmlUserOption()
+            pageInfo.handleType = 'ADDTASK'
+            $('#planModal').modal()
+        }
+        // 删除任务
+        function deletTask(e) {
+            const index = $(e).attr('data-index')
+            pageInfo.handRow = pageInfo.taskList[index]
+            $('#confirm_Modal #confirm_Modal_title').html('是否删除' + pageInfo.handRow.title + '?')
+            pageInfo.handleType = 'DELETETASK'
+            $('#confirm_Modal').modal()
         }
 
-        // 我的任务 表格初始化
-        function initTaskTable() {
-            $.ajax({
-                type: "post",
-                url: baseUrl + "/api/v1/user/gw/order/list",
-                data: JSON.stringify({
-                    id: parseInt(localStorage.getItem("user_id")), //用户id
-                    page: 1, //页数
-                }),
-                dataType: "json",
-                beforeSend: function(request) {
-                    request.setRequestHeader("token", localStorage.getItem("token"));
-                },
-                success: function(data) {
-                    if (data.success == true) {
-                        if (data.data.length > 0) {
-                            $(".task-box .no_table").addClass('hide');
-                            $(".task-box table").show();
-                            var html = "";
-                            for (var i in data.data) {
-                                var html =
-                                    html +
-                                    " <tr>" +
-                                    "<td>" +
-                                    data.data[i].product_name +
-                                    "</td>" +
-                                    "<td>" +
-                                    data.data[i].order_number +
-                                    "</td>" +
-                                    "<td>" +
-                                    data.data[i].submit_time +
-                                    "</td>" +
-                                    "<td>" +
-                                    data.data[i].total_amount +
-                                    "</td>" +
-                                    "<td>" +
-                                    infoFormatter(data.data[i].order_status) +
-                                    "</td>" +
-                                    "</tr>";
-                            }
-                            $(".task-box table tbody").html(html);
-                            var options = {
-                                currentPage: $("#task-page .active a").html(), //当前的请求页面。
-                                totalPages: data.total_page, //一共多少页。
-                                size: "normal", //应该是页眉的大小。
-                                bootstrapMajorVersion: 3, //bootstrap的版本要求。
-                                alignment: "right",
-                                numberOfPages: 10, //一页列出多少数据。
-                                itemTexts: function(type, page, current) {
-                                    //如下的代码是将页眉显示的中文显示我们自定义的中文。
-                                    switch (type) {
-                                        case "first":
-                                            return "首页";
-                                        case "prev":
-                                            return "上一页";
-                                        case "next":
-                                            return "下一页";
-                                        case "last":
-                                            return "末页";
-                                        case "page":
-                                            return page;
-                                    }
-                                },
-                                onPageClicked: function(event, originalEvent, type, page) {
-                                    $.ajax({
-                                        url: baseUrl + "/api/v1/user/gw/order/list",
-                                        type: "post",
-                                        data: JSON.stringify({
-                                            id: parseInt(localStorage.getItem(
-                                                "user_id")), //用户id
-                                            page: page, //页数
-                                        }),
-                                        dataType: "json",
-                                        beforeSend: function(request) {
-                                            request.setRequestHeader(
-                                                "token",
-                                                localStorage.getItem("token")
-                                            );
-                                        },
-                                        success: function(data) {
-                                            if (data.success == true) {
-                                                if (data.data.length > 0) {
-                                                    $(".no_table").hide();
-                                                    $(".task-box table").show();
-                                                    var html = "";
-                                                    for (var i in data.data) {
-                                                        var html =
-                                                            html +
-                                                            " <tr>" +
-                                                            "<td>" +
-                                                            data.data[i].product_name +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                            data.data[i].order_number +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                            data.data[i].submit_time +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                            data.data[i].total_amount +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                            infoFormatter(data.data[i]
-                                                                .order_status) +
-                                                            "</td>" +
-                                                            "</tr>";
-                                                    }
-                                                    $(".task-box table tbody").html(
-                                                        html);
-                                                } else {
-                                                    $(".no_table").show();
-                                                    $(".task-box table").hide();
-                                                }
-                                            }
-                                        },
-                                        error: function(data) {
-                                            if (data.status == 403) {
-                                                deleteItem();
-                                                messageBox(
-                                                    "您的登录已过期，请重新登录！",
-                                                    "登录过期",
-                                                    0,
-                                                    function() {
-                                                        window.location.href =
-                                                            "./index.html";
-                                                    }
-                                                );
-                                            }
-                                        },
-                                    });
-                                },
-                            };
-                            $(".task-box #pageLimit1").bootstrapPaginator(options);
-                        } else {
-                            $(".no_table").show();
-                            $(".task-box table").hide();
-                        }
+        function editTask(btn) {
+            var $btn = $(this);
+            var params = {};
+            var form_data = $('#modal_task_form').serializeArray()
+                // 数据查验
+            try {
+                form_data.forEach(item => {
+                    if (item.name == 'title' && !item.value) {
+                        throw new Error('请输入任务名称！')
                     }
-                },
-                error: function(data) {
-                    if (data.status == 403) {
-                        deleteItem();
-                        messageBox(
-                            "您的登录已过期，请重新登录！",
-                            "登录过期",
-                            0,
-                            function() {
-                                window.location.href = "index.html";
-                            }
-                        );
+                    if (item.name == 'content' && !item.value) {
+                        throw new Error('请输入任务内容！')
                     }
-                },
-            });
-        }
+                    if (item.name == 'status' && !item.value) {
+                        throw new Error('请选择任务状态！')
+                    }
+                    if (item.name == 'userId' && !item.value) {
+                        throw new Error('请选择任务实现者！')
+                    }
+                    if (item.name == 'teamId' && !item.value) {
+                        throw new Error('请选择所属车队！')
+                    }
+                    params[item.name] = item.value
+                })
+                if (!localStorage.getItem('userid')) {
+                    setTimeout(function() {
+                        location.href = './login.html'
+                    }, 1000)
+                    throw new Error('登录失效请重新登录！')
+                }
+                params.createUser = localStorage.getItem('userid')
+                params.createTime = new Date().getTime()
 
-        // 任务系统 表格初始化
-        function initUserTable() {
-
-            $.ajax({
-                type: "post",
-                url: baseUrl + "/api/v1/user/gw/order/list",
-                data: JSON.stringify({
-                    id: parseInt(localStorage.getItem("user_id")), //用户id
-                    page: 1, //页数
-                }),
-                dataType: "json",
-                beforeSend: function(request) {
-                    request.setRequestHeader("token", localStorage.getItem("token"));
-                },
-                success: function(data) {
-                    if (data.success == true) {
-                        if (data.data.length > 0) {
-                            $(".user-box .no_table").addClass('hide');
-                            $(".user-box table").show();
-                            var html = "";
-                            for (var i in data.data) {
-                                var html =
-                                    html +
-                                    " <tr>" +
-                                    "<td>" +
-                                    data.data[i].product_name +
-                                    "</td>" +
-                                    "<td>" +
-                                    data.data[i].order_number +
-                                    "</td>" +
-                                    "<td>" +
-                                    data.data[i].submit_time +
-                                    "</td>" +
-                                    "<td>" +
-                                    data.data[i].total_amount +
-                                    "</td>" +
-                                    "<td>" +
-                                    infoFormatter(data.data[i].order_status) +
-                                    "</td>" +
-                                    "</tr>";
-                            }
-                            $(".user-box table tbody").html(html);
-                            var options = {
-                                currentPage: $("#sys-page .active a").html(), //当前的请求页面。
-                                totalPages: data.total_page, //一共多少页。
-                                size: "normal", //应该是页眉的大小。
-                                bootstrapMajorVersion: 3, //bootstrap的版本要求。
-                                alignment: "right",
-                                numberOfPages: 10, //一页列出多少数据。
-                                itemTexts: function(type, page, current) {
-                                    //如下的代码是将页眉显示的中文显示我们自定义的中文。
-                                    switch (type) {
-                                        case "first":
-                                            return "首页";
-                                        case "prev":
-                                            return "上一页";
-                                        case "next":
-                                            return "下一页";
-                                        case "last":
-                                            return "末页";
-                                        case "page":
-                                            return page;
-                                    }
-                                },
-                                onPageClicked: function(event, originalEvent, type, page) {
-                                    $.ajax({
-                                        url: baseUrl + "/api/v1/user/gw/order/list",
-                                        type: "post",
-                                        data: JSON.stringify({
-                                            id: parseInt(localStorage.getItem(
-                                                "user_id")), //用户id
-                                            page: page, //页数
-                                        }),
-                                        dataType: "json",
-                                        beforeSend: function(request) {
-                                            request.setRequestHeader(
-                                                "token",
-                                                localStorage.getItem("token")
-                                            );
-                                        },
-                                        success: function(data) {
-                                            if (data.success == true) {
-                                                if (data.data.length > 0) {
-                                                    $(".system-box .no_table").addClass(
-                                                        'hide');
-                                                    $(".system-box table").show();
-                                                    var html = "";
-                                                    for (var i in data.data) {
-                                                        var html =
-                                                            html +
-                                                            " <tr>" +
-                                                            "<td>" +
-                                                            data.data[i].product_name +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                            data.data[i].order_number +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                            data.data[i].submit_time +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                            data.data[i].total_amount +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                            infoFormatter(data.data[i]
-                                                                .order_status) +
-                                                            "</td>" +
-                                                            "</tr>";
-                                                    }
-                                                    $(".system-box table tbody").html(
-                                                        html);
-                                                } else {
-                                                    $(".system-box .no_table").show();
-                                                    $(".system-box table").hide();
-                                                }
-                                            }
-                                        },
-                                        error: function(data) {
-                                            if (data.status == 403) {
-                                                deleteItem();
-                                                messageBox(
-                                                    "您的登录已过期，请重新登录！",
-                                                    "登录过期",
-                                                    0,
-                                                    function() {
-                                                        window.location.href =
-                                                            "./index.html";
-                                                    }
-                                                );
-                                            }
-                                        },
-                                    });
-                                },
-                            };
-                            $(".user-box #pageLimit1").bootstrapPaginator(options);
-                        } else {
-                            $(".user-box .no_table").show();
-                            $(".user-box table").hide();
-                        }
-                    }
-                },
-                error: function(data) {
-                    if (data.status == 403) {
-                        deleteItem();
-                        messageBox(
-                            "您的登录已过期，请重新登录！",
-                            "登录过期",
-                            0,
-                            function() {
-                                window.location.href = "index.html";
-                            }
-                        );
-                    }
-                },
-            });
-
-        }
-        // 任务系统 表格初始化
-        function initSystemTable() {
-
-            $.ajax({
-                type: "post",
-                url: baseUrl + "/api/v1/user/gw/order/list",
-                data: JSON.stringify({
-                    id: parseInt(localStorage.getItem("user_id")), //用户id
-                    page: 1, //页数
-                }),
-                dataType: "json",
-                beforeSend: function(request) {
-                    request.setRequestHeader("token", localStorage.getItem("token"));
-                },
-                success: function(data) {
-                    if (data.success == true) {
-                        if (data.data.length > 0) {
-                            $(".system-box .no_table").addClass('hide');
-                            $(".system-box table").show();
-                            var html = "";
-                            for (var i in data.data) {
-                                var html =
-                                    html +
-                                    " <tr>" +
-                                    "<td>" +
-                                    data.data[i].product_name +
-                                    "</td>" +
-                                    "<td>" +
-                                    data.data[i].order_number +
-                                    "</td>" +
-                                    "<td>" +
-                                    data.data[i].submit_time +
-                                    "</td>" +
-                                    "<td>" +
-                                    data.data[i].total_amount +
-                                    "</td>" +
-                                    "<td>" +
-                                    infoFormatter(data.data[i].order_status) +
-                                    "</td>" +
-                                    "</tr>";
-                            }
-                            $(".system-box table tbody").html(html);
-                            var options = {
-                                currentPage: $("#sys-page .active a").html(), //当前的请求页面。
-                                totalPages: data.total_page, //一共多少页。
-                                size: "normal", //应该是页眉的大小。
-                                bootstrapMajorVersion: 3, //bootstrap的版本要求。
-                                alignment: "right",
-                                numberOfPages: 10, //一页列出多少数据。
-                                itemTexts: function(type, page, current) {
-                                    //如下的代码是将页眉显示的中文显示我们自定义的中文。
-                                    switch (type) {
-                                        case "first":
-                                            return "首页";
-                                        case "prev":
-                                            return "上一页";
-                                        case "next":
-                                            return "下一页";
-                                        case "last":
-                                            return "末页";
-                                        case "page":
-                                            return page;
-                                    }
-                                },
-                                onPageClicked: function(event, originalEvent, type, page) {
-                                    $.ajax({
-                                        url: baseUrl + "/api/v1/user/gw/order/list",
-                                        type: "post",
-                                        data: JSON.stringify({
-                                            id: parseInt(localStorage.getItem(
-                                                "user_id")), //用户id
-                                            page: page, //页数
-                                        }),
-                                        dataType: "json",
-                                        beforeSend: function(request) {
-                                            request.setRequestHeader(
-                                                "token",
-                                                localStorage.getItem("token")
-                                            );
-                                        },
-                                        success: function(data) {
-                                            if (data.success == true) {
-                                                if (data.data.length > 0) {
-                                                    $(".system-box .no_table").addClass(
-                                                        'hide');
-                                                    $(".system-box table").show();
-                                                    var html = "";
-                                                    for (var i in data.data) {
-                                                        var html =
-                                                            html +
-                                                            " <tr>" +
-                                                            "<td>" +
-                                                            data.data[i].product_name +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                            data.data[i].order_number +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                            data.data[i].submit_time +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                            data.data[i].total_amount +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                            infoFormatter(data.data[i]
-                                                                .order_status) +
-                                                            "</td>" +
-                                                            "</tr>";
-                                                    }
-                                                    $(".system-box table tbody").html(
-                                                        html);
-                                                } else {
-                                                    $(".system-box .no_table").show();
-                                                    $(".system-box table").hide();
-                                                }
-                                            }
-                                        },
-                                        error: function(data) {
-                                            if (data.status == 403) {
-                                                deleteItem();
-                                                messageBox(
-                                                    "您的登录已过期，请重新登录！",
-                                                    "登录过期",
-                                                    0,
-                                                    function() {
-                                                        window.location.href =
-                                                            "./index.html";
-                                                    }
-                                                );
-                                            }
-                                        },
-                                    });
-                                },
-                            };
-                            $(".system-box #pageLimit1").bootstrapPaginator(options);
-                        } else {
-                            $(".system-box .no_table").show();
-                            $(".system-box table").hide();
-                        }
-                    }
-                },
-                error: function(data) {
-                    if (data.status == 403) {
-                        deleteItem();
-                        messageBox(
-                            "您的登录已过期，请重新登录！",
-                            "登录过期",
-                            0,
-                            function() {
-                                window.location.href = "index.html";
-                            }
-                        );
-                    }
-                },
-            });
+                handleAddTask($btn, params)
+            } catch (data) {
+                params = {}
+                showToast({
+                    msg: data + '' || '数据有误！',
+                    icon: 'times',
+                    type: 'danger'
+                })
+            }
 
         }
 
-        // 车队管理 admin 表格初始化
-        function initCarTable() {
-
+        // 添加/修改 任务业务事件
+        function handleAddTask($btn, params) {
+            $btn.button("loading");
+            let url, type, msg;
+            if (pageInfo.handleType == 'ADDTASK') {
+                type = 'post'
+                url = _apitaskAdd
+                msg = "添加"
+            } else {
+                type = 'put'
+                url = _apitaskUpdate
+                msg = "修改"
+                params.id = pageInfo.handRow.id
+                params.createTime = null
+            }
+            // 执行添加操作
             $.ajax({
-                type: "post",
-                url: baseUrl + "/api/v1/user/gw/order/list",
-                data: JSON.stringify({
-                    id: parseInt(localStorage.getItem("user_id")), //用户id
-                    page: 1, //页数
-                }),
-                dataType: "json",
-                beforeSend: function(request) {},
+                type: type,
+                url: url,
+                data: JSON.stringify(params),
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
                 success: function(data) {
-                    if (data.success == true) {
-                        if (data.data.length > 0) {
-                            $(".car-box .no_table").addClass('hide');
-                            $(".car-box table").show();
-                            var html = "";
-                            for (var i in data.data) {
-                                var html =
-                                    html +
-                                    " <tr>" +
-                                    "<td>" +
-                                    data.data[i].product_name +
-                                    "</td>" +
-                                    "<td>" +
-                                    data.data[i].order_number +
-                                    "</td>" +
-                                    "<td>" +
-                                    data.data[i].submit_time +
-                                    "</td>" +
-                                    "<td>" +
-                                    data.data[i].total_amount +
-                                    "</td>" +
-                                    "<td>" +
-                                    infoFormatter(data.data[i].order_status) +
-                                    "</td>" +
-                                    "</tr>";
-                            }
-                            $(".system-box table tbody").html(html);
-                            var options = {
-                                currentPage: $("#car-page .active a").html(), //当前的请求页面。
-                                totalPages: data.total_page, //一共多少页。
-                                size: "normal", //应该是页眉的大小。
-                                bootstrapMajorVersion: 3, //bootstrap的版本要求。
-                                alignment: "right",
-                                numberOfPages: 10, //一页列出多少数据。
-                                itemTexts: function(type, page, current) {
-                                    //如下的代码是将页眉显示的中文显示我们自定义的中文。
-                                    switch (type) {
-                                        case "first":
-                                            return "首页";
-                                        case "prev":
-                                            return "上一页";
-                                        case "next":
-                                            return "下一页";
-                                        case "last":
-                                            return "末页";
-                                        case "page":
-                                            return page;
-                                    }
-                                },
-                                onPageClicked: function(event, originalEvent, type, page) {
-                                    $.ajax({
-                                        url: baseUrl + "/api/v1/user/gw/order/list",
-                                        type: "post",
-                                        data: JSON.stringify({
-                                            id: parseInt(localStorage.getItem(
-                                                "user_id")), //用户id
-                                            page: page, //页数
-                                        }),
-                                        dataType: "json",
-                                        beforeSend: function(request) {
-                                            request.setRequestHeader(
-                                                "token",
-                                                localStorage.getItem("token")
-                                            );
-                                        },
-                                        success: function(data) {
-                                            if (data.success == true) {
-                                                if (data.data.length > 0) {
-                                                    $(".system-box .no_table").addClass(
-                                                        'hide');
-                                                    $(".system-box table").show();
-                                                    var html = "";
-                                                    for (var i in data.data) {
-                                                        var html =
-                                                            html +
-                                                            " <tr>" +
-                                                            "<td>" +
-                                                            data.data[i].product_name +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                            data.data[i].order_number +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                            data.data[i].submit_time +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                            data.data[i].total_amount +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                            infoFormatter(data.data[i]
-                                                                .order_status) +
-                                                            "</td>" +
-                                                            "</tr>";
-                                                    }
-                                                    $(".system-box table tbody").html(
-                                                        html);
-                                                } else {
-                                                    $(".system-box .no_table").show();
-                                                    $(".system-box table").hide();
-                                                }
-                                            }
-                                        },
-                                        error: function(data) {
-                                            if (data.status == 403) {
-                                                deleteItem();
-                                                messageBox(
-                                                    "您的登录已过期，请重新登录！",
-                                                    "登录过期",
-                                                    0,
-                                                    function() {
-                                                        window.location.href =
-                                                            "./index.html";
-                                                    }
-                                                );
-                                            }
-                                        },
-                                    });
-                                },
-                            };
-                            $(".car-box #pageLimit1").bootstrapPaginator(options);
-                        } else {
-                            $(".car-box .no_table").show();
-                            $(".car-box table").hide();
-                        }
-                    }
-                },
-                error: function(data) {
-                    if (data.status == 403) {
-                        deleteItem();
-                        messageBox(
-                            "您的登录已过期，请重新登录！",
-                            "登录过期",
-                            0,
-                            function() {
-                                window.location.href = "index.html";
-                            }
-                        );
-                    }
-                },
-            });
+                    $btn.button("reset");
+                    if (data) {
+                        showToast({
+                            msg: msg + '成功！',
+                            icon: 'check',
+                            type: 'success'
+                        })
+                        $('#planModal').modal('hide')
+                        pageInfo.handleType = null
+                        pageInfo.handRow = null
+                            // 刷新列表
+                        getAllList()
 
+                    } else {
+                        showToast({
+                            msg: msg + '失败！' + data,
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: data.message || msg + '失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+
+        }
+        // 删除任务业务事件
+        function handleDeleteTask($btn, id) {
+            console.log(id)
+            $btn.button("loading");
+            // 执行删除操作
+            $.ajax({
+                type: 'DELETE',
+                url: _apitaskDelete + id,
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    $btn.button("reset");
+                    if (data) {
+                        showToast({
+                                msg: '删除成功！',
+                                icon: 'check',
+                                type: 'success'
+                            })
+                            // 刷新列表
+                        getAllList()
+                        $('#confirm_Modal').modal('hide')
+                    } else {
+                        showToast({
+                            msg: '删除失败！' + data,
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: data.message || '删除失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+
+        }
+
+        // 确认框 确认 
+        function confirmModalSubmit(btn) {
+            const $btn = $(btn)
+            switch (pageInfo.handleType) {
+                case 'DELETETASK':
+                    // 删除任务
+                    handleDeleteTask($btn, pageInfo.handRow.id)
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        // select option
+        function htmlUserOption() {
+            const data = pageInfo.userList
+            if (data && data.length) {
+                var domStr = ''
+                for (let i = 0; i < data.length; i++) {
+                    domStr += '<option label="' + data[i].username + '" value="' + data[i].id + '"></option>'
+                }
+                $('#planModal #task_form_userId').append(domStr)
+            }
+            const teamData = pageInfo.teamList
+            if (teamData && teamData.length) {
+                var domStr = ''
+                for (let i = 0; i < teamData.length; i++) {
+                    domStr += '<option label="' + teamData[i].name + '" value="' + teamData[i].id + '"></option>'
+                }
+                $('#planModal #task_form_teamId').append(domStr)
+            }
         }
     </script>
 </body>

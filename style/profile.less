@@ -79,6 +79,7 @@
                 span {
                     color: @slideActiveColor;
                 }
+
                 .icon {
                     color: @slideActiveColor;
                 }
@@ -100,7 +101,7 @@
 
     .main-container {
         width: 800px;
-        padding: 15px;
+        padding: 0 15px 15px 15px;
         margin-left: 224px;
 
         .main-item {
@@ -117,10 +118,20 @@
                 flex-direction: row;
                 align-items: flex-start;
                 justify-content: flex-start;
+                border-bottom: 1px solid #ddd;
+                background-color: #fff;
+
+                &:hover {
+                    background-color: rgb(245, 245, 245);
+                }
+
+                &:last-child {
+                    border: none;
+                }
             }
 
             .user-label {
-                width: 60px;
+                width: 80px;
                 text-align: right;
                 font-weight: bold;
             }
@@ -132,10 +143,22 @@
 
         .task-box {}
 
-        .system-box,.car-box,.user-box {
+        .system-box,
+        .car-box,
+        .user-box {
             .add-wrapper {
-                margin: 20px 0;
+                margin: 0 0 20px 0;
                 text-align: right;
+            }
+
+            .card {
+                max-height: 70vh;
+                overflow: auto;
+                border: 1px solid #f1f1f1;
+
+                table {
+                    width: 100%;
+                }
             }
         }
     }
