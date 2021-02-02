@@ -20,3 +20,7 @@ const _apitaskDelete = baseUrl + '/task/'
 const _apitaskAdd = baseUrl + '/task/save'
     // 修改任务
 const _apitaskUpdate = baseUrl + '/task/update'
+
+
+// ===============博客管理===================
+const _apiArticList = baseUrl + '/content/list'

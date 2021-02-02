@@ -90,6 +90,9 @@
                 <i class="icon icon-flag"></i> <span>车队管理</span>
                 <i class="icon icon-left"></i>
             </li>
+            <li class="slide-item admin" data-page="articl-box">
+                <i class="icon icon-book"></i> <span>文章管理</span>
+                <i class="icon icon-left"></i>
             </li>
         </ul>
         <!-- 右侧内容区域 -->
@@ -245,6 +248,49 @@
                     </div>
                 </div>
             </div>
+            <!-- 文章管理 admin权限 -->
+            <div class="articl-box main-item hide">
+                <div class="card">
+                    <div class="add-wrapper">
+                        <button class="btn btn-success">
+                            <i class="icon icon-plus"></i>
+                            新建文章
+                        </button>
+                    </div>
+                    <table class="table table-striped table-bordered" align="center" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <th width="100px">文章标题</th>
+                            <th width="120px">文章内容</th>
+                            <th width="100px">作者</th>
+                            <th width="120px">创建时间</th>
+                            <th>操作</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>test</td>
+                                <td>test</td>
+                                <td>test</td>
+                                <td>test</td>
+                                <td>
+                                    <button class="btn btn-danger plan_btn" onclick="showPlanModal()">
+                                        <i class="icon icon-times"></i>删除
+                                    </button>
+                                    <button class="btn btn-primary plan_btn" onclick="showPlanModal()">
+                                        <i class="icon icon-repeat"></i>编辑
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="no_table hide">
+                        <p>暂无记录</p>
+                    </div>
+
+                    <div id="car-page" style="text-align: center">
+                        <ul id="pageLimit1"></ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <footer class="footer">
@@ -336,6 +382,7 @@
             taskList: null, // 任务管理
             userList: null, // 用户管理
             teamList: null, // 车队管理 
+            articlList: null, // 文章管理 
             myTaskList: null, //我的任务
         };
         window.onload = function() {
@@ -418,8 +465,27 @@
                                     async: true,
                                     success: function(teamData) {
                                         pageInfo.teamList = teamData
-                                            // 渲染
-                                        setHtmlBox()
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: _apiArticList,
+                                            contentType: "application/json",
+                                            dataType: 'json',
+                                            xhrFields: {
+                                                withCredentials: true
+                                            },
+                                            crossDomain: true,
+                                            async: true,
+                                            success: function(articData) {
+                                                pageInfo.articlList =
+                                                    articData
+                                                    // 渲染
+                                                setHtmlBox()
+                                            },
+                                            error: function(articData) {
+                                                throw new Error(
+                                                    articData)
+                                            }
+                                        })
                                     },
                                     error: function(teamData) {
                                         throw new Error(teamData)
@@ -445,13 +511,16 @@
             }
         }
 
+        // 渲染界面
         function setHtmlBox() {
             let systemdomStr = '',
                 sysData = pageInfo.taskList,
                 teamdomStr = '',
                 teamData = pageInfo.teamList,
                 userdomStr = '',
-                userData = pageInfo.userList;
+                userData = pageInfo.userList,
+                articldomStr = '',
+                articlData = pageInfo.articlList;
 
             // 构建map映射
             // 用户id-名称
@@ -487,7 +556,7 @@
                         '                <td>' + userData[i].createTime + '</td>' +
                         '               <td>' +
                         '                    <button class="btn btn-danger plan_btn" data-index="' + i +
-                        '" onclick="deleteUser(this)">' +
+                        '" onclick="deleteUserModal(this)">' +
                         '                        <i class="icon icon-times"></i>删除' +
                         '                    </button>' +
                         '            <button class="btn btn-primary plan_btn" data-index="' + i +
@@ -598,7 +667,7 @@
                         '                <td>' + teamData[i].createTime + '</td>' +
                         '               <td>' +
                         '                    <button class="btn btn-danger plan_btn" data-index="' + i +
-                        '" onclick="deleteTeam(this)">' +
+                        '" onclick="deleteTeamModal(this)">' +
                         '                        <i class="icon icon-times"></i>删除' +
                         '                    </button>' +
                         '            <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index="' +
@@ -613,9 +682,32 @@
             } else {
                 $('.car-box table tbody').html('<tr><td colspan="4" align="center">暂无数据</td></tr>')
             }
+            // 文章列表
+            if (articlData && articlData.length) {
+                for (let i = 0; i < articlData.length; i++) {
+                    articldomStr += '<tr>' +
+                        '                <td>' + articlData[i].title + '</td>' +
+                        '                <td>' + map_user[teamData[i].user_id] + '</td>' +
+                        '                <td>' + articlData[i].content + '</td>' +
+                        '                <td>' + articlData[i].createTime + '</td>' +
+                        '               <td>' +
+                        '                    <button class="btn btn-danger plan_btn" data-index="' + i +
+                        '" onclick="deleteArticModal(this)">' +
+                        '                        <i class="icon icon-times"></i>删除' +
+                        '                    </button>' +
+                        '            <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index="' +
+                        i +
+                        '" onclick="showArticModal(this)">' +
+                        '                <i class="icon icon-repeat"></i>编辑' +
+                        '        </button>' +
+                        '    </td>' +
+                        '</tr>'
+                }
+                $('.articl-box table tbody').html(articldomStr)
+            } else {
+                $('.articl-box table tbody').html('<tr><td colspan="5" align="center">暂无数据</td></tr>')
+            }
         }
-
-
 
         // 左侧菜单
         function initSlide() {
@@ -678,7 +770,7 @@
             pageInfo.handleType = 'DELETETASK'
             $('#confirm_Modal').modal()
         }
-
+        // 弹窗确定
         function editTask(btn) {
             var $btn = $(this);
             var params = {};
@@ -843,7 +935,6 @@
                     break;
             }
         }
-
         // select option
         function htmlUserOption() {
             const data = pageInfo.userList
@@ -863,6 +954,35 @@
                 $('#planModal #task_form_teamId').append(domStr)
             }
         }
+
+        // 添加/编辑 用户弹窗
+        function showUserModal() {}
+        // 删除 用户弹窗
+        function deleteUserModal() {}
+        // 删除用户业务事件
+        function handleDeleteUser() {}
+        // 编辑/添加 用户业务事件
+        function handleEditUser() {}
+
+
+        // 添加/编辑 车队弹窗
+        function showTeamModal() {}
+        // 删除 车队弹窗
+        function deleteTeamModal() {}
+        // 删除车队业务事件
+        function handleDeleteTeam() {}
+        // 编辑/添加 车队业务事件
+        function handleEditTeam() {}
+
+
+        // 添加/编辑 文章弹窗
+        function showArticModal() {}
+        // 删除 文章弹窗
+        function deleteArticModal() {}
+        // 删除车队文章事件
+        function handleDeleteArtic() {}
+        // 编辑/添加 车队文章事件
+        function handleEditArtic() {}
     </script>
 </body>
 
