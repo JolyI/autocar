@@ -35,3 +35,11 @@ const _apitaskUpdate = baseUrl + '/task/update'
 
 // ===============博客管理===================
 const _apiBlogist = baseUrl + '/content/list'
+const _apiBlogpage = baseUrl + '/content/page'
+const _apiBlogSave = baseUrl + '/content/save'
+const _apiBlogDetail = baseUrl + '/content/'
+
+
+// ===============评论管理===================
+const _apiCommentSave = baseUrl + '/comment/save'
+const _apiCommentList = baseUrl + '/comment/list'

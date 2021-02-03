@@ -51,6 +51,19 @@ function deleteItem() {
     window.localStorage.clear()
 }
 
+// 获取url中参数
+function GetRequest() {
+    var url = location.search;
+    var theRequest = new Object();
+    if (url.indexOf("?") != -1) {
+        var str = url.substr(1);
+        var strs = str.split("&");
+        for (var i = 0; i < strs.length; i++) {
+            theRequest[strs[i].split("=")[0]] = decodeURIComponent((strs[i].split("=")[1]));
+        }
+    }
+    return theRequest;
+}
 
 // 检测是否登录 header栏的变化
 function isLogin() {

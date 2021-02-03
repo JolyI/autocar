@@ -11,7 +11,7 @@
  Target Server Version : 80015
  File Encoding         : 65001
 
- Date: 27/01/2021 18:46:03
+ Date: 03/02/2021 18:30:28
 */
 
 SET NAMES utf8mb4;
@@ -56,6 +56,8 @@ CREATE TABLE `info`  (
   `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP,
   `create_user` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '内容',
+  `icon` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图标',
+  `url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '链接',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '公告栏信息' ROW_FORMAT = Compact;
 
@@ -110,15 +112,17 @@ CREATE TABLE `user`  (
   `award_info` blob NULL COMMENT '获奖信息',
   `specialty` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '特长',
   `team_id` bigint(10) NULL DEFAULT NULL COMMENT '车队di',
+  `super_admin` int(1) NULL DEFAULT 0 COMMENT '0->普通用户 1->超级管理员',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `user_idx1_username`(`username`) USING BTREE COMMENT '用户名全局唯一',
   INDEX `user_idx1_phone`(`phone`) USING BTREE COMMENT '用户手机号全局唯一'
-) ENGINE = InnoDB AUTO_INCREMENT = 84 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 86 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'admin', '管理员', '123456', '18888888888', 'https://www.google.com.hk/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png', '2018-04-20 07:15:18', '2021-01-27 18:09:10', NULL, '听音乐,打篮球，看书', 1);
-INSERT INTO `user` VALUES (84, 'admin1', '管理员1', '123456', '111111111111', '1111', '2021-01-27 00:00:00', '2021-01-27 00:00:00', 0x31, '', NULL);
+INSERT INTO `user` VALUES (1, 'admin', '管理员', '123456', '18888888888', 'https://www.google.com.hk/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png', '2018-04-20 07:15:18', '2021-01-27 18:09:10', NULL, '听音乐,打篮球，看书', 1, 0);
+INSERT INTO `user` VALUES (84, 'admin1', '管理员1', '123456', '111111111111', '1111', '2021-01-27 00:00:00', '2021-01-27 00:00:00', 0x31, '', NULL, 0);
+INSERT INTO `user` VALUES (85, 'admin2', '管理员1', '123456', '111111111111', '1111', '2021-02-02 15:53:23', '2021-02-02 15:53:23', 0x31, '', NULL, 0);
 
 SET FOREIGN_KEY_CHECKS = 1;

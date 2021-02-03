@@ -109,7 +109,7 @@
                 <ul class="news-list"></ul>
             </div> -->
             <!-- 通知  -->
-            <div class="basic notif-info">
+            <div class="basic notif-info hide">
                 <div class="title">
                     <div><i class="icon icon-bell-alt"></i> 通知</div>
                 </div>
@@ -118,7 +118,7 @@
                 </div>
             </div>
             <!-- 公告  -->
-            <div class="basic notice-info ">
+            <div class="basic notice-info hide">
                 <div class="title ">
                     <div><i class="icon icon-info "></i> 公告</div>
                 </div>
@@ -127,7 +127,7 @@
                 </div>
             </div>
             <!-- 赛事消息 -->
-            <div class="basic competition-info ">
+            <div class="basic competition-info hide">
                 <div class="title ">
                     <div><i class="icon icon-hot "></i> 赛事消息</div>
                 </div>
@@ -186,11 +186,10 @@
             },
             crossDomain: true,
             success: function(data) {
-                console.log(data)
                 if (data && data.length) {
-                    var notif_domStr = " "; // 通知
-                    var notice_domStr = " "; // 公告
-                    var competition_domStr = " "; // 赛事消息
+                    var notif_domStr = ''; // 通知
+                    var notice_domStr = ''; // 公告
+                    var competition_domStr = ''; // 赛事消息
 
                     for (let i = 0; i < data.length; i++) {
                         if (data[i].type == 1) {
@@ -207,7 +206,8 @@
                             competition_domStr += '<div class="item ">' +
                                 '     <div class="item-heading ">' +
                                 '       <div class="pull-right label label-success ">实时</div>' +
-                                '           <h4><a href="### " style="font-size:16px ">' + data[i].title +
+                                '           <h4><a href="' + data[i].url + '" style="font-size:16px ">' +
+                                data[i].title +
                                 '</a></h4>' +
                                 '       </div>' +
                                 '       <div class="item-content ">' +
@@ -220,6 +220,15 @@
                     $(".notif-info .info-list ").html(notif_domStr);
                     $(".notice-info .items ").html(notice_domStr);
                     $(".competition-info .items ").html(competition_domStr);
+                    if (notif_domStr.length) {
+                        $('.notif-info').removeClass('hide')
+                    }
+                    if (notice_domStr.length) {
+                        $('.notice-info').removeClass('hide')
+                    }
+                    if (competition_domStr.length) {
+                        $('.competition-info').removeClass('hide')
+                    }
                 } else {
 
                 }

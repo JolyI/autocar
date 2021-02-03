@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-cnzh-cn">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"/>-->
+    <meta name="viewport" content="width=1024" />
+    <!--[if lt IE 9]>
+          <script src="//n.sinaimg.cn/lib/common/html5shiv-printshiv.min.js"></script>
+        <![endif]-->
+    <meta name="keywords" content="赛车,F1,中国赛车,国际赛车,汽车运动,汽车产业" />
+    <meta name="description" content="赛车,F1,中国赛车,国际赛车,汽车运动,汽车产业" />
+    <link rel=”icon” href='./favicon.ico' mce_href=”/dir/favicon.ico” type=”image/x-icon”>
+    <title>中国赛车</title>
+
+    <link rel="stylesheet" href="./style/normalize.css" />
+    <link rel="stylesheet" href="./lib/zui/css/zui.min.css" />
+    <link rel="stylesheet" href="./style/dialog.css" />
+    <!-- <link rel="stylesheet" href="./lib/kindeditor/kindeditor.min.css"> -->
+    <script src="./js/jquery1.9.0.min.js"></script>
+    <script src="./js/dialog.js"></script>
+    <script src="./lib/zui/js/zui.min.js"></script>
+    <script src="./lib/kindeditor/kindeditor.min.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/common.js"></script>
+
+    <!-- 样式文件 -->
+    <link rel="stylesheet/less" type="text/css" href="./style/header.less" />
+    <link rel="stylesheet/less" type="text/css" href="./style/blogwrite.less" />
+    <script src="./style/less.min.js"></script>
+
+</head>
+
+<body>
+    <nav class="blog-write-nav navbar navbar-default" role="navigation">
+        <div class="container">
+            <a href="./blog.html">返回论坛</a>
+        </div>
+    </nav>
+    <div class="wrapper">
+        <div class="blog-writre-box">
+            <div class="input-control has-icon-left title-box">
+                <input id="title" type="text" class="form-control" placeholder="请输入博客标题">
+            </div>
+            <textarea id="content" name="content" class="form-control kindeditor" style="height:600px;" placeholder="想表达些什么呢？快点写下来吧..."></textarea>
+            <div class="submit-box">
+                <button class="btn btn-primary btn-lg" onclick="submitBlog()">提交</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var editor;
+    window.onload = function() {
+        editor = KindEditor.create('textarea.kindeditor', {
+            basePath: './lib/kindeditor/',
+            bodyClass: 'article-content', // 确保编辑器内的内容也应用 ZUI 排版样式
+            cssPath: './lib/zui/css/zui.css', // 确保编辑器内的内容也应用 ZUI 排版样式
+            resizeType: 1,
+            allowPreviewEmoticons: false,
+            allowImageUpload: false,
+            items: [
+                'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                'insertorderedlist',
+                'insertunorderedlist', '|', 'emoticons', 'link'
+            ]
+        });
+    }
+
+    // 提交
+    function submitBlog() {
+        var content = editor.html()
+        var title = $('#title').val()
+        var isEmpty = editor.isEmpty();
+        if (!title) {
+            showToast({
+                msg: '请输入博客标题！',
+                icon: 'info',
+                type: 'warning'
+            })
+            return
+        }
+        if (isEmpty) {
+            showToast({
+                msg: '提交内容不能为空！',
+                icon: 'info',
+                type: 'warning'
+            })
+            return
+        }
+        var params = {
+                content: content,
+                createUser: localStorage.getItem('userid'),
+                title: title,
+            }
+            // 提交数据
+        $.ajax({
+            type: 'POST',
+            url: _apiBlogSave,
+            data: JSON.stringify(params),
+            contentType: "application/json",
+            dataType: 'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            success: function(data) {
+                if (data) {
+                    showToast({
+                        msg: '提交成功！',
+                        icon: 'check',
+                        type: 'success'
+                    })
+                    setTimeout(function() {
+                        window.location.href = './blog.html'
+                    }, 1000);
+                } else {
+                    showToast({
+                        msg: '提交失败！请重试',
+                        icon: 'info',
+                        type: 'danger'
+                    })
+                }
+            },
+            error: function(e) {
+                const data = JSON.parse(e.responseText)
+                $btn.button("reset");
+                showToast({
+                    msg: data.message || msg + '失败！',
+                    icon: 'times',
+                    type: 'danger'
+                })
+            }
+        })
+
+    }
+</script>
+
+</html>

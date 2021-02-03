@@ -19,54 +19,28 @@
     <link rel="stylesheet" href="./lib/zui/css/zui.min.css" />
     <link rel="stylesheet" href="./style/dialog.css" />
     <script src="./js/jquery1.9.0.min.js"></script>
-    <script src="./lib/table/jquery.z-pager.js"></script>
     <script src="./js/dialog.js"></script>
+    <script src="./js/jquery1.9.0.min.js"></script>
     <script src="./lib/zui/js/zui.min.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/common.js"></script>
     <!-- 样式文件 -->
     <link rel="stylesheet/less" type="text/css" href="./style/header.less" />
     <link rel="stylesheet/less" type="text/css" href="./style/blog.less" />
     <script src="./style/less.min.js"></script>
 
-    <script src="./js/common.js"></script>
-    <script src="./js/jquery1.9.0.min.js"></script>
 </head>
 
 <body>
-    <nav class="navbar nav-header" role="navigation">
-        <div class="container-fluid">
-            <div class="nav-wrapper">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-example">
-                        <span class="sr-only">切换导航</span>
-                    </button>
-                    <a class="navbar-brand logo" href="./"></a>
-                </div>
-                <div class="collapse navbar-collapse navbar-collapse-example">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="./index.html">首页</a></li>
-                        <li class="active"><a href="./blog.html">在线论坛</a></li>
-                        <li><a href="./login.html">登录/注册</a></li>
-                        <li class="dropdown">
-                            <a href="your/nice/url" class="dropdown-toggle" data-toggle="dropdown">秦皇汉武 <b
-                                    class="caret"></b></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li>
-                                    <a href="./profile.html">
-                                        <i class="icon icon-user"></i> 个人中心
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a> <i class="icon icon-signout"></i> 退出登录 </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+    <nav class="blog-detail-nav navbar navbar-default" role="navigation">
+        <div class="container">
+            <a href="./blog.html">返回论坛</a>
         </div>
     </nav>
-    <div class="wrapper">
+    <div class="wrapper blog-detail">
+        <div class="article-error hide">
+            <img src="./assets/error.png" alt="">
+        </div>
         <div class="blog-detail-container">
             <article class="article">
                 <!-- 文章头部 -->
@@ -78,52 +52,230 @@
                         <dd id="artic_creater"></dd>
                     </dl>
                     <dl class="dl-inline">
-                        <dd>2016年8月12日 (星期五) 12:53</dd>
+                        <dd id="artic_time"></dd>
                     </dl>
                 </header>
                 <!-- 文章正文部分 -->
                 <section id="artic_content" class="content">
                 </section>
-                <!-- 文章底部 -->
-                <footer>
-                    <ul class="pager pager-justify">
-                        <li class="previous"><a href="#"><i class="icon-arrow-left"></i> 上一篇</a></li>
-                        <li><a href="#"><i class="icon-list-ul"></i> 目录</a></li>
-                        <li class="next disabled"><a href="#">没有下一篇 <i class="icon-arrow-right"></i></a></li>
-                    </ul>
-                </footer>
             </article>
+            <!-- 评论 -->
+            <div class="comment-box">
+                <!-- 个人评论 -->
+                <div class="comment-self-box">
+                    <textarea id="comment_self" class="form-control" rows="5" placeholder="写下你的评论..."></textarea>
+                    <div class="comment-self-btns">
+                        <button class="btn btn-info" data-loading-text="正在发表..." onclick="submitSelfComent(this)">发表</button>
+                    </div>
+                </div>
+                <div class="comment-list-title">
+                    全部评论
+                </div>
+                <div class="comments">
+                    <sectioni id="comments_list" class="comments-list">
+                    </sectioni>
+                    <div class="comment-null hide">
+                        <img src="./assets/null-food.png" alt="">
+                        <div class="text">评论区空空如也！</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <footer class="footer">
-        <div class="detail">@ 2021 中国赛车</div>
-        <div class="tips">
-            本网站仅做学习交流之用途，若有侵权，请及时与站主联系。
-        </div>
-    </footer>
-
     <script>
         var pageInfo = {
+            id: null,
+            map_user: {},
             artic: {
-                id: 1,
-                title: 'HTML5 发展历史',
-                content: 'HTML 5草案的前身名为Web Applications 1.0，是在2004年由WHATWG提出。2008年1月22日，第一份正式草案发布。WHATWG表示该规范是目前仍在进行的工作，仍须多年的努力。[8]目前Mozilla Firefox、Google Chrome、Opera、Safari（版本4以上）、Internet Explorer（版本9以上）已支持HTML5技术。',
+                title: '',
+                content: '',
                 muted: 12,
-                created_time: '2019-09-09',
-                creater: '本——杰克'
+                created_time: '',
+                creater: ''
+            }
+        }
+        window.onload = function() {
+            isLogin()
+            init()
+        }
+
+        function init() {
+            // 获取id
+            var id = GetRequest().blodid
+            if (!id) {
+
+                return
+            } else {
+                pageInfo.id = id
+                getBlogDetail(id)
             }
         }
 
-        init()
+        function getBlogDetail(id) {
+            $.ajax({
+                type: 'GET',
+                url: _apiUserList,
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                async: true,
+                success: function(userData) {
+                    pageInfo.userList = userData
+                    var map_user = {}
+                    if (userData && userData.length) {
+                        userData.forEach(item => {
+                            map_user[item.id] = item.username
+                        })
+                    }
+                    pageInfo.map_user = map_user
+                    $.ajax({
+                        type: 'GET',
+                        url: _apiBlogDetail + id,
+                        contentType: "application/json",
+                        dataType: 'json',
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        crossDomain: true,
+                        async: true,
+                        success: function(data) {
+                            if (data) {
+                                pageInfo.artic = data
+                                $('#artic_title').html(pageInfo.artic.title)
+                                $('#artic_creater').html(map_user[pageInfo.artic
+                                    .createUser])
+                                $('#artic_content').html(pageInfo.artic.content)
+                                $('#artic_time').html('创作于' + pageInfo.artic.createTime)
+                                    // 渲染无数据
+                                $('.article-error').addClass('hide')
+                                $('.blog-detail-container').show()
+                            } else {
+                                // 渲染无数据
+                                $('.blog-detail-container').hide()
+                                $('.article-error').removeClass('hide')
+                            }
+                        },
+                        error: function(e) {
+                            $('.blog-detail-container').hide()
+                            $('.article-error').removeClass('hide')
+                            const data = JSON.parse(e.responseText)
+                            $btn.button("reset");
+                            showToast({
+                                msg: data.message || msg + '失败！',
+                                icon: 'times',
+                                type: 'danger'
+                            })
+                        }
+                    })
+                    getCommentList()
+                },
+                error: function(err) {
 
-        function init() {
-            getBlogList()
+                }
+            })
         }
 
-        function getBlogList() {
-            $('#artic_title').html(pageInfo.artic.title)
-            $('#artic_creater').html(pageInfo.artic.creater)
-            $('#artic_content').html(pageInfo.artic.content)
+        // 评论列表
+        function getCommentList() {
+            var params = {
+                contentId: pageInfo.id
+            }
+            $.ajax({
+                type: 'GET',
+                url: _apiCommentList,
+                data: params,
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    if (data && data.length) {
+                        var str = ''
+                        data.forEach(item => {
+                            str += '<div class="comment">' +
+                                '  <a  class="avatar">' +
+                                '        <i class="icon-user icon-2x"></i>' +
+                                '    </a>' +
+                                '    <div class="content">' +
+                                '        <div class="pull-right text-muted">' + item
+                                .createTime + '</div>' +
+                                '        <div><a ><strong>' + pageInfo.map_user[item
+                                    .createUser] + '</strong></a>' +
+                                '            <a></a></div>' +
+                                '        <div class="text">' + item.content + '</div>' +
+                                '    </div>' +
+                                '</div>'
+                        })
+                        $('.comment-null').addClass('hide')
+                        $('#comments_list').html(str)
+                    } else {
+                        $('.comment-null').removeClass('hide')
+                    }
+                },
+                error: function(data) {
+                    $('.comment-null').removeClass('hide')
+                }
+            })
+        }
+
+        // 发表评论
+        function submitSelfComent(btn) {
+            var $btn = $(btn)
+            var value = $("#comment_self").val()
+            console.log(value)
+            if (!value) return
+            $btn.button("loading");
+            var params = {
+                contentId: pageInfo.id,
+                content: value,
+                createUser: localStorage.getItem('userid'),
+                userId: localStorage.getItem('userid')
+            }
+            $.ajax({
+                type: 'POST',
+                url: _apiCommentSave,
+                data: JSON.stringify(params),
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    $btn.button("reset");
+                    if (data) {
+                        showToast({
+                            msg: '评论成功！',
+                            icon: 'check',
+                            type: 'success'
+                        })
+                        $('#comment_self').val('')
+                            // 刷新评论
+                        getCommentList()
+                    } else {
+                        showToast({
+                            msg: '评论失败！',
+                            icon: 'times',
+                            type: 'danger'
+                        })
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: data.message || '评论失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+
         }
     </script>
 </body>
