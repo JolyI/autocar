@@ -91,7 +91,7 @@
                 <i class="icon icon-left"></i>
             </li>
             <li class="slide-item admin" data-page="articl-box">
-                <i class="icon icon-book"></i> <span>文章管理</span>
+                <i class="icon icon-book"></i> <span>首页文章管理</span>
                 <i class="icon icon-left"></i>
             </li>
         </ul>
@@ -146,31 +146,27 @@
             </div>
             <!-- 用户管理 admin权限 -->
             <div class="user-box main-item hide">
+                <div class="add-wrapper">
+                    <button class="btn btn-success btn-mini" onclick="showAddTaskModal()">
+                        <i class="icon icon-plus"></i>
+                        添加用户
+                    </button>
+                </div>
                 <div class="card">
-                    <div class="add-wrapper">
-                        <button class="btn btn-success">
-                            <i class="icon icon-plus"></i>
-                            添加用户
-                        </button>
-                    </div>
                     <table class="table table-striped table-bordered" align="center" cellspacing="0" cellpadding="0">
                         <thead>
-                            <th>用户姓名</th>
-                            <th>真实姓名</th>
-                            <th>创建时间</th>
-                            <th>操作</th>
+                            <th width="100px">用户姓名</th>
+                            <th width="100px">真实姓名</th>
+                            <th width="100px">所属车队</th>
+                            <th width="100px">特长</th>
+                            <th width="200px">获奖信息</th>
+                            <th width="100px">创建时间</th>
+                            <th width="120px">操作</th>
                         </thead>
                         <tbody>
 
                         </tbody>
                     </table>
-                    <div class="no_table hide">
-                        <p>暂无记录</p>
-                    </div>
-
-                    <div id="user-page" style="text-align: center">
-                        <ul id="pageLimit1"></ul>
-                    </div>
                 </div>
             </div>
             <!-- 任务系统 admin权限 -->
@@ -208,7 +204,7 @@
             <div class="car-box main-item hide">
                 <div class="card">
                     <div class="add-wrapper">
-                        <button class="btn btn-success">
+                        <button class="btn btn-success btn-mini" onclick="addTeamModal()">
                             <i class="icon icon-plus"></i>
                             新建车队
                         </button>
@@ -217,7 +213,7 @@
                         <thead>
                             <th width="100px">车队名称</th>
                             <th width="120px">车队队长</th>
-                            <th width="200px">车队描述</th>
+                            <th width="200px">车队简介</th>
                             <th width="100px">车队所属</th>
                             <th width="120px">创建时间</th>
                             <th>操作</th>
@@ -239,56 +235,28 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="no_table hide">
-                        <p>暂无记录</p>
-                    </div>
-
-                    <div id="car-page" style="text-align: center">
-                        <ul id="pageLimit1"></ul>
-                    </div>
                 </div>
             </div>
-            <!-- 文章管理 admin权限 -->
+            <!-- 首页文章管理 admin权限 -->
             <div class="articl-box main-item hide">
                 <div class="card">
                     <div class="add-wrapper">
-                        <button class="btn btn-success">
+                        <button class="btn btn-success btn-mini" onclick="showAddArticModal()">
                             <i class="icon icon-plus"></i>
                             新建文章
                         </button>
                     </div>
                     <table class="table table-striped table-bordered" align="center" cellspacing="0" cellpadding="0">
                         <thead>
-                            <th width="100px">文章标题</th>
-                            <th width="120px">文章内容</th>
+                            <th width="150px">文章标题</th>
+                            <th width="200px">文章内容</th>
                             <th width="100px">作者</th>
                             <th width="120px">创建时间</th>
                             <th>操作</th>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>test</td>
-                                <td>test</td>
-                                <td>test</td>
-                                <td>test</td>
-                                <td>
-                                    <button class="btn btn-danger plan_btn" onclick="showPlanModal()">
-                                        <i class="icon icon-times"></i>删除
-                                    </button>
-                                    <button class="btn btn-primary plan_btn" onclick="showPlanModal()">
-                                        <i class="icon icon-repeat"></i>编辑
-                                    </button>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
-                    <div class="no_table hide">
-                        <p>暂无记录</p>
-                    </div>
-
-                    <div id="car-page" style="text-align: center">
-                        <ul id="pageLimit1"></ul>
-                    </div>
                 </div>
             </div>
         </div>
@@ -312,19 +280,19 @@
                     <form id="modal_task_form" class="form-horizontal">
                         <div class="form-group">
                             <label for="task_form_title" class="col-sm-2">任务名称</label>
-                            <div class="col-md-6 col-sm-10">
+                            <div class="col-sm-10">
                                 <input name="title" type="text" class="form-control" id="task_form_title" placeholder="任务名称">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="task_form_content" class="col-sm-2">任务内容</label>
-                            <div class="col-md-6 col-sm-10">
+                            <div class="col-sm-10">
                                 <textarea name="content" id="task_form_content" type="text" class="form-control" rows="5" placeholder="任务描述"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="task_form_status" class="col-sm-2">任务状态</label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-10">
                                 <select name="status" class="form-control" id="task_form_status">
                                     <option label="请选择任务状态" value=""></option>
                                     <option label="待开始" value="1"></option>
@@ -335,7 +303,7 @@
                         </div>
                         <div class="form-group">
                             <label for="task_form_userId" class="col-sm-2">任务实现者</label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-10">
                                 <select name="userId" class="form-control" id="task_form_userId">
                                     <option label="请选择用户" value=""></option>
                                 </select>
@@ -343,7 +311,7 @@
                         </div>
                         <div class="form-group">
                             <label for="task_form_teamId" class="col-sm-2">所属车队</label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-10">
                                 <select name="teamId" class="form-control" id="task_form_teamId">
                                     <option label="请选择车队" value=""></option>
                                 </select>
@@ -374,6 +342,212 @@
             </div>
         </div>
     </div>
+    <!-- 对话框 编辑 用户 -->
+    <div id="userModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">关闭</span></button>
+                    <h4 id="modal_user_title" class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <form id="modal_user_form" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="user_form_username" class="col-sm-2">用户名称</label>
+                            <div class="col-sm-10">
+                                <input name="username" type="text" class="form-control" id="user_form_username" placeholder="用户名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_form_realname" class="col-sm-2">真实姓名</label>
+                            <div class="col-sm-10">
+                                <input name="realName" id="user_form_realname" type="text" class="form-control" placeholder="真实姓名"></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_form_phone" class="col-sm-2">电话号码</label>
+                            <div class="col-sm-10">
+                                <input name="phone" id="user_form_phone" type="text" class="form-control" placeholder="电话号码"></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_form_specialty" class="col-sm-2">特长</label>
+                            <div class="col-sm-10">
+                                <input name="specialty" id="user_form_specialty" type="text" class="form-control" placeholder="特长"></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_form_awardInfo" class="col-sm-2">获奖信息</label>
+                            <div class="col-sm-10">
+                                <textarea name="awardInfo" id="user_form_awardInfo" type="text" class="form-control" rows="5" placeholder="获奖信息"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_form_teamId" class="col-sm-2">所属车队</label>
+                            <div class="col-sm-10">
+                                <select name="teamId" class="form-control" id="user_form_teamId">
+                                    <option label="请选择车队" value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="editUserModalSubmit(this)">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 对话框 添加 用户 -->
+    <div id="userAddModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">关闭</span></button>
+                    <h4 id="modal_user_title" class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <form id="modal_user_add_form" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="user_form_username" class="col-sm-2">用户名称</label>
+                            <div class="col-sm-10">
+                                <input name="username" type="text" class="form-control" id="user_form_username" placeholder="用户名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_form_realname" class="col-sm-2">真实姓名</label>
+                            <div class="col-sm-10">
+                                <input name="realName" id="user_form_realname" type="text" class="form-control" placeholder="真实姓名"></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_form_password" class="col-sm-2">初始密码</label>
+                            <div class="col-sm-10">
+                                <input name="password" id="user_form_password" type="text" class="form-control" placeholder="初始密码"></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_form_phone" class="col-sm-2">电话号码</label>
+                            <div class="col-sm-10">
+                                <input name="phone" id="user_form_phone" type="text" class="form-control" placeholder="电话号码（可选）"></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_form_specialty" class="col-sm-2">特长</label>
+                            <div class="col-sm-10">
+                                <input name="specialty" id="user_form_specialty" type="text" class="form-control" placeholder="特长（可选）"></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_form_awardInfo" class="col-sm-2">获奖信息</label>
+                            <div class="col-sm-10">
+                                <textarea name="awardInfo" id="user_form_awardInfo" type="text" class="form-control" rows="5" placeholder="获奖信息（可选）"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_form_teamId" class="col-sm-2">所属车队</label>
+                            <div class="col-sm-10">
+                                <select name="teamId" class="form-control" id="user_form_teamId">
+                                    <option label="请选择车队" value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="addUserModalSubmit(this)">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 对话框 添加/编辑车队 -->
+    <div id="teamModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">关闭</span></button>
+                    <h4 id="modal_team_title" class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <form id="modal_team_form" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="user_form_name" class="col-sm-2">车队名称</label>
+                            <div class="col-sm-10">
+                                <input name="name" type="text" class="form-control" id="user_form_name" placeholder="车队名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_form_content" class="col-sm-2">车队简介</label>
+                            <div class="col-sm-10">
+                                <textarea name="content" id="user_form_content" type="text" class="form-control" placeholder="车队简介"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_form_captain" class="col-sm-2">队长</label>
+                            <div class="col-sm-10">
+                                <select name="captain" class="form-control" id="user_form_captain">
+                                    <option label="请选择队长" value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="editTeamModalSubmit(this)">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 对话框 添加/编辑文章 -->
+    <div id="articlModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">关闭</span></button>
+                    <h4 id="modal_articl_title" class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <form id="modal_articl_form" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="articl_form_title" class="col-sm-2">标题</label>
+                            <div class="col-sm-10">
+                                <input name="title" type="text" class="form-control" id="articl_form_title" placeholder="请输入标题">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="articl_form_content" class="col-sm-2">内容</label>
+                            <div class="col-sm-10">
+                                <textarea name="content" id="articl_form_content" type="text" class="form-control" rows="8" placeholder="请输入内容"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="articl_form_type" class="col-sm-2">类型</label>
+                            <div class="col-sm-10">
+                                <select name="type" class="form-control" id="articl_form_type">
+                                    <option label="请选择类型" value=""></option>
+                                    <option label="通知" value=1></option>
+                                    <option label="公告" value=2></option>
+                                    <option label="赛事消息" value=3></option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="editArticlModalSubmit(this)">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 页面事件 参数  类似vue-data写法
         var pageInfo = {
@@ -384,6 +558,9 @@
             teamList: null, // 车队管理 
             articlList: null, // 文章管理 
             myTaskList: null, //我的任务
+            map_user: {},
+            map_team: {},
+            map_task: {},
         };
         window.onload = function() {
             init();
@@ -423,7 +600,7 @@
             })
         }
 
-        // 嵌套ajax 获取用户列表/任务列表/车队列表
+        // 嵌套ajax 获取用户列表/任务列表/车队列表/首页文章列表
         function getAllList() {
             // 用户列表
             try {
@@ -465,9 +642,10 @@
                                     async: true,
                                     success: function(teamData) {
                                         pageInfo.teamList = teamData
+                                            // 首页文章列表
                                         $.ajax({
                                             type: 'GET',
-                                            url: _apiArticList,
+                                            url: _apiInfoList,
                                             contentType: "application/json",
                                             dataType: 'json',
                                             xhrFields: {
@@ -545,7 +723,10 @@
                     map_task[item.id] = item.title
                 })
             }
-            // 找出 我的任务 
+            pageInfo.map_user = map_user
+            pageInfo.map_team = map_team
+            pageInfo.map_task = map_task
+                // 找出 我的任务 
             var myTaskList = []
                 // 用户列表
             if (userData && userData.length) {
@@ -553,13 +734,17 @@
                     userdomStr += '<tr>' +
                         '                <td>' + userData[i].username + '</td>' +
                         '                <td>' + userData[i].realName + '</td>' +
+                        '                <td>' + map_team[userData[i].teamId] + '</td>' +
+                        '                <td>' + userData[i].specialty + '</td>' +
+                        '                <td>' + userData[i].awardInfo + '</td>' +
                         '                <td>' + userData[i].createTime + '</td>' +
                         '               <td>' +
                         '                    <button class="btn btn-danger plan_btn" data-index="' + i +
                         '" onclick="deleteUserModal(this)">' +
                         '                        <i class="icon icon-times"></i>删除' +
                         '                    </button>' +
-                        '            <button class="btn btn-primary plan_btn" data-index="' + i +
+                        '            <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index="' +
+                        i +
                         '" onclick="showUserModal(this)">' +
                         '                <i class="icon icon-repeat"></i>编辑' +
                         '        </button>' +
@@ -612,23 +797,23 @@
                 $('.system-box table tbody').html(systemdomStr)
                 pageInfo.myTaskList = myTaskList
             } else {
-                $('.system-box table tbody').html('<tr><td colspan="5" align="center">暂无数据</td></tr>')
+                $('.system-box table tbody').html('<tr><td colspan="7" align="center">暂无数据</td></tr>')
             }
 
-            // w我的任务
+            // 我的任务
             if (myTaskList && myTaskList.length) {
                 var mytaskdomStr = ''
                 for (let i = 0; i < myTaskList.length; i++) {
-                    let status = '',
-                        statusStr = ''
-                    if (sysData[i].status == 1) {
-                        statusStr = '<span class="label label-warning">待开始</span>'
+                    let mystatus = '',
+                        mystatusStr = ''
+                    if (myTaskList[i].status == 1) {
+                        mystatusStr = '<span class="label label-warning">待开始</span>'
                     }
-                    if (sysData[i].status == 2) {
-                        statusStr = '<span class="label label-info">进行中</span>'
+                    if (myTaskList[i].status == 2) {
+                        mystatusStr = '<span class="label label-info">进行中</span>'
                     }
-                    if (sysData[i].status == 3) {
-                        statusStr = '<span class="label label-success">已完成</span>'
+                    if (myTaskList[i].status == 3) {
+                        mystatusStr = '<span class="label label-success">已完成</span>'
                     }
 
                     // 根据上面的映射 找出实现者 找出车队 就好做了
@@ -638,22 +823,18 @@
                         '           <td>' + map_user[sysData[i].userId] + '</td>' +
                         '           <td>' + map_team[sysData[i].teamId] + '</td>' +
                         '           <td>' + myTaskList[i].createTime + '</td>' +
-                        '           <td>' + statusStr + '</td>' +
+                        '           <td>' + mystatusStr + '</td>' +
                         '           <td>' +
-                        '               <button class="btn btn-danger plan_btn"  data-index=' + i +
-                        ' onclick="deletTask(this)">' +
-                        '               <i class="icon icon-times"></i>删除' +
-                        '       </button>' +
                         '       <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index=' + i +
-                        ' onclick="showPlanModal(this)">' +
-                        '           <i class="icon icon-edit-sign"></i>编辑' +
+                        ' onclick="showMyTaskMdoal(this)">' +
+                        '           <i class="icon icon-edit-sign"></i>更新进度' +
                         '   </button>' +
                         '</td>' +
                         '</tr>'
                 }
                 $('.task-box table tbody').html(mytaskdomStr)
             } else {
-                $('.task-box table tbody').html('<tr><td colspan="5" align="center">暂无数据</td></tr>')
+                $('.task-box table tbody').html('<tr><td colspan="7" align="center">暂无数据</td></tr>')
             }
 
             // 车队列表
@@ -663,7 +844,7 @@
                         '                <td>' + teamData[i].name + '</td>' +
                         '                <td>' + map_user[teamData[i].captain] + '</td>' +
                         '                <td>' + teamData[i].content + '</td>' +
-                        '                <td>' + teamData[i].createUser + '</td>' +
+                        '                <td>' + map_user[teamData[i].createUser] + '</td>' +
                         '                <td>' + teamData[i].createTime + '</td>' +
                         '               <td>' +
                         '                    <button class="btn btn-danger plan_btn" data-index="' + i +
@@ -680,24 +861,25 @@
                 }
                 $('.car-box table tbody').html(teamdomStr)
             } else {
-                $('.car-box table tbody').html('<tr><td colspan="4" align="center">暂无数据</td></tr>')
+                $('.car-box table tbody').html('<tr><td colspan="6" align="center">暂无数据</td></tr>')
             }
             // 文章列表
+            console.log(articlData)
             if (articlData && articlData.length) {
                 for (let i = 0; i < articlData.length; i++) {
                     articldomStr += '<tr>' +
-                        '                <td>' + articlData[i].title + '</td>' +
-                        '                <td>' + map_user[teamData[i].user_id] + '</td>' +
-                        '                <td>' + articlData[i].content + '</td>' +
+                        '                <td> <div class="ellipis-3">' + articlData[i].title + '</div></td>' +
+                        '                <td> <div class="ellipis-3">' + articlData[i].content + '</div></td>' +
+                        '                <td> ' + map_user[articlData[i].createUser] + '</td>' +
                         '                <td>' + articlData[i].createTime + '</td>' +
                         '               <td>' +
                         '                    <button class="btn btn-danger plan_btn" data-index="' + i +
-                        '" onclick="deleteArticModal(this)">' +
+                        '" onclick="deleteArticlModal(this)">' +
                         '                        <i class="icon icon-times"></i>删除' +
                         '                    </button>' +
                         '            <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index="' +
                         i +
-                        '" onclick="showArticModal(this)">' +
+                        '" onclick="showArticlModal(this)">' +
                         '                <i class="icon icon-repeat"></i>编辑' +
                         '        </button>' +
                         '    </td>' +
@@ -740,6 +922,7 @@
         function showPlanModal(e) {
             const index = $(e).attr('data-index')
             pageInfo.handRow = pageInfo.taskList[index]
+            htmlTaskOption()
                 // console.log(pageInfo.handRow)
             $('#planModal #modal_task_title').html('编辑任务')
             $('#planModal  #task_form_title').val(pageInfo.handRow.title)
@@ -747,18 +930,49 @@
             $('#planModal  #task_form_status').val(pageInfo.handRow.status)
             $('#planModal  #task_form_userId').val(pageInfo.handRow.userId)
             $('#planModal  #task_form_teamId').val(pageInfo.handRow.teamId)
-            htmlUserOption()
+
+
+            $('#planModal  #task_form_title').removeAttr('disabled')
+            $('#planModal  #task_form_content').removeAttr('disabled')
+            $('#planModal  #task_form_status').removeAttr('disabled')
+            $('#planModal  #task_form_userId').removeAttr('disabled')
+            $('#planModal  #task_form_teamId').removeAttr('disabled')
+
             pageInfo.handleType = 'EDITTASK'
             $('#planModal').modal()
         }
+        // 编辑我的任务
+        function showMyTaskMdoal(e) {
+            const index = $(e).attr('data-index')
+            pageInfo.handRow = pageInfo.myTaskList[index]
+            htmlTaskOption()
+                // console.log(pageInfo.handRow)
+            $('#planModal #modal_task_title').html('编辑任务')
+            $('#planModal  #task_form_title').val(pageInfo.handRow.title)
+            $('#planModal  #task_form_content').val(pageInfo.handRow.content)
+            $('#planModal  #task_form_status').val(pageInfo.handRow.status)
+            $('#planModal  #task_form_userId').val(pageInfo.handRow.userId)
+            $('#planModal  #task_form_teamId').val(pageInfo.handRow.teamId)
+
+            $('#planModal  #task_form_title').attr('disabled', 'disabled')
+            $('#planModal  #task_form_content').attr('disabled', 'disabled')
+            $('#planModal  #task_form_userId').attr('disabled', 'disabled')
+            $('#planModal  #task_form_teamId').attr('disabled', 'disabled')
+            pageInfo.handleType = 'EDITTASK'
+                // 进行禁用
+
+            $('#planModal').modal()
+
+        }
+
         // 添加任务
         function showAddTaskModal() {
+            htmlTaskOption()
             $('#planModal #modal_task_title').html('添加任务')
             $('#planModal  #task_form_title').val('')
             $('#planModal  #task_form_content').val('')
             $('#planModal  #userId').val('')
             $('#planModal  #task_form_status').val('')
-            htmlUserOption()
             pageInfo.handleType = 'ADDTASK'
             $('#planModal').modal()
         }
@@ -766,10 +980,12 @@
         function deletTask(e) {
             const index = $(e).attr('data-index')
             pageInfo.handRow = pageInfo.taskList[index]
-            $('#confirm_Modal #confirm_Modal_title').html('是否删除' + pageInfo.handRow.title + '?')
+            $('#confirm_Modal #confirm_Modal_title').html('是否删除任务 ' + pageInfo.handRow.title + '?')
             pageInfo.handleType = 'DELETETASK'
             $('#confirm_Modal').modal()
         }
+
+
         // 弹窗确定
         function editTask(btn) {
             var $btn = $(this);
@@ -878,7 +1094,6 @@
         }
         // 删除任务业务事件
         function handleDeleteTask($btn, id) {
-            console.log(id)
             $btn.button("loading");
             // 执行删除操作
             $.ajax({
@@ -930,59 +1145,692 @@
                     // 删除任务
                     handleDeleteTask($btn, pageInfo.handRow.id)
                     break;
+                case 'DELETEUSER':
+                    // 删除用户
+                    handleDeleteUser($btn, pageInfo.handRow.id)
+                    break;
+                case 'DELETETEAM':
+                    // 删除车队
+                    handleDeleteTeam($btn, pageInfo.handRow.id)
+                    break;
+                case 'DELETARTICL':
+                    // 删除车队
+                    handleDeleteArtic($btn, pageInfo.handRow.id)
+                    break;
 
                 default:
                     break;
             }
         }
+
+
         // select option
-        function htmlUserOption() {
+        function htmlTaskOption() {
             const data = pageInfo.userList
             if (data && data.length) {
-                var domStr = ''
+                var domStr = '<option label="请选择用户" value=""></option>'
                 for (let i = 0; i < data.length; i++) {
                     domStr += '<option label="' + data[i].username + '" value="' + data[i].id + '"></option>'
                 }
-                $('#planModal #task_form_userId').append(domStr)
+                $('#planModal #task_form_userId').html(domStr)
             }
             const teamData = pageInfo.teamList
             if (teamData && teamData.length) {
-                var domStr = ''
+                var domStr = ' <option label="请选择车队" value=""></option>'
                 for (let i = 0; i < teamData.length; i++) {
                     domStr += '<option label="' + teamData[i].name + '" value="' + teamData[i].id + '"></option>'
                 }
-                $('#planModal #task_form_teamId').append(domStr)
+                $('#planModal #task_form_teamId').html(domStr)
             }
         }
 
-        // 添加/编辑 用户弹窗
-        function showUserModal() {}
+        // 编辑 用户弹窗展示
+        function showUserModal(e) {
+            const index = $(e).attr('data-index')
+            pageInfo.handRow = pageInfo.userList[index]
+            pageInfo.handleType = 'EDITUSER'
+            htmlUserOption()
+            $('#userModal #modal_user_title').html('添加任务')
+            $('#userModal #user_form_username').val(pageInfo.handRow.username)
+            $('#userModal #user_form_realname').val(pageInfo.handRow.realName)
+            $('#userModal #user_form_phone').val(pageInfo.handRow.phone)
+            $('#userModal #user_form_specialty').val(pageInfo.handRow.specialty)
+            $('#userModal #user_form_awardInfo').val(pageInfo.handRow.awardInfo)
+            $('#userModal #user_form_teamId').val(pageInfo.handRow.teamId)
+
+            $('#userModal').modal()
+        }
+
+        // 添加 用户弹窗展示
+        function showAddTaskModal() {
+            htmlUserOption()
+            $('#userAddModal #modal_user_title').html('添加用户')
+            $('#userAddModal #user_form_username').val('')
+            $('#userAddModal #user_form_realname').val('')
+            $('#userAddModal #user_form_phone').val('')
+            $('#userAddModal #user_form_password').val('')
+            $('#userAddModal #user_form_specialty').val('')
+            $('#userAddModal #user_form_awardInfo').val('')
+            $('#userAddModal #user_form_teamId').val('')
+
+            $('#userAddModal').modal()
+        }
+
+        // 编辑 用户弹窗确定
+        function editUserModalSubmit(btn) {
+            var $btn = $(this);
+            var params = {};
+            var form_data = $('#modal_user_form').serializeArray()
+                // 数据查验
+            try {
+                form_data.forEach(item => {
+                    if (item.name == 'username' && !item.value) {
+                        throw new Error('请输入用户名称！')
+                    }
+                    if (item.name == 'realName' && !item.value) {
+                        throw new Error('请输入真实姓名！')
+                    }
+                    if (item.name == 'phone' && !item.value) {
+                        throw new Error('请输入电话号码！')
+                    }
+                    if (item.name == "phone" && !(/^1[3456789]\d{9}$/.test(item.value))) {
+                        throw new Error('请输入正确的电话号码！');
+                    }
+                    if (item.name == 'specialty' && !item.value) {
+                        throw new Error('请输入特长！')
+                    }
+                    if (item.name == 'awardInfo' && !item.value) {
+                        throw new Error('请输入获奖信息！')
+                    }
+                    if (item.name == 'teamId' && !item.value) {
+                        throw new Error('请选择所属车队！')
+                    }
+                    params[item.name] = item.value
+                })
+                params.id = pageInfo.handRow.id
+                    // params.createTime = new Date().getTime()
+
+                handleEditUser($btn, params)
+            } catch (data) {
+                params = {}
+                showToast({
+                    msg: data + '' || '数据有误！',
+                    icon: 'times',
+                    type: 'danger'
+                })
+            }
+        }
+
+        // 编辑 用户弹窗确定
+        function addUserModalSubmit(btn) {
+            var $btn = $(this);
+            var params = {};
+            var form_data = $('#modal_user_add_form').serializeArray()
+                // 数据查验
+            try {
+                form_data.forEach(item => {
+                    if (item.name == 'username' && !item.value) {
+                        throw new Error('请输入用户名称！')
+                    }
+                    if (item.name == 'realName' && !item.value) {
+                        throw new Error('请输入真实姓名！')
+                    }
+                    if (item.name == 'realName' && !item.value) {
+                        throw new Error('请输入初始密码！')
+                    }
+                    // if (item.name == 'phone' && !item.value) {
+                    //     throw new Error('请输入电话号码！')
+                    // }
+                    // if (item.name == "phone" && !(/^1[3456789]\d{9}$/.test(item.value))) {
+                    //     throw new Error('请输入正确的电话号码！');
+                    // }
+                    // if (item.name == 'specialty' && !item.value) {
+                    //     throw new Error('请输入特长！')
+                    // }
+                    // if (item.name == 'awardInfo' && !item.value) {
+                    //     throw new Error('请输入获奖信息！')
+                    // }
+                    if (item.name == 'teamId' && !item.value) {
+                        throw new Error('请选择所属车队！')
+                    }
+                    params[item.name] = item.value
+                })
+                params.avatar ? '' : params.avatar =
+                    '//gw.alicdn.com/imgextra/i3/O1CN01QEaQlr1idHCLFlMXQ_!!6000000004435-55-tps-106-19.svg'
+
+                handleAddUser($btn, params)
+            } catch (data) {
+                params = {}
+                showToast({
+                    msg: data + '' || '数据有误！',
+                    icon: 'times',
+                    type: 'danger'
+                })
+            }
+        }
         // 删除 用户弹窗
-        function deleteUserModal() {}
+        function deleteUserModal(e) {
+            const index = $(e).attr('data-index')
+            pageInfo.handRow = pageInfo.userList[index]
+            $('#confirm_Modal #confirm_Modal_title').html('是否删除用户 ' + pageInfo.handRow.username + '?')
+            pageInfo.handleType = 'DELETEUSER'
+            $('#confirm_Modal').modal()
+        }
         // 删除用户业务事件
-        function handleDeleteUser() {}
-        // 编辑/添加 用户业务事件
-        function handleEditUser() {}
+        function handleDeleteUser($btn, id) {
+            $btn.button("loading");
+            // 执行删除操作
+            $.ajax({
+                type: 'DELETE',
+                url: _apiUserDelete + id,
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    $btn.button("reset");
+                    if (data) {
+                        showToast({
+                                msg: '删除成功！',
+                                icon: 'check',
+                                type: 'success'
+                            })
+                            // 刷新列表
+                        getAllList()
+                        $('#confirm_Modal').modal('hide')
+                    } else {
+                        showToast({
+                            msg: '删除失败！' + data,
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: data.message || '删除失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+
+        }
+        // 编辑用户业务事件
+        function handleEditUser($btn, params) {
+            console.log(params)
+            $btn.button("loading");
+            _apiUserUpdate
+            $.ajax({
+                type: 'PUT',
+                url: _apiUserUpdate,
+                data: JSON.stringify(params),
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    $btn.button("reset");
+                    if (data) {
+                        showToast({
+                                msg: '修改成功！',
+                                icon: 'check',
+                                type: 'success'
+                            })
+                            // 刷新列表
+                        getAllList()
+                        $('#userModal').modal('hide')
+                    } else {
+                        showToast({
+                            msg: '修改失败！' + data,
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                        $('#userModal').modal('hide')
+                    }
+
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: data.message || '修改失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+        }
+
+        // 添加 用户业务事件
+        function handleAddUser($btn, params) {
+            $btn.button("loading");
+            _apiUserUpdate
+            $.ajax({
+                type: 'POST',
+                url: _apiUserSave,
+                data: JSON.stringify(params),
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    $btn.button("reset");
+                    if (data) {
+                        showToast({
+                                msg: '添加成功！',
+                                icon: 'check',
+                                type: 'success'
+                            })
+                            // 刷新列表
+                        getAllList()
+                        $('#userAddModal').modal('hide')
+                    } else {
+                        showToast({
+                            msg: '添加失败！' + data,
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                        $('#userAddModal').modal('hide')
+                    }
+
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: data.message || '添加失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+        }
+
+        // select option
+        function htmlUserOption() {
+            const teamData = pageInfo.teamList
+            if (teamData && teamData.length) {
+                var domStr = ' <option label="请选择车队" value=""></option>'
+                for (let i = 0; i < teamData.length; i++) {
+                    domStr += '<option label="' + teamData[i].name + '" value="' + teamData[i].id + '"></option>'
+                }
+                $('#userModal #user_form_teamId').html(domStr)
+                $('#userAddModal #user_form_teamId').html(domStr)
+            }
+        }
 
 
-        // 添加/编辑 车队弹窗
-        function showTeamModal() {}
-        // 删除 车队弹窗
-        function deleteTeamModal() {}
-        // 删除车队业务事件
-        function handleDeleteTeam() {}
+        // 编辑 车队弹窗
+        function showTeamModal(e) {
+            const index = $(e).attr('data-index')
+            pageInfo.handRow = pageInfo.teamList[index]
+            pageInfo.handleType = 'EDITTEAM'
+            htmlTeamOption()
+            $('#teamModal #modal_team_title').html('编辑车队')
+            $('#teamModal #user_form_name').val(pageInfo.handRow.name)
+            $('#teamModal #user_form_content').val(pageInfo.handRow.content)
+            $('#teamModal #user_form_captain').val(pageInfo.handRow.captain)
+            $('#teamModal').modal()
+        }
+        // 添加 车队弹窗
+        function addTeamModal() {
+            pageInfo.handleType = 'ADDTEAM'
+            htmlTeamOption()
+            $('#teamModal #modal_team_title').html('添加车队')
+            $('#teamModal #user_form_name').val('')
+            $('#teamModal #user_form_content').val('')
+            $('#teamModal #user_form_captain').val('')
+            $('#teamModal').modal()
+        }
+        // 添加/编辑 车队弹窗确认
+        function editTeamModalSubmit(btn) {
+            var $btn = $(this);
+            var params = {};
+            var form_data = $('#modal_team_form').serializeArray()
+                // 数据查验
+            try {
+                form_data.forEach(item => {
+                    if (item.name == 'name' && !item.value) {
+                        throw new Error('请输入车队名称！')
+                    }
+                    if (item.name == 'content' && !item.value) {
+                        throw new Error('请输入车队简介！')
+                    }
+                    if (item.name == 'captain' && !item.value) {
+                        throw new Error('请选择车队队长！')
+                    }
+                    params[item.name] = item.value
+                })
+                if (!localStorage.getItem('userid')) {
+                    setTimeout(function() {
+                        location.href = './login.html'
+                    }, 1000)
+                    throw new Error('登录失效请重新登录！')
+                }
+                params.createUser = localStorage.getItem('userid')
+                params.createTime = new Date().getTime()
+
+                handleEditTeam($btn, params)
+            } catch (data) {
+                params = {}
+                showToast({
+                    msg: data + '' || '数据有误！',
+                    icon: 'times',
+                    type: 'danger'
+                })
+            }
+
+        }
         // 编辑/添加 车队业务事件
-        function handleEditTeam() {}
+        function handleEditTeam($btn, params) {
+            $btn.button("loading");
+            let url, type, msg;
+            if (pageInfo.handleType == 'ADDTEAM') {
+                type = 'post'
+                url = _apiTeamSave
+                msg = "添加"
+            } else {
+                type = 'put'
+                url = _apiTeamUpdate
+                msg = "修改"
+                params.id = pageInfo.handRow.id
+                params.createTime = null
+            }
+            $.ajax({
+                type: type,
+                url: url,
+                data: JSON.stringify(params),
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    $btn.button("reset");
+                    if (data) {
+                        showToast({
+                                msg: msg + '成功！',
+                                icon: 'check',
+                                type: 'success'
+                            })
+                            // 刷新列表
+                        pageInfo.handleType = null
+                        pageInfo.handRow = null
+                        getAllList()
+                        $('#teamModal').modal('hide')
+                    } else {
+                        showToast({
+                            msg: msg + '失败！' + data,
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: data.message || msg + '失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+        }
+        // 删除 车队弹窗
+        function deleteTeamModal(e) {
+            const index = $(e).attr('data-index')
+            pageInfo.handRow = pageInfo.teamList[index]
+            $('#confirm_Modal #confirm_Modal_title').html('是否删除车队 ' + pageInfo.handRow.name + '?')
+            pageInfo.handleType = 'DELETETEAM'
+            $('#confirm_Modal').modal()
+        }
+        // 删除车队业务事件
+        function handleDeleteTeam($btn, id) {
+            $btn.button("loading");
+            // 执行删除操作
+            $.ajax({
+                type: 'DELETE',
+                url: _apiTeamDelete + id,
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    $btn.button("reset");
+                    if (data) {
+                        showToast({
+                                msg: '删除成功！',
+                                icon: 'check',
+                                type: 'success'
+                            })
+                            // 刷新列表
+                        pageInfo.handRow = null
+                        pageInfo.handleType = null
+                        getAllList()
+                        $('#confirm_Modal').modal('hide')
+                    } else {
+                        showToast({
+                            msg: '删除失败！' + data,
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: data.message || '删除失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
 
 
-        // 添加/编辑 文章弹窗
-        function showArticModal() {}
+        }
+
+        function htmlTeamOption() {
+            const data = pageInfo.userList
+            if (data && data.length) {
+                var domStr = ' <option label="请选择车队队长" value=""></option>'
+                for (let i = 0; i < data.length; i++) {
+                    domStr += '<option label="' + data[i].username + '" value="' + data[i].id + '"></option>'
+                }
+                $('#teamModal #user_form_captain').html(domStr)
+            }
+        }
+
+
+        // 添加 文章弹窗
+        function showAddArticModal() {
+            pageInfo.handleType = 'ADDARTIC'
+            $('#articlModal #modal_articl_title').html('添加首页文章')
+            $('#articlModal #articl_form_title').val('')
+            $('#articlModal #articl_form_content').val('')
+            $('#articlModal #articl_form_type').val('')
+            $('#articlModal').modal()
+        }
+        // 编辑 文章弹窗
+        function showArticlModal(e) {
+            const index = $(e).attr('data-index')
+            pageInfo.handRow = pageInfo.articlList[index]
+            pageInfo.handleType = 'EDITARTIC'
+            console.log(pageInfo.handRow.type)
+            $('#articlModal #modal_articl_title').html('编辑首页文章')
+            $('#articlModal #articl_form_title').val(pageInfo.handRow.title)
+            $('#articlModal #articl_form_content').val(pageInfo.handRow.content)
+            $('#articlModal #articl_form_type').val(pageInfo.handRow.type)
+            $('#articlModal').modal()
+        }
+        // 添加/编辑 文章弹窗确认
+        function editArticlModalSubmit(btn) {
+            var $btn = $(this);
+            var params = {};
+            var form_data = $('#modal_articl_form').serializeArray()
+            console.log(form_data)
+                // 数据查验
+            try {
+                form_data.forEach(item => {
+                    if (item.name == 'title' && !item.value) {
+                        throw new Error('请输入标题！')
+                    }
+                    if (item.name == 'content' && !item.value) {
+                        throw new Error('请输入内容！')
+                    }
+                    if (item.name == 'captain' && !item.value) {
+                        throw new Error('请选择类型！')
+                    }
+                    params[item.name] = item.value
+                })
+                if (!localStorage.getItem('userid')) {
+                    setTimeout(function() {
+                        location.href = './login.html'
+                    }, 1000)
+                    throw new Error('登录失效请重新登录！')
+                }
+                params.createUser = localStorage.getItem('userid')
+                    // params.createTime = new Date().getTime()
+                handleEditArticl($btn, params)
+            } catch (data) {
+                console.log(data)
+                params = {}
+                showToast({
+                    msg: data + '' || '数据有误！',
+                    icon: 'times',
+                    type: 'danger'
+                })
+            }
+
+        }
+        // 编辑/添加 车队文章业务事件
+        function handleEditArticl($btn, params) {
+            $btn.button("loading");
+            let url, type, msg;
+            if (pageInfo.handleType == 'ADDARTIC') {
+                type = 'post'
+                url = _apiInfoSave
+                msg = "添加"
+            } else {
+                type = 'put'
+                url = _apiInfoUpdate
+                msg = "修改"
+                params.id = pageInfo.handRow.id
+                params.createTime = null
+            }
+            // 执行添加操作
+            $.ajax({
+                type: type,
+                url: url,
+                data: JSON.stringify(params),
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    $btn.button("reset");
+                    if (data) {
+                        showToast({
+                            msg: msg + '成功！',
+                            icon: 'check',
+                            type: 'success'
+                        })
+                        $('#articlModal').modal('hide')
+                        pageInfo.handleType = null
+                        pageInfo.handRow = null
+                            // 刷新列表
+                        getAllList()
+                    } else {
+                        showToast({
+                            msg: msg + '失败！' + data,
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                        $('#articlModal').modal('hide')
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: data.message || msg + '失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+        }
         // 删除 文章弹窗
-        function deleteArticModal() {}
-        // 删除车队文章事件
-        function handleDeleteArtic() {}
-        // 编辑/添加 车队文章事件
-        function handleEditArtic() {}
+        function deleteArticlModal(e) {
+            const index = $(e).attr('data-index')
+            pageInfo.handRow = pageInfo.articlList[index]
+            $('#confirm_Modal #confirm_Modal_title').html('是否删除文章 ' + pageInfo.handRow.title + '?')
+            pageInfo.handleType = 'DELETARTICL'
+            $('#confirm_Modal').modal()
+        }
+        // 删除车队文章业务事件
+        function handleDeleteArtic($btn, id) {
+            $btn.button("loading");
+            // 执行删除操作
+            $.ajax({
+                type: 'DELETE',
+                url: _apiInfoDelete + id,
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    $btn.button("reset");
+                    if (data) {
+                        showToast({
+                                msg: '删除成功！',
+                                icon: 'check',
+                                type: 'success'
+                            })
+                            // 刷新列表
+                        pageInfo.handRow = null
+                        pageInfo.handleType = null
+                        getAllList()
+                        $('#confirm_Modal').modal('hide')
+                    } else {
+                        showToast({
+                            msg: '删除失败！' + data,
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: data.message || '删除失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+
+
+
+        }
     </script>
 </body>
 

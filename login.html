@@ -219,7 +219,6 @@
                         if (item.name == "password" && item.value.length < 5) {
                             msg = '密码不能低于6位！'
                             throw new Error(msg);
-
                         }
                         if (item.name == "password_again" && !item.value) {
                             msg = '请输入确认密码！'

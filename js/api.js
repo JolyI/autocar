@@ -3,13 +3,24 @@ baseUrl = 'http://127.0.0.1:8080'; // common.js也有 如需改动 需同步
 const _apiUserSave = baseUrl + '/user/save'
 const _apiUserLogin = baseUrl + '/user/login'
 const _apiUserList = baseUrl + '/user/list'
+const _apiUserUpdate = baseUrl + '/user/update'
+const _apiUserDelete = baseUrl + '/user/'
 
 // ===============车队管理===================
 // 车队列表
 const _apiTeamList = baseUrl + '/team/list'
+    // 编辑车队信息
+const _apiTeamUpdate = baseUrl + '/team/update'
+    // 新增车队
+const _apiTeamSave = baseUrl + '/team/save'
+    // 删除车队
+const _apiTeamDelete = baseUrl + '/team/'
 
 // ===============信息管理===================
 const _apiInfoList = baseUrl + '/info/list'
+const _apiInfoSave = baseUrl + '/info/save'
+const _apiInfoUpdate = baseUrl + '/info/update'
+const _apiInfoDelete = baseUrl + '/info/'
 
 
 // ===============任务管理===================
@@ -23,4 +34,4 @@ const _apitaskUpdate = baseUrl + '/task/update'
 
 
 // ===============博客管理===================
-const _apiArticList = baseUrl + '/content/list'
+const _apiBlogist = baseUrl + '/content/list'
