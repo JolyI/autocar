@@ -1,0 +1,43 @@
+.nav-wrapper {
+  width: 1024px;
+  margin: 0 auto;
+}
+.nav-wrapper .nav li.active a {
+  color: #1296db;
+}
+.footer {
+  background-color: #000;
+  height: 120px;
+  width: 100%;
+  min-width: 1024px;
+  margin-top: 50px;
+  color: #fff;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.footer .detail {
+  line-height: 20px;
+}
+.footer .tips {
+  line-height: 30px;
+}
+.nav-header {
+  background-color: #fff;
+  box-shadow: 10px 1px 5px #ddd;
+}
+.nav-header .logo {
+  width: 32px;
+  height: 32px;
+  background-image: url('../assets/logo.png');
+  background-position: center;
+  background-size: contain;
+}
+.nav-header .dropdown {
+  text-align: center;
+}
+.nav-header .dropdown li {
+  cursor: pointer;
+}

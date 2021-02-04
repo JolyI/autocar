@@ -1,0 +1,38 @@
+.blog-write-nav .container {
+  width: 1024px;
+  margin: 0 auto;
+}
+.blog-write-nav .container a {
+  line-height: 50px;
+  font-size: 16px;
+  font-weight: bold;
+}
+.wrapper {
+  position: relative;
+  min-height: 80vh;
+  width: 1024px;
+  height: 100%;
+  margin: 0 auto;
+}
+.wrapper .blog-writre-box {
+  height: 90vh;
+}
+.wrapper .blog-writre-box .title-box {
+  margin-bottom: 20px;
+}
+.wrapper .blog-writre-box .title-box input {
+  font-size: 18px;
+  line-height: 50px;
+  height: 50px;
+}
+.wrapper .blog-writre-box .title-box .icon {
+  font-size: 20px;
+  line-height: 45px;
+}
+.wrapper .blog-writre-box .submit-box {
+  margin: 10px;
+  text-align: center;
+}
+.wrapper .blog-writre-box .submit-box .btn {
+  padding: 10px 60px;
+}

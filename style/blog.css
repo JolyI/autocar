@@ -1,0 +1,85 @@
+.wrapper {
+  min-height: 76vh;
+  width: 1024px;
+  margin: 0 auto;
+  position: relative;
+}
+.wrapper .ellipis-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.wrapper .write-box {
+  text-align: right;
+  margin-bottom: 10px;
+}
+.wrapper .container {
+  padding: 0 20px;
+  border: 1px solid #ddd;
+}
+.wrapper .container .blog-null {
+  height: 50vh;
+  text-align: center;
+  padding-top: 10vh;
+}
+.wrapper .container .blog-null img {
+  width: 200px;
+  height: auto;
+}
+.wrapper .container .blog-null .text {
+  font-size: 16px;
+  color: #666;
+  margin-top: 30px;
+}
+.wrapper .blog-footer {
+  text-align: center;
+}
+.blog-detail-nav .container {
+  width: 1024px;
+  margin: 0 auto;
+}
+.blog-detail-nav .container a {
+  line-height: 50px;
+  font-size: 16px;
+  font-weight: bold;
+}
+.blog-detail .article-error {
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+}
+.blog-detail .article-error img {
+  height: 128px;
+}
+.blog-detail .comment-box {
+  padding: 10px 30px 100px 30px;
+}
+.blog-detail .comment-self-box textarea {
+  font-size: 16px;
+  width: 100%;
+  border: 1px solid #f2f2f2;
+  outline: none;
+}
+.blog-detail .comment-self-box .comment-self-btns {
+  text-align: right;
+  padding: 10px;
+}
+.blog-detail .comment-list-title {
+  font-size: 20px;
+  border-left: 5px solid #F56C6C;
+  padding-left: 10px;
+  margin: 10px 0;
+}
+.blog-detail .comment-null {
+  text-align: center;
+}
+.blog-detail .comment-null img {
+  width: 100px;
+  height: auto;
+}
+.blog-detail .comment-null .text {
+  color: #666;
+  font-size-adjust: 16px;
+  margin-top: 20px;
+}
