@@ -93,8 +93,9 @@
         var pageInfo = {
             list: [],
             params: {
+                current: 0,
                 page: 0,
-                size: 1,
+                size: 10,
                 createUser: null, //作者
                 title: null, //文章标题
             },
@@ -105,10 +106,10 @@
         }
 
         function init() {
-            pageInfo.page = 1
-            pageInfo.pagesize = 10
-            pageInfo.createUser = null
-            pageInfo.title = null
+            // pageInfo.page = 0
+            // pageInfo.size = 2
+            // pageInfo.createUser = null
+            // pageInfo.title = null
             getBlogList()
         }
 
@@ -164,7 +165,7 @@
                 if (list[i].type == 0) {
                     statusStr = ''
                 } else if (list[i].type == 1) {
-                    statusStr = '<div class="pull-right label label-danger"></div>'
+                    statusStr = '<div class="pull-right label label-danger">精华</div>'
                 } else if (list[i].type == 2) {
                     statusStr = '<div class="pull-right label label-success">置顶</div>'
                 }
@@ -186,22 +187,20 @@
 
         // 分页加载
         function pageingList(data) {
-            if (data && data.records) {
-                const records = data.records
-                    // 渲染分页
-                var myPager = $('#pager').pager({
-                    page: records.current,
-                    recTotal: records.total,
-                    recPerPage: records.size,
-                    onPageChange: function(data) {
-                        // 当页码变更时的回调函数
-
-                    },
-                    onRender: function() {
-                        // 当分页器界面更新并渲染完毕时调用
-                    }
-                })
-            }
+            const records = data.records
+                // 渲染分页
+            var myPager = $('#pager').pager({
+                page: data.current,
+                recTotal: data.total,
+                recPerPage: data.size,
+                onPageChange: function(data) {
+                    // 当页码变更时的回调函数
+                    getBlogList()
+                },
+                onRender: function() {
+                    // 当分页器界面更新并渲染完毕时调用
+                }
+            })
         }
 
         function toWrite() {

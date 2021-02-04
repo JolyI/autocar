@@ -65,121 +65,71 @@
     <section>
         <div class="wrapper">
             <!-- 新闻轮播 -->
-            <!-- <div id="myNiceCarousel" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    <li data-target="#myNiceCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#myNiceCarousel" data-slide-to="1"></li>
-                    <li data-target="#myNiceCarousel" data-slide-to="2"></li>
+            <div id="swiper-info" class="carousel slide swiper-info">
+                <ol id="swiper_info_ol" class="carousel-indicators">
                 </ol>
+                <div id="swiper_info_inner" class="carousel-inner">
 
-                <div class="carousel-inner">
-                    <div class="item active">
-                        <img alt="First slide" src="//n.sinaimg.cn/sports/transform/180/w630h350/20201213/2b98-kffctca8851364.jpg" />
-                        <div class="carousel-caption">
-                            <a href="http://slide.sports.sina.com.cn/f1/slide_2_84822_259668.html" target="_blank">2020F1阿布扎比站正赛</a>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img alt="second slide" src="//n.sinaimg.cn/sports/transform/180/w630h350/20201206/e7f6-keyancw5691314.jpg" />
-                        <div class="carousel-caption">
-                            <a href="http://slide.sports.sina.com.cn/f1/slide_2_84822_259239.html" target="_blank">米克舒马赫加冕F2年度冠军</a>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img alt="third slide" src="//k.sinaimg.cn/n/sports/2_img/upload/88598dbf/600/w1920h1080/20210121/3cbe-khxeamw0428311.jpg/w220h165z1l0t0q100c79.jpg" />
-                        <div class="carousel-caption">
-                            <a href="http://slide.sports.sina.com.cn/f1/slide_2_84822_261521.html/d/1" target="_blank">红牛新人佩雷兹报到</a>
-                        </div>
-                    </div>
                 </div>
-                <a class="left carousel-control" href="#myNiceCarousel" data-slide="prev">
-                    <span class="icon icon-chevron-left"></span>
-                </a>
-                <a class="right carousel-control" href="#myNiceCarousel" data-slide="next">
-                    <span class="icon icon-chevron-right"></span>
-                </a>
-            </div> -->
-
-            <!-- 热点新闻 -->
-            <!-- <div class="basic hot-news">
-                <div class="title">
-                    <div><i class="icon icon-hot"></i> 热点新闻</div>
-                    <a class="more" href="https://www.srfcworld.com/events">更多>></a>
-                </div>
-                <ul class="news-list"></ul>
-            </div> -->
+            </div>
             <!-- 通知  -->
-            <div class="basic notif-info hide">
-                <div class="title">
-                    <div><i class="icon icon-bell-alt"></i> 通知</div>
+            <div class=" basic notif-info hide ">
+                <div class=" title ">
+                    <div><i class=" icon icon-bell-alt "></i> 通知</div>
                 </div>
-                <div class="info-list">
+                <div class=" info-list ">
 
                 </div>
             </div>
             <!-- 公告  -->
-            <div class="basic notice-info hide">
-                <div class="title ">
-                    <div><i class="icon icon-info "></i> 公告</div>
+            <div class=" basic notice-info hide ">
+                <div class=" title ">
+                    <div><i class=" icon icon-info "></i> 公告</div>
                 </div>
-                <div class="items items-hover ">
+                <div class=" items items-hover ">
 
                 </div>
             </div>
             <!-- 赛事消息 -->
-            <div class="basic competition-info hide">
-                <div class="title ">
-                    <div><i class="icon icon-hot "></i> 赛事消息</div>
+            <div class=" basic competition-info hide ">
+                <div class=" title ">
+                    <div><i class=" icon icon-hot "></i> 赛事消息</div>
                 </div>
-                <ul class="info-list ">
-                    <div class="items items-hover ">
+                <ul class=" info-list ">
+                    <div class=" items items-hover ">
 
                     </div>
                 </ul>
             </div>
             <!-- 网址导航 -->
-            <div class="basic ">
-                <div class="title ">
-                    <div><i class="icon icon-nav "></i> 相关网址</div>
+            <div class=" basic link-info ">
+                <div class=" title ">
+                    <div><i class=" icon icon-nav "></i> 相关网址</div>
                 </div>
-                <ul class="web-list "></ul>
+                <ul class=" web-list "></ul>
             </div>
 
         </div>
     </section>
-    <footer class="footer ">
-        <div class="detail ">@ 2021 中国赛车</div>
-        <div class="tips ">
+    <footer class=" footer ">
+        <div class=" detail ">@ 2021 中国赛车</div>
+        <div class=" tips ">
             本网站仅做学习交流之用途，若有侵权，请及时与站主联系。
         </div>
     </footer>
 </body>
 <script>
-    var page = {
-        list: [{
-            img: "https://z0.sinaimg.cn/auto/resize?img=http%3A%2F%2Fn.sinaimg.cn%2Fsports%2F2_img%2Fupload%2F88598dbf%2F213%2Fw2048h1365%2F20210128%2F9647-kicwvzr2925643.jpg&size=0_143 ",
-            url: " ",
-            title: "图集-塞恩斯首次测试法拉利F1赛车 ",
-            desc: "图集-塞恩斯1月27日在意大利费奥拉诺赛道驾驶法拉利2018款F1赛车SF71H进行了测试，这也是他首次驾驶法拉利F1赛车。 ",
-        }, ],
-        // web网站
-        webList: [{
-            title: "国际汽联官方网站 ",
-            img: "./assets/fia.png ",
-            url: "http://www.fia.com/ ",
-        }, ],
-        infoList: null
-    };
-    isLogin()
-        // 初始化页面数据
-    initHotNews();
-    initWeb();
-    // 初始化热点新闻
-    function initHotNews() {
+    var page = {};
+    window.onload = function() {
+            isLogin()
+            getPageInfo();
+        }
+        // 初始化热点新闻
+    function getPageInfo() {
         $.ajax({
             type: 'get',
             url: _apiInfoList,
-            contentType: "application/json ",
+            contentType: " application/json ",
             dataType: 'json',
             xhrFields: {
                 withCredentials: true
@@ -187,48 +137,105 @@
             crossDomain: true,
             success: function(data) {
                 if (data && data.length) {
-                    var notif_domStr = ''; // 通知
-                    var notice_domStr = ''; // 公告
-                    var competition_domStr = ''; // 赛事消息
-
+                    var notif_domStr = '', // 通知
+                        notice_domStr = '', // 公告
+                        competition_domStr = '', // 赛事消息
+                        swiper_domStr = '', // 轮播
+                        swiper_domStr_indicators = '', // 轮播小点
+                        link_domStr = '', // 相关网址
+                        isFirst = 0;
                     for (let i = 0; i < data.length; i++) {
+                        // 通知
                         if (data[i].type == 1) {
-                            notif_domStr += '<div class="alert alert-danger ">' +
-                                ' <div class="bold">' + data[i].title + '</div>' +
-                                '<div class="normal">' + data[i].content + '</div>' +
+                            notif_domStr += '<div class=" alert alert-danger ">' +
+                                ' <div class=" bold ">' + data[i].title + '</div>' +
+                                '<div class=" normal ">' + data[i].content + '</div>' +
                                 '</div>'
                         } else if (data[i].type == 2) {
-                            notice_domStr += ' <div class="panel panel-warning ">' +
-                                '    <div class="panel-heading ">' + data[i].title + '</div>' +
-                                '        <div class="panel-body">' + data[i].content + '</div>' +
+                            // 公告
+                            notice_domStr += ' <div class=" panel panel-warning ">' +
+                                '    <div class=" panel-heading ">' + data[i].title + '</div>' +
+                                '        <div class=" panel-body ">' + data[i].content + '</div>' +
                                 ' </div>'
                         } else if (data[i].type == 3) {
-                            competition_domStr += '<div class="item ">' +
-                                '     <div class="item-heading ">' +
-                                '       <div class="pull-right label label-success ">实时</div>' +
-                                '           <h4><a href="' + data[i].url + '" style="font-size:16px ">' +
+                            // 赛事消息
+                            competition_domStr += '<div class=" item ">' +
+                                '     <div class=" item-heading ">' +
+                                '       <div class=" pull-right label label-success ">实时</div>' +
+                                '           <h4><a href=" ' + data[i].url + ' " style=" font-size:16px ">' +
                                 data[i].title +
                                 '</a></h4>' +
                                 '       </div>' +
-                                '       <div class="item-content ">' +
-                                '           <div class="text " style="font-size:18px ">' + data[i].content +
+                                '       <div class=" item-content ">' +
+                                '           <div class=" text " style=" font-size:18px ">' + data[i]
+                                .content +
                                 '</div>' +
                                 '   </div>' +
                                 '</div>'
+                        } else if (data[i].type == 4) {
+                            // 轮播
+                            swiper_domStr += '<div class=" item ' + (isFirst == 0 ? 'active' : '') + '">' +
+                                '  <img alt=" ' + data[i].title + ' " src=" ' + data[i].icon + ' " />' +
+                                '                <div class=" carousel-caption ">' +
+                                '                    <a href=" ' + data[i].url + ' " target=" _blank ">' +
+                                data[
+                                    i].title + '</a>' +
+                                '            </div>' +
+                                '        </div>';
+
+                            swiper_domStr_indicators +=
+                                '<li class="' + (isFirst == 0 ? 'active' : '') +
+                                '" data-target=" #swiper-info " data-slide-to=" ' + isFirst + ' "></li>'
+                            isFirst++
+                        } else if (data[i].type == 5) {
+                            // 相关网址
+                            link_domStr += '<li>' +
+                                '    <a href="' + data[i].url + '" target=" _blank ">' +
+                                '        <div class=" web-item ">' +
+                                '         <img src="' + data[i].icon + '" alt=" ">' +
+                                '        <span>' + data[i].title + '</span>' +
+                                '           </div>' +
+                                '        </a>' +
+                                '   </li>'
+
                         }
                     }
-                    $(".notif-info .info-list ").html(notif_domStr);
-                    $(".notice-info .items ").html(notice_domStr);
-                    $(".competition-info .items ").html(competition_domStr);
+
+                    if (swiper_domStr.length) {
+                        $(" .swiper-info #swiper_info_ol ").html(swiper_domStr_indicators);
+                        $(" .swiper-info #swiper_info_inner ").html(swiper_domStr);
+                        $('#swiper-info').carousel({
+                            interval: 3000,
+                        })
+                    } else {
+                        $(".swiper-info").remove()
+                    }
+
                     if (notif_domStr.length) {
+                        $(" .notif-info .info-list ").html(notif_domStr);
                         $('.notif-info').removeClass('hide')
+                    } else {
+                        $('.notif-info').remove()
                     }
                     if (notice_domStr.length) {
+                        $(" .notice-info .items ").html(notice_domStr);
                         $('.notice-info').removeClass('hide')
+                    } else {
+                        $('.notice-info').remove
                     }
                     if (competition_domStr.length) {
+                        $(" .competition-info .items ").html(competition_domStr);
                         $('.competition-info').removeClass('hide')
+                    } else {
+                        $('.competition-info').remove()
                     }
+                    if (link_domStr.length) {
+                        $(" .link-info .web-list ").html(link_domStr);
+                        $('.link-info').removeClass('hide')
+                    } else {
+                        $('.link-info').remove()
+                    }
+
                 } else {
 
                 }
@@ -242,26 +249,6 @@
                 })
             }
         })
-    }
-
-    // 初始化网站导航
-    function initWeb() {
-        var domStr = " ";
-        // 有list数据就循环list
-        for (var h = 0; h < 15; h++) {
-            var data = page.webList[0];
-            domStr += `
-                <li>
-                    <a href="${data.url} " target="_blank ">
-                        <div class="web-item ">
-                            <img src="${data.img} " alt=" ">
-                            <span>${data.title}</span>
-                        </div>
-                    </a>
-                </li>
-                `;
-        }
-        $(".web-list ").html(domStr);
     }
 </script>
 

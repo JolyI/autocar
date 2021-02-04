@@ -77,20 +77,20 @@
                 <i class="icon icon-renwu"></i> <span>我的任务</span>
                 <i class="icon icon-left"></i>
             </li>
-            <li class="slide-item admin" data-page="user-box">
+            <li class="slide-item slide-admin hide" data-page="user-box">
                 <i class="icon icon-group"></i> <span>用户管理</span>
                 <i class="icon icon-left"></i>
             </li>
-            <li class="slide-item admin" data-page="system-box">
+            <li class="slide-item slide-admin hide" data-page="system-box">
                 <i class="icon icon-cloud"></i> <span>任务系统</span>
                 <i class="icon icon-left"></i>
             </li>
-            <li class="slide-item admin" data-page="car-box">
+            <li class="slide-item slide-admin hide" data-page="car-box">
                 <i class="icon icon-flag"></i> <span>车队管理</span>
                 <i class="icon icon-left"></i>
             </li>
-            <li class="slide-item admin" data-page="articl-box">
-                <i class="icon icon-book"></i> <span>首页文章管理</span>
+            <li class="slide-item slide-admin hide" data-page="articl-box">
+                <i class="icon icon-book"></i> <span>首页管理</span>
                 <i class="icon icon-left"></i>
             </li>
         </ul>
@@ -100,7 +100,7 @@
             <div class="personal-box main-item">
                 <div class="card">
                     <div class="user-item">
-                        <span class="user-label">姓名：</span>
+                        <span class="user-label">账户：</span>
                         <span class="desc" id="username">-</span>
                     </div>
                     <div class="user-item">
@@ -144,9 +144,9 @@
                 </div>
             </div>
             <!-- 用户管理 admin权限 -->
-            <div class="user-box main-item hide">
+            <div class="user-box main-item main-admin hide">
                 <div class="add-wrapper">
-                    <button class="btn btn-success btn-mini" onclick="showAddTaskModal()">
+                    <button class="btn btn-success btn-mini" onclick="showAddUserModal()">
                         <i class="icon icon-plus"></i>
                         添加用户
                     </button>
@@ -154,8 +154,9 @@
                 <div class="card">
                     <table class="table table-striped table-bordered" align="center" cellspacing="0" cellpadding="0">
                         <thead>
-                            <th width="100px">用户姓名</th>
-                            <th width="100px">真实姓名</th>
+                            <th width="100px">账户</th>
+                            <th width="130px">账户权限</th>
+                            <th width="130px">真实姓名</th>
                             <th width="100px">所属车队</th>
                             <th width="100px">特长</th>
                             <th width="200px">获奖信息</th>
@@ -169,7 +170,7 @@
                 </div>
             </div>
             <!-- 任务系统 admin权限 -->
-            <div class="system-box main-item hide">
+            <div class="system-box main-item main-admin hide">
                 <div class="add-wrapper">
                     <button class="btn btn-success btn-mini" onclick="showAddTaskModal()">
                         <i class="icon icon-plus"></i>
@@ -200,7 +201,7 @@
                 </div>
             </div>
             <!-- 车队管理 admin权限 -->
-            <div class="car-box main-item hide">
+            <div class="car-box main-item main-admin hide">
                 <div class="card">
                     <div class="add-wrapper">
                         <button class="btn btn-success btn-mini" onclick="addTeamModal()">
@@ -236,22 +237,23 @@
                     </table>
                 </div>
             </div>
-            <!-- 首页文章管理 admin权限 -->
-            <div class="articl-box main-item hide">
+            <!-- 首页管理 admin权限 -->
+            <div class="articl-box main-item main-admin hide">
                 <div class="card">
                     <div class="add-wrapper">
                         <button class="btn btn-success btn-mini" onclick="showAddArticModal()">
                             <i class="icon icon-plus"></i>
-                            新建文章
+                            新建内容
                         </button>
                     </div>
                     <table class="table table-striped table-bordered" align="center" cellspacing="0" cellpadding="0">
                         <thead>
-                            <th width="150px">文章标题</th>
-                            <th width="200px">文章内容</th>
-                            <th width="100px">作者</th>
+                            <th width="150px">类型</th>
+                            <th width="150px">标题</th>
+                            <th width="200px">内容</th>
+                            <th width="100px">创建人</th>
                             <th width="120px">创建时间</th>
-                            <th>操作</th>
+                            <th width="80px">操作</th>
                         </thead>
                         <tbody>
                         </tbody>
@@ -353,15 +355,25 @@
                 <div class="modal-body">
                     <form id="modal_user_form" class="form-horizontal">
                         <div class="form-group">
-                            <label for="user_form_username" class="col-sm-2">用户名称</label>
+                            <label for="user_form_username" class="col-sm-2">账户名称</label>
                             <div class="col-sm-10">
-                                <input name="username" type="text" class="form-control" id="user_form_username" placeholder="用户名称">
+                                <input name="username" type="text" class="form-control" id="user_form_username" placeholder="账户名称">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="user_form_realname" class="col-sm-2">真实姓名</label>
                             <div class="col-sm-10">
                                 <input name="realName" id="user_form_realname" type="text" class="form-control" placeholder="真实姓名"></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_form_superAdmin" class="col-sm-2">账户权限</label>
+                            <div class="col-sm-10">
+                                <select name="superAdmin" class="form-control" id="user_form_superAdmin">
+                                    <option label="请选择账户权限" value=""></option>
+                                    <option label="普通用户" value="0"></option>
+                                    <option label="超级管理员" value="1"></option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -411,15 +423,25 @@
                 <div class="modal-body">
                     <form id="modal_user_add_form" class="form-horizontal">
                         <div class="form-group">
-                            <label for="user_form_username" class="col-sm-2">用户名称</label>
+                            <label for="user_form_username" class="col-sm-2">账户</label>
                             <div class="col-sm-10">
-                                <input name="username" type="text" class="form-control" id="user_form_username" placeholder="用户名称">
+                                <input name="username" type="text" class="form-control" id="user_form_username" placeholder="账户">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="user_form_realname" class="col-sm-2">真实姓名</label>
                             <div class="col-sm-10">
                                 <input name="realName" id="user_form_realname" type="text" class="form-control" placeholder="真实姓名"></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_form_superAdmin" class="col-sm-2">账户权限</label>
+                            <div class="col-sm-10">
+                                <select name="superAdmin" class="form-control" id="user_form_superAdmin">
+                                    <option label="请选择账户权限" value=""></option>
+                                    <option label="普通用户" value="0"></option>
+                                    <option label="超级管理员" value="1"></option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -503,7 +525,7 @@
             </div>
         </div>
     </div>
-    <!-- 对话框 添加/编辑文章 -->
+    <!-- 对话框 添加/编辑首页文章 -->
     <div id="articlModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -534,9 +556,23 @@
                                     <option label="通知" value=1></option>
                                     <option label="公告" value=2></option>
                                     <option label="赛事消息" value=3></option>
+                                    <option label="新闻轮播" value=4></option>
+                                    <option label="相关网址" value=5></option>
                                 </select>
                             </div>
                         </div>
+                        <!-- <div class="form-group articl_form_group_icon">
+                            <label for="articl_form_icon" class="col-sm-2">图片地址</label>
+                            <div class="col-sm-10">
+                                <input name="icon" id="articl_form_icon" type="text" class="form-control" placeholder="请输入图片地址"></input>
+                            </div>
+                        </div>
+                        <div class="form-group articl_form_group_url">
+                            <label for="articl_form_url" class="col-sm-2">链接url</label>
+                            <div class="col-sm-10">
+                                <input name="url" id="articl_form_url" type="text" class="form-control" placeholder="请输入链接url"></input>
+                            </div>
+                        </div> -->
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -560,6 +596,14 @@
             map_user: {},
             map_team: {},
             map_task: {},
+            articlSelect: '', //首页文章选择类型
+            articlTypes: {
+                1: '通知',
+                2: '公告',
+                3: '赛事消息',
+                4: '新闻轮播',
+                5: '相关网址',
+            }
         };
         window.onload = function() {
             init();
@@ -586,12 +630,22 @@
                 crossDomain: true,
                 success: function(data) {
                     localStorage.setItem('userInfo', data)
+                    localStorage.setItem('role', data.superAdmin)
                     $('.personal-box #username').html(data.username)
                     $('.personal-box #realname').html(data.realName)
                     $('.personal-box #phone').html(data.phone)
                     $('.personal-box #create_time').html(data.createTime)
                     $('.personal-box #awardInfo').html(data.awardInfo)
                     $('.personal-box #specialty').html(data.specialty)
+                        // 根据权限 决定是否展示 左侧菜单内容
+                        // 超级管理员？
+                    if (data.superAdmin) {
+                        $('.wrapper .slide-container').find('.slide-admin').removeClass('hide')
+                    } else {
+                        $('.wrapper .slide-container').find('.slide-admin').addClass('hide')
+                        $('.wrapper .slide-container').find('.slide-admin').remove()
+                        $('.wrapper .main-container').find('.main-admin').remove()
+                    }
                 },
                 error: function() {
 
@@ -732,11 +786,13 @@
                 for (let i = 0; i < userData.length; i++) {
                     userdomStr += '<tr>' +
                         '                <td>' + userData[i].username + '</td>' +
-                        '                <td>' + userData[i].realName + '</td>' +
-                        '                <td>' + map_team[userData[i].teamId] + '</td>' +
-                        '                <td>' + userData[i].specialty + '</td>' +
-                        '                <td>' + userData[i].awardInfo + '</td>' +
-                        '                <td>' + userData[i].createTime + '</td>' +
+                        '                <td>' + (userData[i].superAdmin ? '超级管理员' : '普通用户') + '</td>' +
+                        '                <td>' + (userData[i].realName ? userData[i].realName : '') + '</td>' +
+                        '                <td>' + (map_team[userData[i].teamId] ? map_team[userData[i].teamId] : '-') +
+                        '</td>' +
+                        '                <td>' + (userData[i].specialty ? userData[i].specialty : '-') + '</td>' +
+                        '                <td>' + (userData[i].awardInfo ? userData[i].awardInfo : '-') + '</td>' +
+                        '                <td>' + (userData[i].createTime ? userData[i].createTime : '-') + '</td>' +
                         '               <td>' +
                         '                    <button class="btn btn-danger plan_btn" data-index="' + i +
                         '" onclick="deleteUserModal(this)">' +
@@ -752,7 +808,7 @@
                 }
                 $('.user-box table tbody').html(userdomStr)
             } else {
-                $('.user-box table tbody').html('<tr><td colspan="4" align="center">暂无数据</td></tr>')
+                $('.user-box table tbody').html('<tr><td colspan="5" align="center">暂无数据</td></tr>')
             }
 
             // 任务列表
@@ -863,16 +919,18 @@
                 $('.car-box table tbody').html('<tr><td colspan="6" align="center">暂无数据</td></tr>')
             }
             // 文章列表
-            console.log(articlData)
             if (articlData && articlData.length) {
                 for (let i = 0; i < articlData.length; i++) {
                     articldomStr += '<tr>' +
+                        '                <td> <div class="ellipis-3">' + pageInfo.articlTypes[articlData[i].type] +
+                        '</div></td>' +
                         '                <td> <div class="ellipis-3">' + articlData[i].title + '</div></td>' +
                         '                <td> <div class="ellipis-3">' + articlData[i].content + '</div></td>' +
                         '                <td> ' + map_user[articlData[i].createUser] + '</td>' +
                         '                <td>' + articlData[i].createTime + '</td>' +
                         '               <td>' +
-                        '                    <button class="btn btn-danger plan_btn" data-index="' + i +
+                        '                    <button class="btn btn-danger plan_btn"  style="margin-top:10px" data-index="' +
+                        i +
                         '" onclick="deleteArticlModal(this)">' +
                         '                        <i class="icon icon-times"></i>删除' +
                         '                    </button>' +
@@ -886,7 +944,7 @@
                 }
                 $('.articl-box table tbody').html(articldomStr)
             } else {
-                $('.articl-box table tbody').html('<tr><td colspan="5" align="center">暂无数据</td></tr>')
+                $('.articl-box table tbody').html('<tr><td colspan="6" align="center">暂无数据</td></tr>')
             }
         }
 
@@ -915,7 +973,16 @@
                 // 展示对应的
                 $(`.${targetBox}`).removeClass("hide").siblings().addClass("hide");
             });
+            // 首页弹窗 类型选择
+            $('#articlModal #articl_form_type').change(function() {
+                var v = $(this).children('option:selected').val()
+                pageInfo.articlSelect = v
+                    // 4 新闻轮播
+                    // 5 相关网址
+                htmlAtrilFormItem(pageInfo)
+            })
         }
+
 
         // 编辑任务
         function showPlanModal(e) {
@@ -1192,6 +1259,7 @@
             $('#userModal #modal_user_title').html('添加任务')
             $('#userModal #user_form_username').val(pageInfo.handRow.username)
             $('#userModal #user_form_realname').val(pageInfo.handRow.realName)
+            $('#userModal #user_form_superAdmin').val(pageInfo.handRow.superAdmin)
             $('#userModal #user_form_phone').val(pageInfo.handRow.phone)
             $('#userModal #user_form_specialty').val(pageInfo.handRow.specialty)
             $('#userModal #user_form_awardInfo').val(pageInfo.handRow.awardInfo)
@@ -1201,11 +1269,12 @@
         }
 
         // 添加 用户弹窗展示
-        function showAddTaskModal() {
+        function showAddUserModal() {
             htmlUserOption()
             $('#userAddModal #modal_user_title').html('添加用户')
             $('#userAddModal #user_form_username').val('')
             $('#userAddModal #user_form_realname').val('')
+            $('#userAddModal #user_form_superAdmin').val('')
             $('#userAddModal #user_form_phone').val('')
             $('#userAddModal #user_form_password').val('')
             $('#userAddModal #user_form_specialty').val('')
@@ -1224,10 +1293,13 @@
             try {
                 form_data.forEach(item => {
                     if (item.name == 'username' && !item.value) {
-                        throw new Error('请输入用户名称！')
+                        throw new Error('请输入账户！')
                     }
                     if (item.name == 'realName' && !item.value) {
                         throw new Error('请输入真实姓名！')
+                    }
+                    if (item.name == 'superAdmin' && !item.value) {
+                        throw new Error('请选择账户权限！')
                     }
                     if (item.name == 'phone' && !item.value) {
                         throw new Error('请输入电话号码！')
@@ -1260,7 +1332,7 @@
             }
         }
 
-        // 编辑 用户弹窗确定
+        // 添加 用户弹窗确定
         function addUserModalSubmit(btn) {
             var $btn = $(this);
             var params = {};
@@ -1269,10 +1341,13 @@
             try {
                 form_data.forEach(item => {
                     if (item.name == 'username' && !item.value) {
-                        throw new Error('请输入用户名称！')
+                        throw new Error('请输入账户！')
                     }
                     if (item.name == 'realName' && !item.value) {
                         throw new Error('请输入真实姓名！')
+                    }
+                    if (item.name == 'superAdmin' && !item.value) {
+                        throw new Error('请选择账户权限！')
                     }
                     if (item.name == 'realName' && !item.value) {
                         throw new Error('请输入初始密码！')
@@ -1654,28 +1729,34 @@
         }
 
 
-        // 添加 文章弹窗
+        // 添加 首页内容弹窗
         function showAddArticModal() {
             pageInfo.handleType = 'ADDARTIC'
             $('#articlModal #modal_articl_title').html('添加首页文章')
             $('#articlModal #articl_form_title').val('')
             $('#articlModal #articl_form_content').val('')
             $('#articlModal #articl_form_type').val('')
+
+            $('#articlModal .articl_form_group_icon').addClass('hide')
+            $('#articlModal .articl_form_group_url').addClass('hide')
+            pageInfo.articlSelect = ''
+            htmlAtrilFormItem(pageInfo)
             $('#articlModal').modal()
         }
-        // 编辑 文章弹窗
+        // 编辑 首页内容弹窗
         function showArticlModal(e) {
             const index = $(e).attr('data-index')
             pageInfo.handRow = pageInfo.articlList[index]
             pageInfo.handleType = 'EDITARTIC'
-            console.log(pageInfo.handRow.type)
             $('#articlModal #modal_articl_title').html('编辑首页文章')
             $('#articlModal #articl_form_title').val(pageInfo.handRow.title)
             $('#articlModal #articl_form_content').val(pageInfo.handRow.content)
             $('#articlModal #articl_form_type').val(pageInfo.handRow.type)
+            pageInfo.articlSelect = pageInfo.handRow.type
+            htmlAtrilFormItem(pageInfo)
             $('#articlModal').modal()
         }
-        // 添加/编辑 文章弹窗确认
+        // 添加/编辑 首页弹窗确认
         function editArticlModalSubmit(btn) {
             var $btn = $(this);
             var params = {};
@@ -1692,6 +1773,12 @@
                     }
                     if (item.name == 'captain' && !item.value) {
                         throw new Error('请选择类型！')
+                    }
+                    if (item.name == 'icon' && !item.value) {
+                        throw new Error(`请输入${pageInfo.articlSelect==4?'图片地址':'图标地址'}！`)
+                    }
+                    if (item.name == 'url' && !item.value) {
+                        throw new Error('请输入链接url！')
                     }
                     params[item.name] = item.value
                 })
@@ -1715,7 +1802,7 @@
             }
 
         }
-        // 编辑/添加 车队文章业务事件
+        // 编辑/添加 首页内容业务事件
         function handleEditArticl($btn, params) {
             $btn.button("loading");
             let url, type, msg;
@@ -1829,6 +1916,35 @@
 
 
 
+        }
+
+        // 首页弹窗里icon  url 赋值初始化
+        function htmlAtrilFormItem(data) {
+            // 赋值
+            let icon = '',
+                url = '',
+                v = pageInfo.articlSelect;
+            if (data.handleType == 'EDITARTIC') {
+                icon = data.handRow.icon
+                url = data.handRow.url
+            }
+            $('#articlModal .articl_form_group_icon').remove()
+            $('#articlModal .articl_form_group_url').remove()
+            if (v == 4 || v == 5) {
+                var domStr = `<div class="form-group articl_form_group_icon">
+                                <label for="articl_form_icon" class="col-sm-2">${v==4?'图片地址':'图标地址'}</label>
+                                <div class="col-sm-10">
+                                    <input value="${icon}" name="icon" id="articl_form_icon" type="text" class="form-control" placeholder="请输入${v==4?'图片地址':'图标地址'}"/>
+                                </div>
+                            </div>
+                            <div class="form-group articl_form_group_url">
+                                <label for="articl_form_url" class="col-sm-2">链接url</label>
+                                <div class="col-sm-10">
+                                    <input value="${url}" name="url" id="articl_form_url" type="text" class="form-control"  placeholder="请输入链接url" />
+                                </div>
+                            </div>`
+                $('#articlModal #modal_articl_form').append(domStr)
+            }
         }
     </script>
 </body>

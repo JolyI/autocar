@@ -1,73 +1,60 @@
-// header {
-    //   position: relative;
-    //   width: 100%;
-    //   min-width: 1024px;
-    //   background-color: #000;
-    //   -webkit-user-select: none;
-    //   -moz-user-select: none;
-    //   -ms-user-select: none;
-    //   user-select: none;
-    //   position: fixed;
-    //   z-index: 10;
-    //   top: 0;
-    //   left: 0;
-    //   right: 0;
-    // }
 @slideActiveColor: #1296db;
+
 .nav-wrapper {
-  width: 1024px;
-  margin: 0 auto;
-  .nav {
-      li {
-        &.active {
-            a {
-                color: @slideActiveColor;
+    width: 1024px;
+    margin: 0 auto;
+
+    .nav {
+        li {
+            &.active {
+                a {
+                    color: @slideActiveColor;
+                }
             }
         }
-      }
-  }
+    }
 }
 
 .footer {
-  background-color: #000;
-  height: 120px;
-  width: 100%;
-  min-width: 1024px;
-  margin-top: 50px;
-  color: #fff;
-  font-size: 14px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    background-color: #000;
+    height: 120px;
+    width: 100%;
+    min-width: 1024px;
+    margin-top: 50px;
+    color: #fff;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-  .detail {
-    line-height: 20px;
-  }
+    .detail {
+        line-height: 20px;
+    }
 
-  .tips {
-    line-height: 30px;
-  }
+    .tips {
+        line-height: 30px;
+    }
 }
 
 
 .nav-header {
-  background-color: #fff;
-  box-shadow: 10px 1px 5px #ddd;
+    background-color: #fff;
+    box-shadow: 10px 1px 5px #ddd;
 
-  .logo {
-    width: 32px;
-    height: 32px;
-    background-image: url('../assets/logo.png');
-    background-position: center;
-    background-size: contain;
-  }
-
-  .dropdown {
-    text-align: center;
-
-    li {
-      cursor: pointer;
+    .logo {
+        width: 32px;
+        height: 32px;
+        background-image: url('../assets/logo.png');
+        background-position: center;
+        background-size: contain;
     }
-  }
+
+    .dropdown {
+        text-align: center;
+
+        li {
+            cursor: pointer;
+        }
+    }
 }

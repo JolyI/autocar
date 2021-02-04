@@ -83,6 +83,7 @@ function isLogin() {
             crossDomain: true,
             success: function(data) {
                 localStorage.setItem('userInfo', data)
+                localStorage.setItem('role', data.superAdmin)
                 $('nav #name').html(data.username)
             },
             error: function() {
