@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"/>-->
+    <meta name="viewport" content="width=1024" />
+    <!--[if lt IE 9]>
+      <script src="//n.sinaimg.cn/lib/common/html5shiv-printshiv.min.js"></script>
+    <![endif]-->
+    <meta name="keywords" content="赛车,F1,中国赛车,国际赛车,汽车运动,汽车产业" />
+    <meta name="description" content="赛车,F1,中国赛车,国际赛车,汽车运动,汽车产业" />
+    <link rel=”icon” href='./favicon.ico' mce_href=”/dir/favicon.ico” type=”image/x-icon”>
+    <title>中国赛车</title>
+    <link rel="stylesheet" href="./style/normalize.css" />
+    <link rel="stylesheet" href="./lib/zui/css/zui.min.css" />
+    <!-- 样式文件 -->
+    <script src="./js/api.js"></script>
+    <script src="./js/jquery1.9.0.min.js"></script>
+    <script src="./lib/zui/js/zui.min.js"></script>
+    <script src="./js/common.js"></script>
+</head>
+
+<body>
+    <div>
+        <article class="article">
+            <!-- 文章头部 -->
+            <header>
+                <h1 id="title"></h1>
+                <dl class="dl-inline">
+                    <dt id="time"></dt>
+                </dl>
+            </header>
+            <!-- 文章正文部分 -->
+            <section id="content" class="content">
+            </section>
+        </article>
+    </div>
+</body>
+<script>
+    init()
+
+    function init() {
+        var id = GetRequest().id
+        $.ajax({
+            type: 'get',
+            url: _apiInfoList,
+            contentType: " application/json ",
+            dataType: 'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            success: function(data) {
+                if (data && data.length) {
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].id == id) {
+                            console.log('---', data)
+                            $('#title').html(data[i].title)
+                            $('#content').html(data[i].content)
+                            $('#time').html(data[i].createTime)
+                        }
+                    }
+                }
+            }
+        })
+    }
+</script>
+
+</html>

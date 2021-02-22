@@ -41,12 +41,13 @@
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-example">
                         <span class="sr-only">切换导航</span>
                     </button>
-                    <a class="navbar-brand logo" href="./"></a>
+                    <a class="navbar-brand logo" href="./index.html"></a>
                 </div>
                 <div class="collapse navbar-collapse navbar-collapse-example">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="./index.html">首页</a></li>
                         <li><a href="./blog.html">在线论坛</a></li>
+                        <li><a href="./admin.html">后台系统</a></li>
                         <li class="login-no"><a href="./login.html">登录/注册</a></li>
                         <li class="login-ok none- dropdown">
                             <a href="your/nice/url" class="dropdown-toggle" data-toggle="dropdown"><span
@@ -79,10 +80,10 @@
                 <i class="icon icon-renwu"></i> <span>我的任务</span>
                 <i class="icon icon-left"></i>
             </li>
-            <li class="slide-item slide-admin hide" data-page="user-box">
+            <!-- <li class="slide-item slide-admin hide" data-page="user-box">
                 <i class="icon icon-group"></i> <span>用户管理</span>
                 <i class="icon icon-left"></i>
-            </li>
+            </li> -->
             <li class="slide-item slide-admin hide" data-page="system-box">
                 <i class="icon icon-cloud"></i> <span>任务系统</span>
                 <i class="icon icon-left"></i>
@@ -293,7 +294,7 @@
                                 <textarea name="content" id="task_form_content" type="text" class="form-control" rows="5" placeholder="任务描述"></textarea>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="task_form_status" class="col-sm-2">任务状态</label>
                             <div class="col-sm-10">
                                 <select name="status" class="form-control" id="task_form_status">
@@ -303,7 +304,7 @@
                                     <option label="已完成" value="3"></option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <label for="task_form_userId" class="col-sm-2">任务实现者</label>
                             <div class="col-sm-10">
@@ -312,14 +313,14 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="task_form_teamId" class="col-sm-2">所属车队</label>
                             <div class="col-sm-10">
                                 <select name="teamId" class="form-control" id="task_form_teamId">
                                     <option label="请选择车队" value=""></option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -510,14 +511,14 @@
                                 <textarea name="content" id="user_form_content" type="text" class="form-control" placeholder="车队简介"></textarea>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="user_form_captain" class="col-sm-2">队长</label>
                             <div class="col-sm-10">
                                 <select name="captain" class="form-control" id="user_form_captain">
                                     <option label="请选择队长" value=""></option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -595,6 +596,7 @@
             teamList: null, // 车队管理 
             articlList: null, // 文章管理 
             myTaskList: null, //我的任务
+            reViewList: null, //审核列表
             map_user: {},
             map_team: {},
             map_task: {},
@@ -684,23 +686,22 @@
                             async: true,
                             success: function(taskData) {
                                 pageInfo.taskList = taskData
-                                    // 车队列表
+                                    // 审核列表
                                 $.ajax({
-                                    type: 'GET',
-                                    url: _apiTeamList,
+                                    type: 'get',
+                                    url: _apiInfoReviewList,
                                     contentType: "application/json",
                                     dataType: 'json',
                                     xhrFields: {
                                         withCredentials: true
                                     },
                                     crossDomain: true,
-                                    async: true,
-                                    success: function(teamData) {
-                                        pageInfo.teamList = teamData
-                                            // 首页文章列表
+                                    success: function(reviewData) {
+                                        pageInfo.reViewList = reviewData
+                                            // 车队列表
                                         $.ajax({
                                             type: 'GET',
-                                            url: _apiInfoList,
+                                            url: _apiTeamList,
                                             contentType: "application/json",
                                             dataType: 'json',
                                             xhrFields: {
@@ -708,20 +709,35 @@
                                             },
                                             crossDomain: true,
                                             async: true,
-                                            success: function(articData) {
-                                                pageInfo.articlList =
-                                                    articData
-                                                    // 渲染
-                                                setHtmlBox()
+                                            success: function(teamData) {
+                                                pageInfo.teamList = teamData
+                                                    // 首页文章列表
+                                                $.ajax({
+                                                    type: 'GET',
+                                                    url: _apiInfoList,
+                                                    contentType: "application/json",
+                                                    dataType: 'json',
+                                                    xhrFields: {
+                                                        withCredentials: true
+                                                    },
+                                                    crossDomain: true,
+                                                    async: true,
+                                                    success: function(articData) {
+                                                        pageInfo.articlList =
+                                                            articData
+                                                            // 渲染
+                                                        setHtmlBox()
+                                                    },
+                                                    error: function(articData) {
+                                                        throw new Error(
+                                                            articData)
+                                                    }
+                                                })
                                             },
-                                            error: function(articData) {
-                                                throw new Error(
-                                                    articData)
+                                            error: function(teamData) {
+                                                throw new Error(teamData)
                                             }
                                         })
-                                    },
-                                    error: function(teamData) {
-                                        throw new Error(teamData)
                                     }
                                 })
                             },
@@ -897,6 +913,23 @@
             // 车队列表
             if (teamData && teamData.length) {
                 for (let i = 0; i < teamData.length; i++) {
+                    console.log(pageInfo.reViewList)
+                    var reviewid = -1,
+                        btnStr = ' <button class="btn btn-info plan_btn" style="margin-top:10px" data-index="' + i +
+                        '" onclick="joinTeamModal(this)">' +
+                        ' <i class="icon icon-hand-left"></i>加入' +
+                        '</button>'
+                    if (pageInfo.reViewList && pageInfo.reViewList.length) {
+                        reviewid = pageInfo.reViewList[0].teamId
+                        if (reviewid == teamData[i].id) {
+                            btnStr = '</button>' +
+                                ' <button class="btn btn-warning plan_btn" style="margin-top:10px" data-index="' + i +
+                                '" onclick="joinTeamModal(this)">' +
+                                ' <i class="icon icon-hand-right"></i>退出' +
+                                '  </button>'
+                        }
+                    }
+
                     teamdomStr += '<tr>' +
                         '                <td>' + teamData[i].name + '</td>' +
                         '                <td>' + map_user[teamData[i].captain] + '</td>' +
@@ -912,7 +945,7 @@
                         i +
                         '" onclick="showTeamModal(this)">' +
                         '                <i class="icon icon-repeat"></i>编辑' +
-                        '        </button>' +
+                        '        </button>' + btnStr +
                         '    </td>' +
                         '</tr>'
                 }
@@ -1224,6 +1257,14 @@
                 case 'DELETARTICL':
                     // 删除车队
                     handleDeleteArtic($btn, pageInfo.handRow.id)
+                    break;
+                case 'JOINTEAM':
+                    // 加入车队
+                    handleJoinTeam($btn, pageInfo.handRow.id)
+                    break;
+                case 'QUITTEAM':
+                    // 退出车队
+                    handleQuitTeam($btn, pageInfo.handRow.id)
                     break;
 
                 default:
@@ -1581,9 +1622,9 @@
                     if (item.name == 'content' && !item.value) {
                         throw new Error('请输入车队简介！')
                     }
-                    if (item.name == 'captain' && !item.value) {
-                        throw new Error('请选择车队队长！')
-                    }
+                    // if (item.name == 'captain' && !item.value) {
+                    //     throw new Error('请选择车队队长！')
+                    // }
                     params[item.name] = item.value
                 })
                 if (!localStorage.getItem('userid')) {
@@ -1592,6 +1633,7 @@
                     }, 1000)
                     throw new Error('登录失效请重新登录！')
                 }
+                params.captain = localStorage.getItem('userid')
                 params.createUser = localStorage.getItem('userid')
                 params.createTime = new Date().getTime()
 
@@ -1729,6 +1771,129 @@
                 $('#teamModal #user_form_captain').html(domStr)
             }
         }
+
+        // 加入车队 弹窗
+        function joinTeamModal(e) {
+            const index = $(e).attr('data-index')
+            console.log(pageInfo.teamList[index])
+            console.log(pageInfo.reViewList)
+            if () {
+
+            }
+            return
+            pageInfo.handRow = pageInfo.teamList[index]
+            $('#confirm_Modal #confirm_Modal_title').html('是否加入车队《' + pageInfo.handRow.name + '》?')
+            pageInfo.handleType = 'JOINTEAM'
+            $('#confirm_Modal').modal()
+        }
+
+        // 加入车队 业务事件
+        function handleJoinTeam($btn, id) {
+            var params = {
+                type: 1,
+                teamId: id,
+                status: 0,
+                userId: localStorage.getItem('userid')
+            }
+            $.ajax({
+                type: 'POST',
+                url: _apiInfoReviewSave,
+                data: JSON.stringify(params),
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    $btn.button("reset");
+                    if (data) {
+                        showToast({
+                                msg: '加入成功！',
+                                icon: 'check',
+                                type: 'success'
+                            })
+                            // 刷新列表
+                        pageInfo.handRow = null
+                        pageInfo.handleType = null
+                        getAllList()
+                        $('#confirm_Modal').modal('hide')
+                    } else {
+                        showToast({
+                            msg: '加入失败！' + data,
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: data || '加入失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+
+        }
+
+        // 退出车队 弹窗
+        function quitTeamModal(e) {
+            const index = $(e).attr('data-index')
+            pageInfo.handRow = pageInfo.teamList[index]
+            $('#confirm_Modal #confirm_Modal_title').html('是否退出车队《' + pageInfo.handRow.name + '》?')
+            pageInfo.handleType = 'QUITTEAM'
+            $('#confirm_Modal').modal()
+        }
+
+        // 退出车队 业务事件
+        function handleQuitTeam($btn, id) {
+            $.ajax({
+                type: 'DELETE',
+                url: _apiTeamDelete + id,
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    $btn.button("reset");
+                    if (data) {
+                        showToast({
+                                msg: '退出成功！',
+                                icon: 'check',
+                                type: 'success'
+                            })
+                            // 刷新列表
+                        pageInfo.handRow = null
+                        pageInfo.handleType = null
+                        getAllList()
+                        $('#confirm_Modal').modal('hide')
+                    } else {
+                        showToast({
+                            msg: '退出失败！' + data,
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: '退出失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+
+
+        }
+
 
 
         // 添加 首页内容弹窗

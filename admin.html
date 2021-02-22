@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"/>-->
+    <meta name="viewport" content="width=1024" />
+    <!--[if lt IE 9]>
+      <script src="//n.sinaimg.cn/lib/common/html5shiv-printshiv.min.js"></script>
+    <![endif]-->
+    <meta name="keywords" content="赛车,F1,中国赛车,国际赛车,汽车运动,汽车产业" />
+    <meta name="description" content="赛车,F1,中国赛车,国际赛车,汽车运动,汽车产业" />
+    <link rel=”icon” href='./favicon.ico' mce_href=”/dir/favicon.ico” type=”image/x-icon”>
+    <title>中国赛车</title>
+
+    <link rel="stylesheet" href="./style/normalize.css" />
+    <link rel="stylesheet" href="./lib/zui/css/zui.min.css" />
+    <link rel="stylesheet" href="./style/dialog.css" />
+    <script src="./js/jquery1.9.0.min.js"></script>
+    <script src="./js/dialog.js"></script>
+    <script src="./lib/zui/js/zui.min.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/common.js"></script>
+
+    <!-- 样式文件 -->
+
+    <link rel="stylesheet" href="./style/header.css">
+    <link rel="stylesheet" href="./style/profile.css">
+</head>
+
+<body>
+    <nav class="navbar nav-header" role="navigation">
+        <div class="container-fluid">
+            <div class="nav-wrapper">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-example">
+                        <span class="sr-only">切换导航</span>
+                    </button>
+                    <a class="navbar-brand logo" href="./index.html"></a>
+                </div>
+                <div class="collapse navbar-collapse navbar-collapse-example">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="./index.html">首页</a></li>
+                        <li><a href="./blog.html">在线论坛</a></li>
+                        <li class="active"><a href="./admin.html">后台系统</a></li>
+                        <li class="login-no"><a href="./login.html">登录/注册</a></li>
+                        <li class="login-ok none- dropdown">
+                            <a href="your/nice/url" class="dropdown-toggle" data-toggle="dropdown"><span
+                                    id="name"></span> <b class="caret"></b></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="./profile.html">
+                                        <i class="icon icon-user"></i> 个人中心
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a onclick="logOut()"> <i class="icon icon-signout"></i> 退出登录 </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="wrapper admin-page">
+        <!-- 右侧内容区域 -->
+        <div class="main-container">
+            <!-- 首页管理 admin权限 -->
+            <div class="articl-box main-item main-admin">
+                <div class="card">
+                    <div class="add-wrapper">
+                        <button class="btn btn-success btn-mini" onclick="showAddArticModal()">
+                            <i class="icon icon-plus"></i>
+                            新建内容
+                        </button>
+                    </div>
+                    <table class="table table-striped table-bordered" align="center" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <th width="150px">类型</th>
+                            <th width="150px">标题</th>
+                            <th width="200px">内容</th>
+                            <th width="100px">创建人</th>
+                            <th width="120px">创建时间</th>
+                            <th width="80px">操作</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="detail">@ 2021 中国赛车</div>
+        <div class="tips">
+            本网站仅做学习交流之用途，若有侵权，请及时与站主联系。
+        </div>
+    </footer>
+    <!-- 确认弹窗 -->
+    <div class="modal fade" id="confirm_Modal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">关闭</span></button>
+                    <h4 class="modal-title" id="confirm_Modal_title"></h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmModalSubmit(this)">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 对话框 添加/编辑首页文章 -->
+    <div id="articlModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">关闭</span></button>
+                    <h4 id="modal_articl_title" class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <form id="modal_articl_form" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="articl_form_title" class="col-sm-2">标题</label>
+                            <div class="col-sm-10">
+                                <input name="title" type="text" class="form-control" id="articl_form_title" placeholder="请输入标题">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="articl_form_content" class="col-sm-2">内容</label>
+                            <div class="col-sm-10">
+                                <textarea name="content" id="articl_form_content" type="text" class="form-control" rows="8" placeholder="请输入内容"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="articl_form_type" class="col-sm-2">类型</label>
+                            <div class="col-sm-10">
+                                <select name="type" class="form-control" id="articl_form_type">
+                                    <option label="请选择类型" value=""></option>
+                                    <option label="通知" value=1></option>
+                                    <option label="公告" value=2></option>
+                                    <option label="赛事消息" value=3></option>
+                                    <option label="新闻轮播" value=4></option>
+                                    <option label="相关网址" value=5></option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group articl_form_group_icon">
+                            <label for="articl_form_icon" class="col-sm-2">图片地址</label>
+                            <div class="col-sm-10">
+                                <input name="icon" id="articl_form_icon" type="text" class="form-control" placeholder="请输入图片地址"></input>
+                            </div>
+                        </div>
+                        <div class="form-group articl_form_group_url">
+                            <label for="articl_form_url" class="col-sm-2">链接url</label>
+                            <div class="col-sm-10">
+                                <input name="url" id="articl_form_url" type="text" class="form-control" placeholder="请输入链接url"></input>
+                            </div>
+                        </div> -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="editArticlModalSubmit(this)">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 页面事件 参数  类似vue-data写法
+        var pageInfo = {
+            handleType: null,
+            handRow: null, // 当前操作行数据
+            taskList: null, // 任务管理
+            userList: null, // 用户管理
+            teamList: null, // 车队管理 
+            articlList: null, // 文章管理 
+            myTaskList: null, //我的任务
+            map_user: {},
+            map_team: {},
+            map_task: {},
+            articlSelect: '', //首页文章选择类型
+            articlTypes: {
+                1: '通知',
+                2: '公告',
+                3: '赛事消息',
+                4: '新闻轮播',
+                5: '相关网址',
+            }
+        };
+        window.onload = function() {
+            init();
+        };
+
+        function init() {
+            isLogin()
+            getUserInfo()
+            getAllList()
+            eventListener();
+        }
+
+        // 用户信息
+        function getUserInfo() {
+            $.ajax({
+                type: 'get',
+                url: baseUrl + '/user/' + localStorage.getItem('userid'),
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    localStorage.setItem('userInfo', data)
+                    localStorage.setItem('role', data.superAdmin)
+                    $('.personal-box #username').html(data.username)
+                    $('.personal-box #realname').html(data.realName)
+                    $('.personal-box #phone').html(data.phone)
+                    $('.personal-box #create_time').html(data.createTime)
+                    $('.personal-box #awardInfo').html(data.awardInfo)
+                    $('.personal-box #specialty').html(data.specialty)
+                        // 根据权限 决定是否展示 左侧菜单内容
+                        // 超级管理员？
+                    if (data.superAdmin) {
+                        $('.wrapper .slide-container').find('.slide-admin').removeClass('hide')
+                    } else {
+                        $('.wrapper .slide-container').find('.slide-admin').addClass('hide')
+                        $('.wrapper .slide-container').find('.slide-admin').remove()
+                        $('.wrapper .main-container').find('.main-admin').remove()
+                    }
+                },
+                error: function() {
+
+                }
+            })
+        }
+
+        // 嵌套ajax 获取用户列表/任务列表/车队列表/首页文章列表
+        function getAllList() {
+            // 用户列表
+            try {
+                $.ajax({
+                    type: 'GET',
+                    url: _apiUserList,
+                    contentType: "application/json",
+                    dataType: 'json',
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    crossDomain: true,
+                    async: true,
+                    success: function(userData) {
+                        pageInfo.userList = userData
+                            // 任务列表
+                        $.ajax({
+                            type: 'GET',
+                            url: _apitaskList,
+                            contentType: "application/json",
+                            dataType: 'json',
+                            xhrFields: {
+                                withCredentials: true
+                            },
+                            crossDomain: true,
+                            async: true,
+                            success: function(taskData) {
+                                pageInfo.taskList = taskData
+                                    // 车队列表
+                                $.ajax({
+                                    type: 'GET',
+                                    url: _apiTeamList,
+                                    contentType: "application/json",
+                                    dataType: 'json',
+                                    xhrFields: {
+                                        withCredentials: true
+                                    },
+                                    crossDomain: true,
+                                    async: true,
+                                    success: function(teamData) {
+                                        pageInfo.teamList = teamData
+                                            // 首页文章列表
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: _apiInfoList,
+                                            contentType: "application/json",
+                                            dataType: 'json',
+                                            xhrFields: {
+                                                withCredentials: true
+                                            },
+                                            crossDomain: true,
+                                            async: true,
+                                            success: function(articData) {
+                                                pageInfo.articlList =
+                                                    articData
+                                                    // 渲染
+                                                setHtmlBox()
+                                            },
+                                            error: function(articData) {
+                                                throw new Error(
+                                                    articData)
+                                            }
+                                        })
+                                    },
+                                    error: function(teamData) {
+                                        throw new Error(teamData)
+                                    }
+                                })
+                            },
+                            error: function(taskData) {
+                                throw new Error(taskData)
+                            }
+                        })
+                    },
+                    error: function(userData) {
+                        throw new Error(userData)
+                    }
+                })
+            } catch (error) {
+                const data = JSON.parse(e.responseText)
+                showToast({
+                    msg: '失败',
+                    icon: 'times',
+                    type: 'danger'
+                })
+            }
+        }
+
+        // 渲染界面
+        function setHtmlBox() {
+            let systemdomStr = '',
+                sysData = pageInfo.taskList,
+                teamdomStr = '',
+                teamData = pageInfo.teamList,
+                userdomStr = '',
+                userData = pageInfo.userList,
+                articldomStr = '',
+                articlData = pageInfo.articlList;
+
+            // 构建map映射
+            // 用户id-名称
+            var map_user = {}
+                // 车队id-名称
+            var map_team = {}
+                // 任务id-名称
+            var map_task = {}
+
+            if (userData && userData.length) {
+                userData.forEach(item => {
+                    map_user[item.id] = item.username
+                })
+            }
+            if (teamData && teamData.length) {
+                teamData.forEach(item => {
+                    map_team[item.id] = item.name
+                })
+            }
+            if (sysData && sysData.length) {
+                sysData.forEach(item => {
+                    map_task[item.id] = item.title
+                })
+            }
+            pageInfo.map_user = map_user
+            pageInfo.map_team = map_team
+            pageInfo.map_task = map_task
+                // 找出 我的任务 
+            var myTaskList = []
+                // 用户列表
+            if (userData && userData.length) {
+                for (let i = 0; i < userData.length; i++) {
+                    userdomStr += '<tr>' +
+                        '                <td>' + userData[i].username + '</td>' +
+                        '                <td>' + (userData[i].superAdmin ? '超级管理员' : '普通用户') + '</td>' +
+                        '                <td>' + (userData[i].realName ? userData[i].realName : '') + '</td>' +
+                        '                <td>' + (map_team[userData[i].teamId] ? map_team[userData[i].teamId] : '-') +
+                        '</td>' +
+                        '                <td>' + (userData[i].specialty ? userData[i].specialty : '-') + '</td>' +
+                        '                <td>' + (userData[i].awardInfo ? userData[i].awardInfo : '-') + '</td>' +
+                        '                <td>' + (userData[i].createTime ? userData[i].createTime : '-') + '</td>' +
+                        '               <td>' +
+                        '                    <button class="btn btn-danger plan_btn" data-index="' + i +
+                        '" onclick="deleteUserModal(this)">' +
+                        '                        <i class="icon icon-times"></i>删除' +
+                        '                    </button>' +
+                        '            <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index="' +
+                        i +
+                        '" onclick="showUserModal(this)">' +
+                        '                <i class="icon icon-repeat"></i>编辑' +
+                        '        </button>' +
+                        '    </td>' +
+                        '</tr>'
+                }
+                $('.user-box table tbody').html(userdomStr)
+            } else {
+                $('.user-box table tbody').html('<tr><td colspan="5" align="center">暂无数据</td></tr>')
+            }
+
+            // 任务列表
+            if (pageInfo.taskList && pageInfo.taskList.length) {
+                for (let i = 0; i < sysData.length; i++) {
+                    if (sysData[i].userId == localStorage.getItem('userid')) {
+                        myTaskList.push(sysData[i])
+                    }
+                    let status = '',
+                        statusStr = ''
+                    if (sysData[i].status == 1) {
+                        statusStr = '<span class="label label-warning">待开始</span>'
+                    }
+                    if (sysData[i].status == 2) {
+                        statusStr = '<span class="label label-info">进行中</span>'
+                    }
+                    if (sysData[i].status == 3) {
+                        statusStr = '<span class="label label-success">已完成</span>'
+                    }
+
+                    // 根据上面的映射 找出实现者 找出车队 就好做了
+                    systemdomStr += '<tr>' +
+                        '           <td>' + sysData[i].title + '</td>' +
+                        '           <td>' + sysData[i].content + '</td>' +
+                        '           <td>' + map_user[sysData[i].userId] + '</td>' +
+                        '           <td>' + map_team[sysData[i].teamId] + '</td>' +
+                        '           <td>' + sysData[i].createTime + '</td>' +
+                        '           <td>' + statusStr + '</td>' +
+                        '           <td>' +
+                        '               <button class="btn btn-danger plan_btn"  data-index=' + i +
+                        ' onclick="deletTask(this)">' +
+                        '               <i class="icon icon-times"></i>删除' +
+                        '       </button>' +
+                        '       <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index=' + i +
+                        ' onclick="showPlanModal(this)">' +
+                        '           <i class="icon icon-edit-sign"></i>编辑' +
+                        '   </button>' +
+                        '</td>' +
+                        '</tr>'
+                }
+                $('.system-box table tbody').html(systemdomStr)
+                pageInfo.myTaskList = myTaskList
+            } else {
+                $('.system-box table tbody').html('<tr><td colspan="7" align="center">暂无数据</td></tr>')
+            }
+
+            // 我的任务
+            if (myTaskList && myTaskList.length) {
+                var mytaskdomStr = ''
+                for (let i = 0; i < myTaskList.length; i++) {
+                    let mystatus = '',
+                        mystatusStr = ''
+                    if (myTaskList[i].status == 1) {
+                        mystatusStr = '<span class="label label-warning">待开始</span>'
+                    }
+                    if (myTaskList[i].status == 2) {
+                        mystatusStr = '<span class="label label-info">进行中</span>'
+                    }
+                    if (myTaskList[i].status == 3) {
+                        mystatusStr = '<span class="label label-success">已完成</span>'
+                    }
+
+                    // 根据上面的映射 找出实现者 找出车队 就好做了
+                    mytaskdomStr += '<tr>' +
+                        '           <td>' + myTaskList[i].title + '</td>' +
+                        '           <td>' + myTaskList[i].content + '</td>' +
+                        '           <td>' + map_user[sysData[i].userId] + '</td>' +
+                        '           <td>' + map_team[sysData[i].teamId] + '</td>' +
+                        '           <td>' + myTaskList[i].createTime + '</td>' +
+                        '           <td>' + mystatusStr + '</td>' +
+                        '           <td>' +
+                        '       <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index=' + i +
+                        ' onclick="showMyTaskMdoal(this)">' +
+                        '           <i class="icon icon-edit-sign"></i>更新进度' +
+                        '   </button>' +
+                        '</td>' +
+                        '</tr>'
+                }
+                $('.task-box table tbody').html(mytaskdomStr)
+            } else {
+                $('.task-box table tbody').html('<tr><td colspan="7" align="center">暂无数据</td></tr>')
+            }
+
+            // 车队列表
+            if (teamData && teamData.length) {
+                for (let i = 0; i < teamData.length; i++) {
+                    teamdomStr += '<tr>' +
+                        '                <td>' + teamData[i].name + '</td>' +
+                        '                <td>' + map_user[teamData[i].captain] + '</td>' +
+                        '                <td>' + teamData[i].content + '</td>' +
+                        '                <td>' + map_user[teamData[i].createUser] + '</td>' +
+                        '                <td>' + teamData[i].createTime + '</td>' +
+                        '               <td>' +
+                        '                    <button class="btn btn-danger plan_btn" data-index="' + i +
+                        '" onclick="deleteTeamModal(this)">' +
+                        '                        <i class="icon icon-times"></i>删除' +
+                        '                    </button>' +
+                        '            <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index="' +
+                        i +
+                        '" onclick="showTeamModal(this)">' +
+                        '                <i class="icon icon-repeat"></i>编辑' +
+                        '        </button>' +
+                        '    </td>' +
+                        '</tr>'
+                }
+                $('.car-box table tbody').html(teamdomStr)
+            } else {
+                $('.car-box table tbody').html('<tr><td colspan="6" align="center">暂无数据</td></tr>')
+            }
+            // 文章列表
+            if (articlData && articlData.length) {
+                for (let i = 0; i < articlData.length; i++) {
+                    articldomStr += '<tr>' +
+                        '                <td> <div class="ellipis-3">' + pageInfo.articlTypes[articlData[i].type] +
+                        '</div></td>' +
+                        '                <td> <div class="ellipis-3">' + articlData[i].title + '</div></td>' +
+                        '                <td> <div class="ellipis-3">' + articlData[i].content + '</div></td>' +
+                        '                <td> ' + map_user[articlData[i].createUser] + '</td>' +
+                        '                <td>' + articlData[i].createTime + '</td>' +
+                        '               <td>' +
+                        '                    <button class="btn btn-danger plan_btn"  style="margin-top:10px" data-index="' +
+                        i +
+                        '" onclick="deleteArticlModal(this)">' +
+                        '                        <i class="icon icon-times"></i>删除' +
+                        '                    </button>' +
+                        '            <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index="' +
+                        i +
+                        '" onclick="showArticlModal(this)">' +
+                        '                <i class="icon icon-repeat"></i>编辑' +
+                        '        </button>' +
+                        '    </td>' +
+                        '</tr>'
+                }
+                $('.articl-box table tbody').html(articldomStr)
+            } else {
+                $('.articl-box table tbody').html('<tr><td colspan="6" align="center">暂无数据</td></tr>')
+            }
+        }
+
+
+        // 事件监听集合
+        function eventListener() {
+            // 首页弹窗 类型选择
+            $('#articlModal #articl_form_type').change(function() {
+                var v = $(this).children('option:selected').val()
+                pageInfo.articlSelect = v
+                    // 4 新闻轮播
+                    // 5 相关网址
+                htmlAtrilFormItem(pageInfo)
+            })
+        }
+
+
+        // 确认框 确认 
+        function confirmModalSubmit(btn) {
+            const $btn = $(btn)
+            switch (pageInfo.handleType) {
+                case 'DELETETASK':
+                    // 删除任务
+                    handleDeleteTask($btn, pageInfo.handRow.id)
+                    break;
+                case 'DELETEUSER':
+                    // 删除用户
+                    handleDeleteUser($btn, pageInfo.handRow.id)
+                    break;
+                case 'DELETETEAM':
+                    // 删除车队
+                    handleDeleteTeam($btn, pageInfo.handRow.id)
+                    break;
+                case 'DELETARTICL':
+                    // 删除车队
+                    handleDeleteArtic($btn, pageInfo.handRow.id)
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+
+        // 添加 首页内容弹窗
+        function showAddArticModal() {
+            pageInfo.handleType = 'ADDARTIC'
+            $('#articlModal #modal_articl_title').html('添加首页文章')
+            $('#articlModal #articl_form_title').val('')
+            $('#articlModal #articl_form_content').val('')
+            $('#articlModal #articl_form_type').val('')
+
+            $('#articlModal .articl_form_group_icon').addClass('hide')
+            $('#articlModal .articl_form_group_url').addClass('hide')
+            pageInfo.articlSelect = ''
+            htmlAtrilFormItem(pageInfo)
+            $('#articlModal').modal()
+        }
+        // 编辑 首页内容弹窗
+        function showArticlModal(e) {
+            const index = $(e).attr('data-index')
+            pageInfo.handRow = pageInfo.articlList[index]
+            pageInfo.handleType = 'EDITARTIC'
+            $('#articlModal #modal_articl_title').html('编辑首页文章')
+            $('#articlModal #articl_form_title').val(pageInfo.handRow.title)
+            $('#articlModal #articl_form_content').val(pageInfo.handRow.content)
+            $('#articlModal #articl_form_type').val(pageInfo.handRow.type)
+            pageInfo.articlSelect = pageInfo.handRow.type
+            htmlAtrilFormItem(pageInfo)
+            $('#articlModal').modal()
+        }
+        // 添加/编辑 首页弹窗确认
+        function editArticlModalSubmit(btn) {
+            var $btn = $(this);
+            var params = {};
+            var form_data = $('#modal_articl_form').serializeArray()
+            console.log(form_data)
+                // 数据查验
+            try {
+                form_data.forEach(item => {
+                    if (item.name == 'title' && !item.value) {
+                        throw new Error('请输入标题！')
+                    }
+                    if (item.name == 'content' && !item.value) {
+                        throw new Error('请输入内容！')
+                    }
+                    if (item.name == 'captain' && !item.value) {
+                        throw new Error('请选择类型！')
+                    }
+                    if (item.name == 'icon' && !item.value) {
+                        throw new Error(`请输入${pageInfo.articlSelect==4?'图片地址':'图标地址'}！`)
+                    }
+                    if (item.name == 'url' && !item.value) {
+                        throw new Error('请输入链接url！')
+                    }
+                    params[item.name] = item.value
+                })
+                if (!localStorage.getItem('userid')) {
+                    setTimeout(function() {
+                        location.href = './login.html'
+                    }, 1000)
+                    throw new Error('登录失效请重新登录！')
+                }
+                params.createUser = localStorage.getItem('userid')
+                    // params.createTime = new Date().getTime()
+                handleEditArticl($btn, params)
+            } catch (data) {
+                console.log(data)
+                params = {}
+                showToast({
+                    msg: data + '' || '数据有误！',
+                    icon: 'times',
+                    type: 'danger'
+                })
+            }
+
+        }
+        // 编辑/添加 首页内容业务事件
+        function handleEditArticl($btn, params) {
+            $btn.button("loading");
+            let url, type, msg;
+            if (pageInfo.handleType == 'ADDARTIC') {
+                type = 'post'
+                url = _apiInfoSave
+                msg = "添加"
+            } else {
+                type = 'put'
+                url = _apiInfoUpdate
+                msg = "修改"
+                params.id = pageInfo.handRow.id
+                params.createTime = null
+            }
+            // 执行添加操作
+            $.ajax({
+                type: type,
+                url: url,
+                data: JSON.stringify(params),
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    $btn.button("reset");
+                    if (data) {
+                        showToast({
+                            msg: msg + '成功！',
+                            icon: 'check',
+                            type: 'success'
+                        })
+                        $('#articlModal').modal('hide')
+                        pageInfo.handleType = null
+                        pageInfo.handRow = null
+                            // 刷新列表
+                        getAllList()
+                    } else {
+                        showToast({
+                            msg: msg + '失败！' + data,
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                        $('#articlModal').modal('hide')
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: msg + '失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+        }
+        // 删除 文章弹窗
+        function deleteArticlModal(e) {
+            const index = $(e).attr('data-index')
+            pageInfo.handRow = pageInfo.articlList[index]
+            $('#confirm_Modal #confirm_Modal_title').html('是否删除文章 ' + pageInfo.handRow.title + '?')
+            pageInfo.handleType = 'DELETARTICL'
+            $('#confirm_Modal').modal()
+        }
+        // 删除车队文章业务事件
+        function handleDeleteArtic($btn, id) {
+            $btn.button("loading");
+            // 执行删除操作
+            $.ajax({
+                type: 'DELETE',
+                url: _apiInfoDelete + id,
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    $btn.button("reset");
+                    if (data) {
+                        showToast({
+                                msg: '删除成功！',
+                                icon: 'check',
+                                type: 'success'
+                            })
+                            // 刷新列表
+                        pageInfo.handRow = null
+                        pageInfo.handleType = null
+                        getAllList()
+                        $('#confirm_Modal').modal('hide')
+                    } else {
+                        showToast({
+                            msg: '删除失败！' + data,
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: '删除失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+
+
+
+        }
+
+        // 首页弹窗里icon  url 赋值初始化
+        function htmlAtrilFormItem(data) {
+            // 赋值
+            let icon = '',
+                url = '',
+                v = pageInfo.articlSelect;
+            if (data.handleType == 'EDITARTIC') {
+                icon = data.handRow.icon
+                url = data.handRow.url
+            }
+            $('#articlModal .articl_form_group_icon').remove()
+            $('#articlModal .articl_form_group_url').remove()
+            if (v == 4 || v == 5) {
+                var domStr = `<div class="form-group articl_form_group_icon">
+                                <label for="articl_form_icon" class="col-sm-2">${v==4?'图片地址':'图标地址'}</label>
+                                <div class="col-sm-10">
+                                    <input value="${icon}" name="icon" id="articl_form_icon" type="text" class="form-control" placeholder="请输入${v==4?'图片地址':'图标地址'}"/>
+                                </div>
+                            </div>
+                            <div class="form-group articl_form_group_url">
+                                <label for="articl_form_url" class="col-sm-2">链接url</label>
+                                <div class="col-sm-10">
+                                    <input value="${url}" name="url" id="articl_form_url" type="text" class="form-control"  placeholder="请输入链接url" />
+                                </div>
+                            </div>`
+                $('#articlModal #modal_articl_form').append(domStr)
+            }
+        }
+    </script>
+</body>
+
+</html>
