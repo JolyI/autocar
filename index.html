@@ -245,7 +245,7 @@
             error: function(e) {
                 const data = JSON.parse(e.responseText)
                 showToast({
-                    msg: data.message || '新闻获取失败！',
+                    msg: '新闻获取失败！',
                     icon: 'times',
                     type: 'danger'
                 })

@@ -131,7 +131,7 @@
                 const data = JSON.parse(e.responseText)
                 $btn.button("reset");
                 showToast({
-                    msg: data.message || msg + '失败！',
+                    msg: msg + '失败！',
                     icon: 'times',
                     type: 'danger'
                 })

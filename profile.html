@@ -737,7 +737,7 @@
             } catch (error) {
                 const data = JSON.parse(e.responseText)
                 showToast({
-                    msg: data.message || '',
+                    msg: '失败',
                     icon: 'times',
                     type: 'danger'
                 })
@@ -1152,7 +1152,7 @@
                     const data = JSON.parse(e.responseText)
                     $btn.button("reset");
                     showToast({
-                        msg: data.message || msg + '失败！',
+                        msg: msg + '失败！',
                         icon: 'times',
                         type: 'danger'
                     })
@@ -1196,7 +1196,7 @@
                     const data = JSON.parse(e.responseText)
                     $btn.button("reset");
                     showToast({
-                        msg: data.message || '删除失败！',
+                        msg: '删除失败！',
                         icon: 'times',
                         type: 'danger'
                     })
@@ -1428,7 +1428,7 @@
                     const data = JSON.parse(e.responseText)
                     $btn.button("reset");
                     showToast({
-                        msg: data.message || '删除失败！',
+                        msg: '删除失败！',
                         icon: 'times',
                         type: 'danger'
                     })
@@ -1476,7 +1476,7 @@
                     const data = JSON.parse(e.responseText)
                     $btn.button("reset");
                     showToast({
-                        msg: data.message || '修改失败！',
+                        msg: '修改失败！',
                         icon: 'times',
                         type: 'danger'
                     })
@@ -1523,7 +1523,7 @@
                     const data = JSON.parse(e.responseText)
                     $btn.button("reset");
                     showToast({
-                        msg: data.message || '添加失败！',
+                        msg: '添加失败！',
                         icon: 'times',
                         type: 'danger'
                     })
@@ -1656,7 +1656,7 @@
                     const data = JSON.parse(e.responseText)
                     $btn.button("reset");
                     showToast({
-                        msg: data.message || msg + '失败！',
+                        msg: msg + '失败！',
                         icon: 'times',
                         type: 'danger'
                     })
@@ -1709,7 +1709,7 @@
                     const data = JSON.parse(e.responseText)
                     $btn.button("reset");
                     showToast({
-                        msg: data.message || '删除失败！',
+                        msg: '删除失败！',
                         icon: 'times',
                         type: 'danger'
                     })
@@ -1856,7 +1856,7 @@
                     const data = JSON.parse(e.responseText)
                     $btn.button("reset");
                     showToast({
-                        msg: data.message || msg + '失败！',
+                        msg: msg + '失败！',
                         icon: 'times',
                         type: 'danger'
                     })
@@ -1909,7 +1909,7 @@
                     const data = JSON.parse(e.responseText)
                     $btn.button("reset");
                     showToast({
-                        msg: data.message || '删除失败！',
+                        msg: '删除失败！',
                         icon: 'times',
                         type: 'danger'
                     })

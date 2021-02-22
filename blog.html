@@ -97,7 +97,7 @@
             params: {
                 current: 0,
                 page: 0,
-                size: 10,
+                size: 2,
                 createUser: null, //作者
                 title: null, //文章标题
             },
@@ -150,7 +150,7 @@
                     $('.blog-null').removeClass('hide')
                     const data = JSON.parse(e.responseText)
                     showToast({
-                        msg: data.message || '查询失败！',
+                        msg: '查询失败！',
                         icon: 'times',
                         type: 'danger'
                     })

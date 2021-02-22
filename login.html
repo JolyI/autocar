@@ -78,11 +78,11 @@
             </div>
             <div class="form-box">
                 <div class="label">密码</div>
-                <input type="text" placeholder="请输入密码" name="password" />
+                <input type="password" placeholder="请输入密码" name="password" />
             </div>
             <div class="form-box">
                 <div class="label">确认密码</div>
-                <input type="text" placeholder="请输入确认密码" name="password_again" />
+                <input type="password" placeholder="请输入确认密码" name="password_again" />
             </div>
             <button id="reg_account_btn" type="button" class="btn btn-primary submit" data-loading-text="正在注册...">
                 注 册
@@ -200,18 +200,18 @@
                             msg = '请输入正确的电话号码！'
                             throw new Error(msg);
                         }
-                        if (item.name == "teamId" && !item.value) {
-                            msg = '请选择车队！'
-                            throw new Error(msg);
-                        }
-                        if (item.name == "specialty" && !item.value) {
-                            msg = '请输入特长！'
-                            throw new Error(msg);
-                        }
-                        if (item.name == "awardInfo" && !item.value) {
-                            msg = '请输入获奖信息！'
-                            throw new Error(msg);
-                        }
+                        // if (item.name == "teamId" && !item.value) {
+                        //     msg = '请选择车队！'
+                        //     throw new Error(msg);
+                        // }
+                        // if (item.name == "specialty" && !item.value) {
+                        //     msg = '请输入特长！'
+                        //     throw new Error(msg);
+                        // }
+                        // if (item.name == "awardInfo" && !item.value) {
+                        //     msg = '请输入获奖信息！'
+                        //     throw new Error(msg);
+                        // }
                         if (item.name == "password" && !item.value) {
                             msg = '请输入密码！'
                             throw new Error(msg);
@@ -240,8 +240,8 @@
                 var $btn = $(this);
                 $btn.button("loading");
                 // 先给个
-                params.avatar ? '' : params.avatar =
-                    '//gw.alicdn.com/imgextra/i3/O1CN01QEaQlr1idHCLFlMXQ_!!6000000004435-55-tps-106-19.svg'
+                params.avatar ? '' : params.avatar = ''
+                    // '//gw.alicdn.com/imgextra/i3/O1CN01QEaQlr1idHCLFlMXQ_!!6000000004435-55-tps-106-19.svg'
                 handleRegister($btn, params)
 
             } catch (error) {
@@ -270,6 +270,22 @@
             setTimeout(() => {
                 $(".login_box").show(10);
             }, 0);
+        });
+
+        // 回车事件
+        $(document).keyup(function(event) {
+            if (event.keyCode == 13) {
+                // 判断当前登录还是注册
+                if ($('.login_box')[0].style.display == 'none') {
+                    console.log('注册')
+                        // 注册
+                    $("#reg_account_btn").click()
+                } else {
+                    console.log('登录')
+                        // 登录
+                    $("#submit_btn").click()
+                }
+            }
         });
 
         // 注册业务事件
@@ -308,7 +324,7 @@
                     const data = JSON.parse(e.responseText)
                     $btn.button("reset");
                     showToast({
-                        msg: data.message || '注册失败！',
+                        msg: '注册失败！',
                         icon: 'times',
                         type: 'danger'
                     })
@@ -354,7 +370,7 @@
                     const data = JSON.parse(e.responseText)
                     $btn.button("reset");
                     showToast({
-                        msg: data.message || '登录失败！',
+                        msg: '登录失败！',
                         icon: 'times',
                         type: 'danger'
                     })
