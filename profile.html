@@ -938,21 +938,22 @@
             // 车队列表
             if (teamData && teamData.length) {
                 for (let i = 0; i < teamData.length; i++) {
-                    btnStr = ' <button class="btn btn-info plan_btn" style="margin-top:10px" data-id="' + teamData[i].id +
-                        '" onclick="joinTeamModal(this)">' +
-                        ' <i class="icon icon-hand-left"></i>加入' +
-                        '</button>'
-                        // 判断有加入车队
-                    if (pageInfo.userInfo && pageInfo.userInfo.teamId) {
-                        if (pageInfo.userInfo.teamId == teamData[i].id) {
-                            btnStr = '</button>' +
-                                ' <button class="btn btn-warning plan_btn" style="margin-top:10px" data-id="' + teamData[i].id +
-                                '" onclick="quitTeamModal(this)">' +
-                                ' <i class="icon icon-hand-right"></i>退出' +
-                                '  </button>'
+                    if (teamData[i].captain != pageInfo.userInfo.id) {
+                        btnStr = ' <button class="btn btn-info plan_btn" style="margin-top:10px" data-id="' + teamData[i].id +
+                            '" onclick="joinTeamModal(this)">' +
+                            ' <i class="icon icon-hand-left"></i>加入' +
+                            '</button>'
+                            // 判断有加入车队
+                        if (pageInfo.userInfo && pageInfo.userInfo.teamId) {
+                            if (pageInfo.userInfo.teamId == teamData[i].id) {
+                                btnStr = '</button>' +
+                                    ' <button class="btn btn-warning plan_btn" style="margin-top:10px" data-id="' + teamData[i].id +
+                                    '" onclick="quitTeamModal(this)">' +
+                                    ' <i class="icon icon-hand-right"></i>退出' +
+                                    '  </button>'
+                            }
                         }
                     }
-
                     teamdomStr += '<tr>' +
                         '                <td>' + teamData[i].name + '</td>' +
                         '                <td>' + map_user[teamData[i].captain] + '</td>' +
@@ -970,7 +971,9 @@
                         '                <i class="icon icon-repeat"></i>编辑' +
                         '        </button>' + btnStr +
                         '    </td>' +
-                        '</tr>'
+                        '</tr>';
+
+                    btnStr = ''
                 }
                 $('.car-box table tbody').html('')
                 $('.car-box table tbody').html(teamdomStr)
@@ -1029,7 +1032,7 @@
                     for (let i = 0; i < reviewMine.length; i++) {
                         revierwdomStr += '<tr>' +
                             '                <td>' + map_user[reviewMine[i].userId] + '</td>' +
-                            '                <td>' + (reviewMine[i].type ? '加入车队' : '退出车队') + '</td>' +
+                            '                <td>' + (reviewMine[i].type == 1 ? '加入车队' : '退出车队') + '</td>' +
                             '                <td>' + reviewMine[i].createTime + '</td>' +
                             '               <td>' +
                             '                    <button class="btn btn-danger plan_btn" data-id="' + reviewMine[i].id + '" data-teamid="' + reviewMine[i].teamId + '" data-type="' + reviewMine[i].type + '" data-userid="' + reviewMine[i].userId +
@@ -2242,9 +2245,9 @@
             $btn.button("loading");
             var params = {
                 id: pageInfo.handRow.id,
-                teamId: pageInfo.handRow.teamid,
+                teamId: pageInfo.handRow.teamId,
                 type: pageInfo.handRow.type,
-                userId: pageInfo.handRow.userid,
+                userId: pageInfo.handRow.userId,
                 status: 2
             }
             $.ajax({
@@ -2301,6 +2304,7 @@
                 type: _type,
                 userId: _userId,
             }
+
             $('#confirm_Modal #confirm_Modal_title').html('确认通过？ ')
             pageInfo.handleType = 'PASSREVIEW'
             $('#confirm_Modal').modal()
@@ -2308,11 +2312,12 @@
         // 审核通过 业务事件
         function handlePassReview($btn, id) {
             $btn.button("loading");
+
             var params = {
                 id: pageInfo.handRow.id,
-                teamId: pageInfo.handRow.teamid,
+                teamId: pageInfo.handRow.teamId,
                 type: pageInfo.handRow.type,
-                userId: pageInfo.handRow.userid,
+                userId: pageInfo.handRow.userId,
                 status: 1
             }
             $.ajax({
