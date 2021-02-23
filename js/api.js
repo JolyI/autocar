@@ -21,6 +21,9 @@ const _apiInfoList = baseUrl + '/info/list'
 const _apiInfoSave = baseUrl + '/info/save'
 const _apiInfoUpdate = baseUrl + '/info/update'
 const _apiInfoDelete = baseUrl + '/info/'
+
+
+// ===============审核管理===================
 const _apiInfoReviewList = baseUrl + '/review/list'
 const _apiInfoReviewUpdate = baseUrl + '/review/update'
 const _apiInfoReviewSave = baseUrl + '/review/save'

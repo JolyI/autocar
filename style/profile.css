@@ -118,6 +118,7 @@
 .wrapper .main-container .system-box .add-wrapper,
 .wrapper .main-container .car-box .add-wrapper,
 .wrapper .main-container .articl-box .add-wrapper,
+.wrapper .main-container .review-box .add-wrapper,
 .wrapper .main-container .user-box .add-wrapper {
   margin: 0 0 20px 0;
   text-align: right;
@@ -125,6 +126,7 @@
 .wrapper .main-container .system-box .card,
 .wrapper .main-container .car-box .card,
 .wrapper .main-container .articl-box .card,
+.wrapper .main-container .review-box .card,
 .wrapper .main-container .user-box .card {
   max-height: 70vh;
   overflow: auto;
@@ -133,12 +135,14 @@
 .wrapper .main-container .system-box .card table,
 .wrapper .main-container .car-box .card table,
 .wrapper .main-container .articl-box .card table,
+.wrapper .main-container .review-box .card table,
 .wrapper .main-container .user-box .card table {
   width: 100%;
 }
 .wrapper .main-container .system-box .card .ellipis-3,
 .wrapper .main-container .car-box .card .ellipis-3,
 .wrapper .main-container .articl-box .card .ellipis-3,
+.wrapper .main-container .review-box .card .ellipis-3,
 .wrapper .main-container .user-box .card .ellipis-3 {
   display: -webkit-box;
   -webkit-box-orient: vertical;

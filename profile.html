@@ -92,8 +92,12 @@
                 <i class="icon icon-flag"></i> <span>车队管理</span>
                 <i class="icon icon-left"></i>
             </li>
-            <li class="slide-item slide-admin hide" data-page="articl-box">
+            <!-- <li class="slide-item slide-admin hide" data-page="articl-box">
                 <i class="icon icon-book"></i> <span>首页管理</span>
+                <i class="icon icon-left"></i>
+            </li> -->
+            <li class="slide-item slide-admin hide" data-page="review-box">
+                <i class="icon icon-toggle-on"></i> <span>车队审核管理</span>
                 <i class="icon icon-left"></i>
             </li>
         </ul>
@@ -257,6 +261,21 @@
                             <th width="100px">创建人</th>
                             <th width="120px">创建时间</th>
                             <th width="80px">操作</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- 车队管理 admin权限 -->
+            <div class="review-box main-item main-admin hide">
+                <div class="card">
+                    <table class="table table-striped table-bordered" align="center" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <th width="100px">申请人</th>
+                            <th width="120px">申请类型</th>
+                            <th>申请时间</th>
+                            <th>操作</th>
                         </thead>
                         <tbody>
                         </tbody>
@@ -589,6 +608,7 @@
     <script>
         // 页面事件 参数  类似vue-data写法
         var pageInfo = {
+            userInfo: null,
             handleType: null,
             handRow: null, // 当前操作行数据
             taskList: null, // 任务管理
@@ -597,6 +617,7 @@
             articlList: null, // 文章管理 
             myTaskList: null, //我的任务
             reViewList: null, //审核列表
+            reviewMine: null, // 我的审核列表
             map_user: {},
             map_team: {},
             map_task: {},
@@ -616,7 +637,6 @@
         function init() {
             isLogin()
             getUserInfo()
-            getAllList()
             initSlide();
             eventListener();
         }
@@ -632,9 +652,11 @@
                     withCredentials: true
                 },
                 crossDomain: true,
+                async: true,
                 success: function(data) {
                     localStorage.setItem('userInfo', data)
                     localStorage.setItem('role', data.superAdmin)
+                    pageInfo.userInfo = data
                     $('.personal-box #username').html(data.username)
                     $('.personal-box #realname').html(data.realName)
                     $('.personal-box #phone').html(data.phone)
@@ -643,13 +665,14 @@
                     $('.personal-box #specialty').html(data.specialty)
                         // 根据权限 决定是否展示 左侧菜单内容
                         // 超级管理员？
-                    if (data.superAdmin) {
-                        $('.wrapper .slide-container').find('.slide-admin').removeClass('hide')
-                    } else {
-                        $('.wrapper .slide-container').find('.slide-admin').addClass('hide')
-                        $('.wrapper .slide-container').find('.slide-admin').remove()
-                        $('.wrapper .main-container').find('.main-admin').remove()
-                    }
+                        // if (data.superAdmin) {
+                    $('.wrapper .slide-container').find('.slide-admin').removeClass('hide')
+                        // } else {
+                        //     $('.wrapper .slide-container').find('.slide-admin').addClass('hide')
+                        //     $('.wrapper .slide-container').find('.slide-admin').remove()
+                        //     $('.wrapper .main-container').find('.main-admin').remove()
+                        // }
+                    getAllList()
                 },
                 error: function() {
 
@@ -769,7 +792,9 @@
                 userdomStr = '',
                 userData = pageInfo.userList,
                 articldomStr = '',
-                articlData = pageInfo.articlList;
+                articlData = pageInfo.articlList,
+                reviewData = pageInfo.reViewList,
+                revierwdomStr = '';
 
             // 构建map映射
             // 用户id-名称
@@ -913,18 +938,16 @@
             // 车队列表
             if (teamData && teamData.length) {
                 for (let i = 0; i < teamData.length; i++) {
-                    console.log(pageInfo.reViewList)
-                    var reviewid = -1,
-                        btnStr = ' <button class="btn btn-info plan_btn" style="margin-top:10px" data-index="' + i +
+                    btnStr = ' <button class="btn btn-info plan_btn" style="margin-top:10px" data-id="' + teamData[i].id +
                         '" onclick="joinTeamModal(this)">' +
                         ' <i class="icon icon-hand-left"></i>加入' +
                         '</button>'
-                    if (pageInfo.reViewList && pageInfo.reViewList.length) {
-                        reviewid = pageInfo.reViewList[0].teamId
-                        if (reviewid == teamData[i].id) {
+                        // 判断有加入车队
+                    if (pageInfo.userInfo && pageInfo.userInfo.teamId) {
+                        if (pageInfo.userInfo.teamId == teamData[i].id) {
                             btnStr = '</button>' +
-                                ' <button class="btn btn-warning plan_btn" style="margin-top:10px" data-index="' + i +
-                                '" onclick="joinTeamModal(this)">' +
+                                ' <button class="btn btn-warning plan_btn" style="margin-top:10px" data-id="' + teamData[i].id +
+                                '" onclick="quitTeamModal(this)">' +
                                 ' <i class="icon icon-hand-right"></i>退出' +
                                 '  </button>'
                         }
@@ -949,6 +972,7 @@
                         '    </td>' +
                         '</tr>'
                 }
+                $('.car-box table tbody').html('')
                 $('.car-box table tbody').html(teamdomStr)
             } else {
                 $('.car-box table tbody').html('<tr><td colspan="6" align="center">暂无数据</td></tr>')
@@ -980,6 +1004,49 @@
                 $('.articl-box table tbody').html(articldomStr)
             } else {
                 $('.articl-box table tbody').html('<tr><td colspan="6" align="center">暂无数据</td></tr>')
+            }
+            // 审核列表
+            // 找出属于“我”审核的数据
+            if (reviewData && reviewData.length) {
+                // 找出 属于我的车队
+                var teamMineId = null
+                if (teamData && teamData.length) {
+                    for (var ti = 0; ti < teamData.length; ti++) {
+                        if (teamData[ti].captain == pageInfo.userInfo.id) {
+                            teamMineId = teamData[ti].id
+                        }
+                    }
+                }
+                // 找出属于我审核的列表
+                var reviewMine = []
+                for (var ri = 0; ri < reviewData.length; ri++) {
+                    if (reviewData[ri].teamId == teamMineId && reviewData[ri].status == 0) {
+                        reviewMine.push(reviewData[ri])
+                    }
+                }
+                pageInfo.reViewMine = reviewMine
+                if (reviewMine.length) {
+                    for (let i = 0; i < reviewMine.length; i++) {
+                        revierwdomStr += '<tr>' +
+                            '                <td>' + map_user[reviewMine[i].userId] + '</td>' +
+                            '                <td>' + (reviewMine[i].type ? '加入车队' : '退出车队') + '</td>' +
+                            '                <td>' + reviewMine[i].createTime + '</td>' +
+                            '               <td>' +
+                            '                    <button class="btn btn-danger plan_btn" data-id="' + reviewMine[i].id + '" data-teamid="' + reviewMine[i].teamId + '" data-type="' + reviewMine[i].type + '" data-userid="' + reviewMine[i].userId +
+                            '" onclick="refuseReviewModal(this)">' +
+                            '                        <i class="icon icon-times"></i>不通过' +
+                            '                    </button>' +
+                            '            <button class="btn btn-primary plan_btn" style="margin-left:10px"  data-id="' + reviewMine[i].id + '" data-teamid="' + reviewMine[i].teamId + '" data-type="' + reviewMine[i].type + '" data-userid="' + reviewMine[i].userId +
+                            '" onclick="passReviewModal(this)">' +
+                            '                <i class="icon icon-check"></i>通过' +
+                            '        </button>'
+                        '    </td>' +
+                        '</tr>'
+                    }
+                    $('.review-box table tbody').html(revierwdomStr)
+                } else {
+                    $('.review-box table tbody').html('<tr><td colspan="5" align="center">暂无数据</td></tr>')
+                }
             }
         }
 
@@ -1265,6 +1332,14 @@
                 case 'QUITTEAM':
                     // 退出车队
                     handleQuitTeam($btn, pageInfo.handRow.id)
+                    break;
+                case 'REFUSEREVIEW':
+                    // 审核拒绝
+                    handleRefuseReview($btn, pageInfo.handRow.id)
+                    break;
+                case 'PASSREVIEW':
+                    // 审核通过
+                    handlePassReview($btn, pageInfo.handRow.id)
                     break;
 
                 default:
@@ -1774,15 +1849,19 @@
 
         // 加入车队 弹窗
         function joinTeamModal(e) {
-            const index = $(e).attr('data-index')
-            console.log(pageInfo.teamList[index])
-            console.log(pageInfo.reViewList)
-            if () {
-
+            if (pageInfo.userInfo && pageInfo.userInfo.teamId) {
+                showToast({
+                    msg: '您已加入其他车队，不能重复加入！',
+                    icon: 'times',
+                    type: 'danger'
+                })
+                return
             }
-            return
-            pageInfo.handRow = pageInfo.teamList[index]
-            $('#confirm_Modal #confirm_Modal_title').html('是否加入车队《' + pageInfo.handRow.name + '》?')
+            const id = $(e).attr('data-id')
+            pageInfo.handRow = {
+                id: id
+            }
+            $('#confirm_Modal #confirm_Modal_title').html('是否加入车队?')
             pageInfo.handleType = 'JOINTEAM'
             $('#confirm_Modal').modal()
         }
@@ -1795,6 +1874,7 @@
                 status: 0,
                 userId: localStorage.getItem('userid')
             }
+            console.log('加入车队', params)
             $.ajax({
                 type: 'POST',
                 url: _apiInfoReviewSave,
@@ -1809,14 +1889,14 @@
                     $btn.button("reset");
                     if (data) {
                         showToast({
-                                msg: '加入成功！',
+                                msg: '已提交申请，等待车队队长审核！',
                                 icon: 'check',
                                 type: 'success'
                             })
                             // 刷新列表
                         pageInfo.handRow = null
                         pageInfo.handleType = null
-                        getAllList()
+                        getUserInfo()
                         $('#confirm_Modal').modal('hide')
                     } else {
                         showToast({
@@ -1841,18 +1921,28 @@
 
         // 退出车队 弹窗
         function quitTeamModal(e) {
-            const index = $(e).attr('data-index')
-            pageInfo.handRow = pageInfo.teamList[index]
-            $('#confirm_Modal #confirm_Modal_title').html('是否退出车队《' + pageInfo.handRow.name + '》?')
+            const index = $(e).attr('data-id')
+            pageInfo.handRow = {
+                id: index
+            }
+            $('#confirm_Modal #confirm_Modal_title').html('是否退出车队?')
             pageInfo.handleType = 'QUITTEAM'
             $('#confirm_Modal').modal()
         }
 
         // 退出车队 业务事件
         function handleQuitTeam($btn, id) {
+            var params = {
+                type: 1,
+                teamId: id,
+                status: 0,
+                type: 2,
+                userId: localStorage.getItem('userid')
+            }
             $.ajax({
-                type: 'DELETE',
-                url: _apiTeamDelete + id,
+                type: 'POST',
+                url: _apiInfoReviewSave,
+                data: JSON.stringify(params),
                 contentType: "application/json",
                 dataType: 'json',
                 xhrFields: {
@@ -1863,18 +1953,18 @@
                     $btn.button("reset");
                     if (data) {
                         showToast({
-                                msg: '退出成功！',
+                                msg: '已提交申请，等待车队队长审核！',
                                 icon: 'check',
                                 type: 'success'
                             })
                             // 刷新列表
                         pageInfo.handRow = null
                         pageInfo.handleType = null
-                        getAllList()
+                        getUserInfo()
                         $('#confirm_Modal').modal('hide')
                     } else {
                         showToast({
-                            msg: '退出失败！' + data,
+                            msg: '加入失败！' + data,
                             icon: 'info',
                             type: 'danger'
                         })
@@ -1884,13 +1974,12 @@
                     const data = JSON.parse(e.responseText)
                     $btn.button("reset");
                     showToast({
-                        msg: '退出失败！',
+                        msg: data || '加入失败！',
                         icon: 'times',
                         type: 'danger'
                     })
                 }
             })
-
 
         }
 
@@ -2080,9 +2169,6 @@
                     })
                 }
             })
-
-
-
         }
 
         // 首页弹窗里icon  url 赋值初始化
@@ -2112,6 +2198,144 @@
                             </div>`
                 $('#articlModal #modal_articl_form').append(domStr)
             }
+        }
+
+
+        // 审核不通过
+        function refuseReviewModal(e) {
+            const _id = $(e).attr('data-id')
+            const _teamId = $(e).attr('data-teamid')
+            const _type = $(e).attr('data-type')
+            const _userId = $(e).attr('data-userid')
+            pageInfo.handRow = {
+                id: _id,
+                teamId: _teamId,
+                type: _type,
+                userId: _userId,
+            }
+            $('#confirm_Modal #confirm_Modal_title').html('确认不通过？ ')
+            pageInfo.handleType = 'REFUSEREVIEW'
+            $('#confirm_Modal').modal()
+        }
+        // 审核不通过 业务事件
+        function handleRefuseReview($btn, id) {
+            $btn.button("loading");
+            var params = {
+                id: pageInfo.handRow.id,
+                teamId: pageInfo.handRow.teamid,
+                type: pageInfo.handRow.type,
+                userId: pageInfo.handRow.userid,
+                status: 2
+            }
+            $.ajax({
+                type: 'PUT',
+                url: _apiInfoReviewUpdate,
+                data: JSON.stringify(params),
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    $btn.button("reset");
+                    if (data) {
+                        showToast({
+                                msg: '操作成功！',
+                                icon: 'check',
+                                type: 'success'
+                            })
+                            // 刷新列表
+                        getUserInfo()
+                        $('#confirm_Modal').modal('hide')
+                    } else {
+                        showToast({
+                            msg: '操作失败！' + data,
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: '操作失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+
+
+        }
+        // 审核通过
+        function passReviewModal(e) {
+            const _id = $(e).attr('data-id')
+            const _teamId = $(e).attr('data-teamid')
+            const _type = $(e).attr('data-type')
+            const _userId = $(e).attr('data-userid')
+            pageInfo.handRow = {
+                id: _id,
+                teamId: _teamId,
+                type: _type,
+                userId: _userId,
+            }
+            $('#confirm_Modal #confirm_Modal_title').html('确认通过？ ')
+            pageInfo.handleType = 'PASSREVIEW'
+            $('#confirm_Modal').modal()
+        }
+        // 审核通过 业务事件
+        function handlePassReview($btn, id) {
+            $btn.button("loading");
+            var params = {
+                id: pageInfo.handRow.id,
+                teamId: pageInfo.handRow.teamid,
+                type: pageInfo.handRow.type,
+                userId: pageInfo.handRow.userid,
+                status: 1
+            }
+            $.ajax({
+                type: 'PUT',
+                url: _apiInfoReviewUpdate,
+                data: JSON.stringify(params),
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    $btn.button("reset");
+                    if (data) {
+                        showToast({
+                                msg: '操作成功！',
+                                icon: 'check',
+                                type: 'success'
+                            })
+                            // 刷新列表
+                        getUserInfo()
+                        $('#confirm_Modal').modal('hide')
+                    } else {
+                        showToast({
+                            msg: '操作失败！' + data,
+                            icon: 'info',
+                            type: 'danger'
+                        })
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    $btn.button("reset");
+                    showToast({
+                        msg: '操作失败！',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
+
+
         }
     </script>
 </body>
