@@ -229,13 +229,13 @@
                     $('.personal-box #specialty').html(data.specialty)
                         // 根据权限 决定是否展示 左侧菜单内容
                         // 超级管理员？
-                    if (data.superAdmin) {
-                        $('.wrapper .slide-container').find('.slide-admin').removeClass('hide')
-                    } else {
-                        $('.wrapper .slide-container').find('.slide-admin').addClass('hide')
-                        $('.wrapper .slide-container').find('.slide-admin').remove()
-                        $('.wrapper .main-container').find('.main-admin').remove()
-                    }
+                    $('.wrapper .slide-container').find('.slide-admin').removeClass('hide')
+                        // if (data.superAdmin) {
+                        // } else {
+                        //     $('.wrapper .slide-container').find('.slide-admin').addClass('hide')
+                        //     $('.wrapper .slide-container').find('.slide-admin').remove()
+                        //     $('.wrapper .main-container').find('.main-admin').remove()
+                        // }
                 },
                 error: function() {
 
