@@ -15,6 +15,9 @@ const _apiTeamUpdate = baseUrl + '/team/update'
 const _apiTeamSave = baseUrl + '/team/save'
     // 删除车队
 const _apiTeamDelete = baseUrl + '/team/'
+    // 查询车队成员
+const _apiTeamUser = baseUrl + '/user/listByTeamId'
+
 
 // ===============信息管理===================
 const _apiInfoList = baseUrl + '/info/list'

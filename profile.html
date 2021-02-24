@@ -618,6 +618,7 @@
             myTaskList: null, //我的任务
             reViewList: null, //审核列表
             reviewMine: null, // 我的审核列表
+            teamUsers: null, // 我的车队成员
             map_user: {},
             map_team: {},
             map_task: {},
@@ -663,15 +664,10 @@
                     $('.personal-box #create_time').html(data.createTime)
                     $('.personal-box #awardInfo').html(data.awardInfo)
                     $('.personal-box #specialty').html(data.specialty)
-                        // 根据权限 决定是否展示 左侧菜单内容
-                        // 超级管理员？
-                        // if (data.superAdmin) {
                     $('.wrapper .slide-container').find('.slide-admin').removeClass('hide')
-                        // } else {
-                        //     $('.wrapper .slide-container').find('.slide-admin').addClass('hide')
-                        //     $('.wrapper .slide-container').find('.slide-admin').remove()
-                        //     $('.wrapper .main-container').find('.main-admin').remove()
-                        // }
+                    if (!data.teamId) {
+                        $('.wrapper .slide-container').find('.slide-item[data-page="system-box"]').addClass('hide')
+                    }
                     getAllList()
                 },
                 error: function() {
@@ -692,6 +688,9 @@
                     xhrFields: {
                         withCredentials: true
                     },
+                    beforeSend: function(request) {
+                        request.setRequestHeader("userId", localStorage.getItem('userid'));
+                    },
                     crossDomain: true,
                     async: true,
                     success: function(userData) {
@@ -704,6 +703,9 @@
                             dataType: 'json',
                             xhrFields: {
                                 withCredentials: true
+                            },
+                            beforeSend: function(request) {
+                                request.setRequestHeader("userId", localStorage.getItem('userid'));
                             },
                             crossDomain: true,
                             async: true,
@@ -718,6 +720,9 @@
                                     xhrFields: {
                                         withCredentials: true
                                     },
+                                    beforeSend: function(request) {
+                                        request.setRequestHeader("userId", localStorage.getItem('userid'));
+                                    },
                                     crossDomain: true,
                                     success: function(reviewData) {
                                         pageInfo.reViewList = reviewData
@@ -729,6 +734,9 @@
                                             dataType: 'json',
                                             xhrFields: {
                                                 withCredentials: true
+                                            },
+                                            beforeSend: function(request) {
+                                                request.setRequestHeader("userId", localStorage.getItem('userid'));
                                             },
                                             crossDomain: true,
                                             async: true,
@@ -742,6 +750,9 @@
                                                     dataType: 'json',
                                                     xhrFields: {
                                                         withCredentials: true
+                                                    },
+                                                    beforeSend: function(request) {
+                                                        request.setRequestHeader("userId", localStorage.getItem('userid'));
                                                     },
                                                     crossDomain: true,
                                                     async: true,
@@ -794,7 +805,8 @@
                 articldomStr = '',
                 articlData = pageInfo.articlList,
                 reviewData = pageInfo.reViewList,
-                revierwdomStr = '';
+                revierwdomStr = '',
+                teamBtnStr = '';
 
             // 构建map映射
             // 用户id-名称
@@ -946,13 +958,24 @@
                             // 判断有加入车队
                         if (pageInfo.userInfo && pageInfo.userInfo.teamId) {
                             if (pageInfo.userInfo.teamId == teamData[i].id) {
-                                btnStr = '</button>' +
-                                    ' <button class="btn btn-warning plan_btn" style="margin-top:10px" data-id="' + teamData[i].id +
+                                btnStr = ' <button class="btn btn-warning plan_btn" style="margin-top:10px" data-id="' + teamData[i].id +
                                     '" onclick="quitTeamModal(this)">' +
                                     ' <i class="icon icon-hand-right"></i>退出' +
                                     '  </button>'
                             }
                         }
+                    }
+                    // 判断是属于我的车队 
+                    if (teamData[i].captain == pageInfo.userInfo.id) {
+                        teamBtnStr = '                    <button class="btn btn-danger plan_btn" data-index="' + i +
+                            '" onclick="deleteTeamModal(this)">' +
+                            '                        <i class="icon icon-times"></i>删除' +
+                            '                    </button>' +
+                            '<button class="btn btn-primary plan_btn" style="margin-top:10px" data-index="' +
+                            i +
+                            '" onclick="showTeamModal(this)">' +
+                            '                <i class="icon icon-repeat"></i>编辑' +
+                            '        </button>'
                     }
                     teamdomStr += '<tr>' +
                         '                <td>' + teamData[i].name + '</td>' +
@@ -960,20 +983,14 @@
                         '                <td>' + teamData[i].content + '</td>' +
                         '                <td>' + map_user[teamData[i].createUser] + '</td>' +
                         '                <td>' + teamData[i].createTime + '</td>' +
-                        '               <td>' +
-                        '                    <button class="btn btn-danger plan_btn" data-index="' + i +
-                        '" onclick="deleteTeamModal(this)">' +
-                        '                        <i class="icon icon-times"></i>删除' +
-                        '                    </button>' +
-                        '            <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index="' +
-                        i +
-                        '" onclick="showTeamModal(this)">' +
-                        '                <i class="icon icon-repeat"></i>编辑' +
-                        '        </button>' + btnStr +
+                        '               <td>' + teamBtnStr +
+                        btnStr +
                         '    </td>' +
                         '</tr>';
 
                     btnStr = ''
+                    teamBtnStr = ''
+                    console.log(btnStr)
                 }
                 $('.car-box table tbody').html('')
                 $('.car-box table tbody').html(teamdomStr)
@@ -1077,6 +1094,7 @@
                 var targetBox = $target.attr("data-page");
                 // 展示对应的
                 $(`.${targetBox}`).removeClass("hide").siblings().addClass("hide");
+                getUserInfo()
             });
             // 首页弹窗 类型选择
             $('#articlModal #articl_form_type').change(function() {
@@ -1094,61 +1112,127 @@
             const index = $(e).attr('data-index')
             pageInfo.handRow = pageInfo.taskList[index]
             htmlTask2(pageInfo.taskList[index].status)
-            htmlTaskOption()
-                // console.log(pageInfo.handRow)
-            $('#planModal #modal_task_title').html('编辑任务')
-            $('#planModal  #task_form_title').val(pageInfo.handRow.title)
-            $('#planModal  #task_form_content').val(pageInfo.handRow.content)
-            $('#planModal  #task_form_status').val(pageInfo.handRow.status)
-            $('#planModal  #task_form_userId').val(pageInfo.handRow.userId)
-            $('#planModal  #task_form_teamId').val(pageInfo.handRow.teamId)
+
+            $.ajax({
+                type: 'GET',
+                url: _apiTeamUser + '?teamId=' + pageInfo.userInfo.teamId,
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    pageInfo.teamUsers = data
+                    htmlTaskOption()
+                        // console.log(pageInfo.handRow)
+                    $('#planModal #modal_task_title').html('编辑任务')
+                    $('#planModal  #task_form_title').val(pageInfo.handRow.title)
+                    $('#planModal  #task_form_content').val(pageInfo.handRow.content)
+                    $('#planModal  #task_form_status').val(pageInfo.handRow.status)
+                    $('#planModal  #task_form_userId').val(pageInfo.handRow.userId)
+                    $('#planModal  #task_form_teamId').val(pageInfo.handRow.teamId)
 
 
-            $('#planModal  #task_form_title').removeAttr('disabled')
-            $('#planModal  #task_form_content').removeAttr('disabled')
-            $('#planModal  #task_form_status').removeAttr('disabled')
-            $('#planModal  #task_form_userId').removeAttr('disabled')
-            $('#planModal  #task_form_teamId').removeAttr('disabled')
+                    $('#planModal  #task_form_title').removeAttr('disabled')
+                    $('#planModal  #task_form_content').removeAttr('disabled')
+                    $('#planModal  #task_form_status').removeAttr('disabled')
+                    $('#planModal  #task_form_userId').removeAttr('disabled')
+                    $('#planModal  #task_form_teamId').removeAttr('disabled')
 
-            pageInfo.handleType = 'EDITTASK'
-            $('#planModal').modal()
+                    pageInfo.handleType = 'EDITTASK'
+                    $('#planModal').modal()
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    showToast({
+                        msg: '数据请求失败',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
         }
         // 编辑我的任务
         function showMyTaskMdoal(e) {
             const index = $(e).attr('data-index')
             pageInfo.handRow = pageInfo.myTaskList[index]
             htmlTask2(pageInfo.taskList[index].status)
-            htmlTaskOption()
-                // console.log(pageInfo.handRow)
-            $('#planModal #modal_task_title').html('编辑任务')
-            $('#planModal  #task_form_title').val(pageInfo.handRow.title)
-            $('#planModal  #task_form_content').val(pageInfo.handRow.content)
-            $('#planModal  #task_form_status').val(pageInfo.handRow.status)
-            $('#planModal  #task_form_userId').val(pageInfo.handRow.userId)
-            $('#planModal  #task_form_teamId').val(pageInfo.handRow.teamId)
+            $.ajax({
+                type: 'GET',
+                url: _apiTeamUser + '?teamId=' + pageInfo.userInfo.teamId,
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    pageInfo.teamUsers = data
+                    htmlTaskOption()
+                        // console.log(pageInfo.handRow)
+                    $('#planModal #modal_task_title').html('编辑任务')
+                    $('#planModal  #task_form_title').val(pageInfo.handRow.title)
+                    $('#planModal  #task_form_content').val(pageInfo.handRow.content)
+                    $('#planModal  #task_form_status').val(pageInfo.handRow.status)
+                    $('#planModal  #task_form_userId').val(pageInfo.handRow.userId)
+                    $('#planModal  #task_form_teamId').val(pageInfo.handRow.teamId)
 
-            $('#planModal  #task_form_title').attr('disabled', 'disabled')
-            $('#planModal  #task_form_content').attr('disabled', 'disabled')
-            $('#planModal  #task_form_userId').attr('disabled', 'disabled')
-            $('#planModal  #task_form_teamId').attr('disabled', 'disabled')
-            pageInfo.handleType = 'EDITTASK'
-                // 进行禁用
+                    $('#planModal  #task_form_title').attr('disabled', 'disabled')
+                    $('#planModal  #task_form_content').attr('disabled', 'disabled')
+                    $('#planModal  #task_form_userId').attr('disabled', 'disabled')
+                    $('#planModal  #task_form_teamId').attr('disabled', 'disabled')
+                    pageInfo.handleType = 'EDITTASK'
+                        // 进行禁用
 
-            $('#planModal').modal()
+                    $('#planModal').modal()
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    showToast({
+                        msg: '数据请求失败',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
 
         }
 
         // 添加任务
         function showAddTaskModal() {
-            htmlTask2(1)
-            htmlTaskOption()
-            $('#planModal #modal_task_title').html('添加任务')
-            $('#planModal  #task_form_title').val('')
-            $('#planModal  #task_form_content').val('')
-            $('#planModal  #userId').val('')
-            $('#planModal  #task_form_status').val('')
-            pageInfo.handleType = 'ADDTASK'
-            $('#planModal').modal()
+
+            // ajax 车队成员
+            $.ajax({
+                type: 'GET',
+                url: _apiTeamUser + '?teamId=' + pageInfo.userInfo.teamId,
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function(data) {
+                    pageInfo.teamUsers = data
+                    htmlTask2(1)
+                    htmlTaskOption()
+                    $('#planModal #modal_task_title').html('添加任务')
+                    $('#planModal  #task_form_title').val('')
+                    $('#planModal  #task_form_content').val('')
+                    $('#planModal  #userId').val('')
+                    $('#planModal  #task_form_status').val('')
+                    pageInfo.handleType = 'ADDTASK'
+                    $('#planModal').modal()
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    showToast({
+                        msg: '数据请求失败',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
         }
         // 删除任务
         function deletTask(e) {
@@ -1244,7 +1328,7 @@
                         pageInfo.handleType = null
                         pageInfo.handRow = null
                             // 刷新列表
-                        getAllList()
+                        getUserInfo()
 
                     } else {
                         showToast({
@@ -1288,7 +1372,7 @@
                                 type: 'success'
                             })
                             // 刷新列表
-                        getAllList()
+                        getUserInfo()
                         $('#confirm_Modal').modal('hide')
                     } else {
                         showToast({
@@ -1356,7 +1440,7 @@
 
         // select option
         function htmlTaskOption() {
-            const data = pageInfo.userList
+            const data = pageInfo.teamUsers
             if (data && data.length) {
                 var domStr = '<option label="请选择用户" value=""></option>'
                 for (let i = 0; i < data.length; i++) {
@@ -1389,6 +1473,10 @@
                 statusStr = ' <option label="已完成" value="3"></option>'
             }
             $("#planModal #task_form_status").html(statusStr)
+        }
+
+        function htmlTeamSelect() {
+
         }
 
         // 编辑 用户弹窗展示
@@ -1553,7 +1641,7 @@
                                 type: 'success'
                             })
                             // 刷新列表
-                        getAllList()
+                        getUserInfo()
                         $('#confirm_Modal').modal('hide')
                     } else {
                         showToast({
@@ -1599,7 +1687,7 @@
                                 type: 'success'
                             })
                             // 刷新列表
-                        getAllList()
+                        getUserInfo()
                         $('#userModal').modal('hide')
                     } else {
                         showToast({
@@ -1646,7 +1734,7 @@
                                 type: 'success'
                             })
                             // 刷新列表
-                        getAllList()
+                        getUserInfo()
                         $('#userAddModal').modal('hide')
                     } else {
                         showToast({
@@ -1782,7 +1870,7 @@
                             // 刷新列表
                         pageInfo.handleType = null
                         pageInfo.handRow = null
-                        getAllList()
+                        getUserInfo()
                         $('#teamModal').modal('hide')
                     } else {
                         showToast({
@@ -1796,7 +1884,7 @@
                     const data = JSON.parse(e.responseText)
                     $btn.button("reset");
                     showToast({
-                        msg: msg + '失败！',
+                        msg: data.message || '失败！',
                         icon: 'times',
                         type: 'danger'
                     })
@@ -1835,7 +1923,7 @@
                             // 刷新列表
                         pageInfo.handRow = null
                         pageInfo.handleType = null
-                        getAllList()
+                        getUserInfo()
                         $('#confirm_Modal').modal('hide')
                     } else {
                         showToast({
@@ -2119,7 +2207,7 @@
                         pageInfo.handleType = null
                         pageInfo.handRow = null
                             // 刷新列表
-                        getAllList()
+                        getUserInfo()
                     } else {
                         showToast({
                             msg: msg + '失败！' + data,
@@ -2172,7 +2260,7 @@
                             // 刷新列表
                         pageInfo.handRow = null
                         pageInfo.handleType = null
-                        getAllList()
+                        getUserInfo()
                         $('#confirm_Modal').modal('hide')
                     } else {
                         showToast({
