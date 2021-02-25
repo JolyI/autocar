@@ -97,7 +97,7 @@
                 <i class="icon icon-left"></i>
             </li> -->
             <li class="slide-item slide-admin hide" data-page="review-box">
-                <i class="icon icon-toggle-on"></i> <span>车队审核管理</span>
+                <i class="icon icon-toggle-on"></i> <span>入队审核</span>
                 <i class="icon icon-left"></i>
             </li>
         </ul>
@@ -920,14 +920,23 @@
             // 我的任务
             if (myTaskList && myTaskList.length) {
                 var mytaskdomStr = ''
+                var mytaskBtnStr = ''
                 for (let i = 0; i < myTaskList.length; i++) {
                     let mystatus = '',
                         mystatusStr = ''
                     if (myTaskList[i].status == 1) {
                         mystatusStr = '<span class="label label-warning">待开始</span>'
+                        mytaskBtnStr = '<button class="btn btn-primary plan_btn" style="margin-top:10px" data-index=' + i +
+                            ' onclick="showMyTaskMdoal(this)">' +
+                            '           <i class="icon icon-edit-sign"></i>更新进度' +
+                            '   </button>';
                     }
                     if (myTaskList[i].status == 2) {
                         mystatusStr = '<span class="label label-info">进行中</span>'
+                        mytaskBtnStr = '<button class="btn btn-primary plan_btn" style="margin-top:10px" data-index=' + i +
+                            ' onclick="showMyTaskMdoal(this)">' +
+                            '           <i class="icon icon-edit-sign"></i>更新进度' +
+                            '   </button>'
                     }
                     if (myTaskList[i].status == 3) {
                         mystatusStr = '<span class="label label-success">已完成</span>'
@@ -942,10 +951,7 @@
                         '           <td>' + myTaskList[i].createTime + '</td>' +
                         '           <td>' + mystatusStr + '</td>' +
                         '           <td>' +
-                        '       <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index=' + i +
-                        ' onclick="showMyTaskMdoal(this)">' +
-                        '           <i class="icon icon-edit-sign"></i>更新进度' +
-                        '   </button>' +
+                        mytaskBtnStr +
                         '</td>' +
                         '</tr>'
                 }
