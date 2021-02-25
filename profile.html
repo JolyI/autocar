@@ -119,8 +119,9 @@
                         <span class="desc" id="phone">-</span>
                     </div>
                     <div class="user-item">
-                        <span class="user-label">更新时间：</span>
-                        <span class="desc" id="create_time">-</span>
+                        <span class="user-label">所属车队：</span>
+                        <span class="desc" id="team">-</span>
+                        <span class="desc hide" id="isteam" style="color:#666;font-size:14px"><i class="icon icon-star" style="color:red;font-size:20px;margin-right:5px"></i>队长</span>
                     </div>
                     <div class="user-item">
                         <span class="user-label">获奖信息：</span>
@@ -129,6 +130,10 @@
                     <div class="user-item">
                         <span class="user-label">特长：</span>
                         <span class="desc" id="specialty">-</span>
+                    </div>
+                    <div class="user-item">
+                        <span class="user-label">更新时间：</span>
+                        <span class="desc" id="create_time">-</span>
                     </div>
                 </div>
             </div>
@@ -835,6 +840,7 @@
             pageInfo.map_user = map_user
             pageInfo.map_team = map_team
             pageInfo.map_task = map_task
+            $('.personal-box #team').html(map_team[pageInfo.userInfo.teamId])
                 // 找出 我的任务 
             var myTaskList = []
                 // 用户列表
@@ -965,6 +971,7 @@
                                     '  </button>'
                             }
                         }
+                        $('.personal-box #isteam').addClass('hide')
                     }
                     // 判断是属于我的车队 
                     if (teamData[i].captain == pageInfo.userInfo.id) {
@@ -976,7 +983,10 @@
                             i +
                             '" onclick="showTeamModal(this)">' +
                             '                <i class="icon icon-repeat"></i>编辑' +
-                            '        </button>'
+                            '        </button>';
+
+                        // 加个队长标记
+                        $('.personal-box #isteam').removeClass('hide')
                     }
                     teamdomStr += '<tr>' +
                         '                <td>' + teamData[i].name + '</td>' +
