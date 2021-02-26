@@ -216,9 +216,13 @@
             <div class="car-box main-item main-admin hide">
                 <div class="card">
                     <div class="add-wrapper">
-                        <button class="btn btn-success btn-mini" onclick="addTeamModal()">
+                        <button id="addTeamBtn" class="btn btn-success btn-mini hide" onclick="addTeamModal()">
                             <i class="icon icon-plus"></i>
                             新建车队
+                        </button>
+                        <button id="seeTeamListBtn" class="btn btn-success btn-mini hide" onclick="seeTeamListModal()">
+                            <i class="icon icon-eye-open"></i>
+                            查看车队成员
                         </button>
                     </div>
                     <table class="table table-striped table-bordered" align="center" cellspacing="0" cellpadding="0">
@@ -588,24 +592,39 @@
                                 </select>
                             </div>
                         </div>
-                        <!-- <div class="form-group articl_form_group_icon">
-                            <label for="articl_form_icon" class="col-sm-2">图片地址</label>
-                            <div class="col-sm-10">
-                                <input name="icon" id="articl_form_icon" type="text" class="form-control" placeholder="请输入图片地址"></input>
-                            </div>
-                        </div>
-                        <div class="form-group articl_form_group_url">
-                            <label for="articl_form_url" class="col-sm-2">链接url</label>
-                            <div class="col-sm-10">
-                                <input name="url" id="articl_form_url" type="text" class="form-control" placeholder="请输入链接url"></input>
-                            </div>
-                        </div> -->
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-primary" onclick="editArticlModalSubmit(this)">确定</button>
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- 对话框 车队成员 -->
+    <div id="teamListModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">关闭</span></button>
+                    <h4 id="modal_articl_title" class="modal-title">车队成员列表</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-bordered" align="center" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <th width="100px">账号</th>
+                            <th width="100px">真实姓名</th>
+                            <th width="100px">电话</th>
+                            <th width="100px">角色</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭弹窗</button>
+                </div> -->
             </div>
         </div>
     </div>
@@ -667,11 +686,16 @@
                     $('.personal-box #realname').html(data.realName)
                     $('.personal-box #phone').html(data.phone)
                     $('.personal-box #create_time').html(data.createTime)
-                    $('.personal-box #awardInfo').html(data.awardInfo)
-                    $('.personal-box #specialty').html(data.specialty)
+                    $('.personal-box #awardInfo').html(data.awardInfo ? data.awardInfo : '-')
+                    $('.personal-box #specialty').html(data.specialty ? data.specialty : '-')
                     $('.wrapper .slide-container').find('.slide-admin').removeClass('hide')
                     if (!data.teamId) {
                         $('.wrapper .slide-container').find('.slide-item[data-page="system-box"]').addClass('hide')
+                        $('.car-box #addTeamBtn').show()
+                        $('.car-box #seeTeamListBtn').hide()
+                    } else {
+                        $('.car-box #addTeamBtn').hide()
+                        $('.car-box #seeTeamListBtn').show()
                     }
                     getAllList()
                 },
@@ -840,7 +864,8 @@
             pageInfo.map_user = map_user
             pageInfo.map_team = map_team
             pageInfo.map_task = map_task
-            $('.personal-box #team').html(map_team[pageInfo.userInfo.teamId])
+            var myTeamStr = map_team[pageInfo.userInfo.teamId] ? map_team[pageInfo.userInfo.teamId] : '-'
+            $('.personal-box #team').html(myTeamStr)
                 // 找出 我的任务 
             var myTaskList = []
                 // 用户列表
@@ -1007,7 +1032,6 @@
 
                     btnStr = ''
                     teamBtnStr = ''
-                    console.log(btnStr)
                 }
                 $('.car-box table tbody').html('')
                 $('.car-box table tbody').html(teamdomStr)
@@ -1962,6 +1986,58 @@
             })
 
 
+        }
+
+        // 查看车队成员列表
+        function seeTeamListModal() {
+            $("#teamListModal .table tbody").html('')
+            $.ajax({
+                type: 'GET',
+                url: _apiUserList + '?teamId=' + pageInfo.userInfo.teamId,
+                contentType: "application/json",
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                beforeSend: function(request) {
+                    request.setRequestHeader("userId", localStorage.getItem('userid'));
+                },
+                crossDomain: true,
+                async: true,
+                success: function(teamuserListdata) {
+                    if (teamuserListdata && teamuserListdata.length) {
+                        var teamUserListStr = '';
+                        var teamList = pageInfo.teamList
+                        for (var tui = 0; tui < teamuserListdata.length; tui++) {
+                            var isCaptain = false;
+                            // 找出这个车队
+                            if (teamList && teamList.length) {
+                                for (var tti = 0; tti < teamList.length; tti++) {
+                                    if (teamList[tti].captain == teamuserListdata[tui].id) {
+                                        // 是这个车队的队长
+                                        isCaptain = true
+                                    }
+                                }
+                            }
+                            teamUserListStr += '<tr>' +
+                                '<td>' + teamuserListdata[tui].username + '</td>' +
+                                '<td>' + teamuserListdata[tui].realName + '</td>' +
+                                '<td>' + teamuserListdata[tui].phone + '</td>' +
+                                '<td>' + (isCaptain ? '队长' : '队员') + '</td>'
+                        }
+                        $("#teamListModal .table tbody").html(teamUserListStr)
+                        $("#teamListModal").modal()
+                    }
+                },
+                error: function(e) {
+                    const data = JSON.parse(e.responseText)
+                    showToast({
+                        msg: '查看失败',
+                        icon: 'times',
+                        type: 'danger'
+                    })
+                }
+            })
         }
 
         function htmlTeamOption() {
