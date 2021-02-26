@@ -34,7 +34,8 @@ const _apiInfoReviewSave = baseUrl + '/review/save'
 
 // ===============任务管理===================
 const _apitaskList = baseUrl + '/task/list'
-    // 删除任务
+
+// 删除任务
 const _apitaskDelete = baseUrl + '/task/'
     // 添加任务
 const _apitaskAdd = baseUrl + '/task/save'

@@ -203,7 +203,6 @@
         function init() {
             isLogin()
             getUserInfo()
-            getAllList()
             eventListener();
         }
 
@@ -218,24 +217,22 @@
                     withCredentials: true
                 },
                 crossDomain: true,
+                async: true,
                 success: function(data) {
                     localStorage.setItem('userInfo', data)
                     localStorage.setItem('role', data.superAdmin)
+                    pageInfo.userInfo = data
                     $('.personal-box #username').html(data.username)
                     $('.personal-box #realname').html(data.realName)
                     $('.personal-box #phone').html(data.phone)
                     $('.personal-box #create_time').html(data.createTime)
                     $('.personal-box #awardInfo').html(data.awardInfo)
                     $('.personal-box #specialty').html(data.specialty)
-                        // 根据权限 决定是否展示 左侧菜单内容
-                        // 超级管理员？
                     $('.wrapper .slide-container').find('.slide-admin').removeClass('hide')
-                        // if (data.superAdmin) {
-                        // } else {
-                        //     $('.wrapper .slide-container').find('.slide-admin').addClass('hide')
-                        //     $('.wrapper .slide-container').find('.slide-admin').remove()
-                        //     $('.wrapper .main-container').find('.main-admin').remove()
-                        // }
+                    if (!data.teamId) {
+                        $('.wrapper .slide-container').find('.slide-item[data-page="system-box"]').addClass('hide')
+                    }
+                    getAllList()
                 },
                 error: function() {
 
@@ -255,66 +252,36 @@
                     xhrFields: {
                         withCredentials: true
                     },
+                    beforeSend: function(request) {
+                        request.setRequestHeader("userId", localStorage.getItem('userid'));
+                    },
                     crossDomain: true,
                     async: true,
                     success: function(userData) {
                         pageInfo.userList = userData
-                            // 任务列表
+                            // 首页文章列表
                         $.ajax({
                             type: 'GET',
-                            url: _apitaskList,
+                            url: _apiInfoList,
                             contentType: "application/json",
                             dataType: 'json',
                             xhrFields: {
                                 withCredentials: true
                             },
+                            beforeSend: function(request) {
+                                request.setRequestHeader("userId", localStorage.getItem('userid'));
+                            },
                             crossDomain: true,
                             async: true,
-                            success: function(taskData) {
-                                pageInfo.taskList = taskData
-                                    // 车队列表
-                                $.ajax({
-                                    type: 'GET',
-                                    url: _apiTeamList,
-                                    contentType: "application/json",
-                                    dataType: 'json',
-                                    xhrFields: {
-                                        withCredentials: true
-                                    },
-                                    crossDomain: true,
-                                    async: true,
-                                    success: function(teamData) {
-                                        pageInfo.teamList = teamData
-                                            // 首页文章列表
-                                        $.ajax({
-                                            type: 'GET',
-                                            url: _apiInfoList,
-                                            contentType: "application/json",
-                                            dataType: 'json',
-                                            xhrFields: {
-                                                withCredentials: true
-                                            },
-                                            crossDomain: true,
-                                            async: true,
-                                            success: function(articData) {
-                                                pageInfo.articlList =
-                                                    articData
-                                                    // 渲染
-                                                setHtmlBox()
-                                            },
-                                            error: function(articData) {
-                                                throw new Error(
-                                                    articData)
-                                            }
-                                        })
-                                    },
-                                    error: function(teamData) {
-                                        throw new Error(teamData)
-                                    }
-                                })
+                            success: function(articData) {
+                                pageInfo.articlList =
+                                    articData
+                                    // 渲染
+                                setHtmlBox()
                             },
-                            error: function(taskData) {
-                                throw new Error(taskData)
+                            error: function(articData) {
+                                throw new Error(
+                                    articData)
                             }
                         })
                     },
@@ -346,169 +313,14 @@
             // 构建map映射
             // 用户id-名称
             var map_user = {}
-                // 车队id-名称
-            var map_team = {}
-                // 任务id-名称
-            var map_task = {}
-
             if (userData && userData.length) {
                 userData.forEach(item => {
                     map_user[item.id] = item.username
                 })
             }
-            if (teamData && teamData.length) {
-                teamData.forEach(item => {
-                    map_team[item.id] = item.name
-                })
-            }
-            if (sysData && sysData.length) {
-                sysData.forEach(item => {
-                    map_task[item.id] = item.title
-                })
-            }
             pageInfo.map_user = map_user
-            pageInfo.map_team = map_team
-            pageInfo.map_task = map_task
-                // 找出 我的任务 
-            var myTaskList = []
                 // 用户列表
-            if (userData && userData.length) {
-                for (let i = 0; i < userData.length; i++) {
-                    userdomStr += '<tr>' +
-                        '                <td>' + userData[i].username + '</td>' +
-                        '                <td>' + (userData[i].superAdmin ? '超级管理员' : '普通用户') + '</td>' +
-                        '                <td>' + (userData[i].realName ? userData[i].realName : '') + '</td>' +
-                        '                <td>' + (map_team[userData[i].teamId] ? map_team[userData[i].teamId] : '-') +
-                        '</td>' +
-                        '                <td>' + (userData[i].specialty ? userData[i].specialty : '-') + '</td>' +
-                        '                <td>' + (userData[i].awardInfo ? userData[i].awardInfo : '-') + '</td>' +
-                        '                <td>' + (userData[i].createTime ? userData[i].createTime : '-') + '</td>' +
-                        '               <td>' +
-                        '                    <button class="btn btn-danger plan_btn" data-index="' + i +
-                        '" onclick="deleteUserModal(this)">' +
-                        '                        <i class="icon icon-times"></i>删除' +
-                        '                    </button>' +
-                        '            <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index="' +
-                        i +
-                        '" onclick="showUserModal(this)">' +
-                        '                <i class="icon icon-repeat"></i>编辑' +
-                        '        </button>' +
-                        '    </td>' +
-                        '</tr>'
-                }
-                $('.user-box table tbody').html(userdomStr)
-            } else {
-                $('.user-box table tbody').html('<tr><td colspan="5" align="center">暂无数据</td></tr>')
-            }
-
-            // 任务列表
-            if (pageInfo.taskList && pageInfo.taskList.length) {
-                for (let i = 0; i < sysData.length; i++) {
-                    if (sysData[i].userId == localStorage.getItem('userid')) {
-                        myTaskList.push(sysData[i])
-                    }
-                    let status = '',
-                        statusStr = ''
-                    if (sysData[i].status == 1) {
-                        statusStr = '<span class="label label-warning">待开始</span>'
-                    }
-                    if (sysData[i].status == 2) {
-                        statusStr = '<span class="label label-info">进行中</span>'
-                    }
-                    if (sysData[i].status == 3) {
-                        statusStr = '<span class="label label-success">已完成</span>'
-                    }
-
-                    // 根据上面的映射 找出实现者 找出车队 就好做了
-                    systemdomStr += '<tr>' +
-                        '           <td>' + sysData[i].title + '</td>' +
-                        '           <td>' + sysData[i].content + '</td>' +
-                        '           <td>' + map_user[sysData[i].userId] + '</td>' +
-                        '           <td>' + map_team[sysData[i].teamId] + '</td>' +
-                        '           <td>' + sysData[i].createTime + '</td>' +
-                        '           <td>' + statusStr + '</td>' +
-                        '           <td>' +
-                        '               <button class="btn btn-danger plan_btn"  data-index=' + i +
-                        ' onclick="deletTask(this)">' +
-                        '               <i class="icon icon-times"></i>删除' +
-                        '       </button>' +
-                        '       <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index=' + i +
-                        ' onclick="showPlanModal(this)">' +
-                        '           <i class="icon icon-edit-sign"></i>编辑' +
-                        '   </button>' +
-                        '</td>' +
-                        '</tr>'
-                }
-                $('.system-box table tbody').html(systemdomStr)
-                pageInfo.myTaskList = myTaskList
-            } else {
-                $('.system-box table tbody').html('<tr><td colspan="7" align="center">暂无数据</td></tr>')
-            }
-
-            // 我的任务
-            if (myTaskList && myTaskList.length) {
-                var mytaskdomStr = ''
-                for (let i = 0; i < myTaskList.length; i++) {
-                    let mystatus = '',
-                        mystatusStr = ''
-                    if (myTaskList[i].status == 1) {
-                        mystatusStr = '<span class="label label-warning">待开始</span>'
-                    }
-                    if (myTaskList[i].status == 2) {
-                        mystatusStr = '<span class="label label-info">进行中</span>'
-                    }
-                    if (myTaskList[i].status == 3) {
-                        mystatusStr = '<span class="label label-success">已完成</span>'
-                    }
-
-                    // 根据上面的映射 找出实现者 找出车队 就好做了
-                    mytaskdomStr += '<tr>' +
-                        '           <td>' + myTaskList[i].title + '</td>' +
-                        '           <td>' + myTaskList[i].content + '</td>' +
-                        '           <td>' + map_user[sysData[i].userId] + '</td>' +
-                        '           <td>' + map_team[sysData[i].teamId] + '</td>' +
-                        '           <td>' + myTaskList[i].createTime + '</td>' +
-                        '           <td>' + mystatusStr + '</td>' +
-                        '           <td>' +
-                        '       <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index=' + i +
-                        ' onclick="showMyTaskMdoal(this)">' +
-                        '           <i class="icon icon-edit-sign"></i>更新进度' +
-                        '   </button>' +
-                        '</td>' +
-                        '</tr>'
-                }
-                $('.task-box table tbody').html(mytaskdomStr)
-            } else {
-                $('.task-box table tbody').html('<tr><td colspan="7" align="center">暂无数据</td></tr>')
-            }
-
-            // 车队列表
-            if (teamData && teamData.length) {
-                for (let i = 0; i < teamData.length; i++) {
-                    teamdomStr += '<tr>' +
-                        '                <td>' + teamData[i].name + '</td>' +
-                        '                <td>' + map_user[teamData[i].captain] + '</td>' +
-                        '                <td>' + teamData[i].content + '</td>' +
-                        '                <td>' + map_user[teamData[i].createUser] + '</td>' +
-                        '                <td>' + teamData[i].createTime + '</td>' +
-                        '               <td>' +
-                        '                    <button class="btn btn-danger plan_btn" data-index="' + i +
-                        '" onclick="deleteTeamModal(this)">' +
-                        '                        <i class="icon icon-times"></i>删除' +
-                        '                    </button>' +
-                        '            <button class="btn btn-primary plan_btn" style="margin-top:10px" data-index="' +
-                        i +
-                        '" onclick="showTeamModal(this)">' +
-                        '                <i class="icon icon-repeat"></i>编辑' +
-                        '        </button>' +
-                        '    </td>' +
-                        '</tr>'
-                }
-                $('.car-box table tbody').html(teamdomStr)
-            } else {
-                $('.car-box table tbody').html('<tr><td colspan="6" align="center">暂无数据</td></tr>')
-            }
-            // 文章列表
+                // 文章列表
             if (articlData && articlData.length) {
                 for (let i = 0; i < articlData.length; i++) {
                     articldomStr += '<tr>' +
@@ -690,7 +502,7 @@
                         pageInfo.handleType = null
                         pageInfo.handRow = null
                             // 刷新列表
-                        getAllList()
+                        getUserInfo()
                     } else {
                         showToast({
                             msg: msg + '失败！' + data,
@@ -743,7 +555,7 @@
                             // 刷新列表
                         pageInfo.handRow = null
                         pageInfo.handleType = null
-                        getAllList()
+                        getUserInfo()
                         $('#confirm_Modal').modal('hide')
                     } else {
                         showToast({
